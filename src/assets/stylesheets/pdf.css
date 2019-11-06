@@ -1,0 +1,170 @@
+#pdfPage{
+    color: black;
+    font-size: 20px;
+    /* display: none; */
+    height: 1000px;
+    /* width: 150%; */
+}
+/* #pdfPage .customP{
+    margin: 0px !important;
+} */
+.pdfTable .table-bordered th, .pdfTable .table-bordered td {
+    /* border: 1px solid black; */
+}
+.pdfTable .row{
+    padding: 0px !important;
+}
+.pdfTable{
+    padding:5% 10% 0% 7% !important;
+}
+/* .pdfTable th,tr{
+    border: 2px solid black !important;
+} */
+
+.bloomAddr-pdf{
+    font-weight: bold;
+    float: left;   
+     width: 60%;
+    /* font-size: 15px;  */
+}
+/* .invoice{
+    width:45%;
+} */
+.pdf-invoice td {
+    border: 1px solid black;
+    text-align: left;
+    width: 180px;
+    padding-left: 2%;
+    /* font-size: 15px; */
+  
+  }
+  .invoice-content{
+    font-weight: bold;
+
+  }
+.bill-to th,tr,td{
+    /* border: 2px solid black; */
+}
+.bill-to{
+   width: 60%;
+    float: left;
+
+}
+.bill-to-content{
+    width: 55%;
+}
+.bill-to-body,.ship-to-body{
+    border: 1px solid black;
+    margin-top: 3%;
+    height: 160px;
+    /* font-size: 15px; */
+}
+
+.consolidated-billbody{
+    border: 2px solid black;
+    margin-top: 5%;
+    height: 160px;
+    width: 85%;
+   
+}
+.consolidated-billbody p{
+    margin-left: 1%;
+}
+.bill-to-head,.ship-to-head{
+    border: 1px solid black;
+  text-align: center;
+  margin-top: 3%;
+  font-weight: bold;
+}
+.consolidated-billhead{
+    border: 2px solid black;
+  text-align: center;
+  margin-top: 10%;
+  font-weight: bold;
+  width: 85%;
+}
+.ship-to{
+    width: 30%;
+    float: right;
+    margin-right: 5%;
+}
+/* .ship-to-body{
+    border: 2px solid black;
+    margin-top: 3%;
+} */
+.bill-to-custcode{
+    border: 1px solid black;  
+    padding-top: 1%;
+    width: 50%;
+    float: left;
+
+}
+.pdf-total{
+    float: right;
+    font-size: 15px;
+    margin-top: 2%;
+    margin-right: 5%;
+}
+.pdf-total td{
+font-size: 15px;
+border: 2px solid black;
+}
+.box-summary{
+    width: 33%;
+    float: left;
+    padding-left: 13%;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 1%;
+    
+}
+.box-summary h5{
+    font-size: 15px;
+    font-weight: bold;
+}
+.pdf-invoice{
+    float: right;
+    margin-top: -6%;
+    /* font-size: 15px; */
+    margin-right: 5%;
+}
+.box-summary-content{
+   text-align: center;
+   /* font-size: 15px; */
+
+}
+.pdf-order-head th{
+    font-size: 15px;
+}
+
+.pdf-order-blank,.pdf-order-head th{
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 1%;
+ 
+}
+
+/* .pdf-order-head th{
+border: 2px solid black;
+} */
+.pdf-order-detail td{
+    border: 1px solid black;
+    font-size: 15px;
+    height: 35px;
+    text-align: center;
+    padding: 1%;
+
+}
+.pdf-order-detail table{
+width: 100%;
+}
+.pdf-order-detail{
+    margin-right: 5%;
+}
+
+
+.pdf-consolidated{
+    font-weight: bold;
+    margin:5% 4% 0% 7%;
+}

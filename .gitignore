@@ -1,0 +1,19 @@
+.idea/
+node_modules/
+npm-debug.log*
+node_modules*
+/assets/
+/dist/
+dist/
+package-lock.json
+.vscode/*
+react.crt
+react.key
+react_bundle.crt
+.env*
+sitemap.xml
+# webpack.prod.js
+# webpack.dev.js
+# src/containers/AdminPage.jsx
+# robots.html
+

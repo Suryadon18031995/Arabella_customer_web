@@ -1,0 +1,219 @@
+.my-account .page-title h1 {
+    color: #434343;
+    font: 18px/1.35 Gotham_Book_Regular, Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin-bottom: 18px;
+  }
+  .my-account .page-title {
+    margin: 0 0 10px 0;
+  }
+
+.my-account .box-title h2 {
+    color: #434343;
+    font: 14px/1.55 Gotham_Book_Regular, Lato,Helvetica Neue, Helvetica, Arial, sans-serif;
+  }
+  .order-info dt, .order-info dd, .order-info ul, .order-info li {
+    display: inline;
+  }
+  .col2-set .col-1 {
+    float: left;
+    width: 50%;
+  }
+  .info-box .info-table tr {
+    border: 0;
+    display: table-row-group;
+    line-height: 1.8em;
+  }
+  .order-info-box {
+    padding: 0;
+    clear: both;
+  }
+  .container button.back-link:hover {
+    background-color: #7773A8;
+    border: 1px solid;
+    overflow: visible;
+    color: #fff;
+    width: auto;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    float: left;
+    -moz-transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    -moz-backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    padding: 7px 25px;
+    text-transform: uppercase;
+    font: 12px/1.35 Gotham_Book_Regular, Lato, Helvetica, Arial, sans-serif;
+  }
+  .container button.back-link {
+    border: 1px solid;
+    overflow: visible;
+    color: #fff;
+    width: auto;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    float: left;
+    clear: both;
+    -moz-transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    -moz-backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    padding: 7px 25px;
+    text-transform: uppercase;
+    background-color: #a1a1a1;
+    font: 12px/1.35 Gotham_Book_Regular, Lato, Helvetica, Arial, sans-serif;
+  }
+  .my-account button.get-update {
+    color: #ffffff;
+    border-color: #7773A8;
+    background-color: #7773A8;
+    font: 12px/1.35 Gotham_Book_Regular, Lato, Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    border: 1px solid;
+    overflow: visible;
+    width: auto;
+    margin: 0 10px 10px 0;
+    padding: 7px 10px;
+    cursor: pointer;
+    float: left;
+    -moz-transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    -moz-backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    white-space: nowrap;
+  }
+  .my-account button.get-update:hover{
+    background-color: #fff;
+    color: #7773A8;
+    border-color: #7773A8;
+    font: 12px/1.35 Gotham_Book_Regular, Lato, Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    border: 1px solid;
+    overflow: visible;
+    width: auto;
+    margin: 0 10px 10px 0;
+    padding: 7px 10px;
+    cursor: pointer;
+    -moz-transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    -moz-backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    white-space: nowrap;
+  }
+  .my-account table tr td span {
+    cursor: pointer;
+  }
+  
+  .MywishlistTable .productdetails{
+    cursor: pointer;
+  }
+  /* override the margin bottom property */
+  .table{
+   margin-bottom: 0 !important;
+  }
+  
+  /* .modal-dialog {
+    width: 578px !important;
+  } */
+  
+  .grid {
+    padding: 1% 5% 5% 5%;
+    width: 100%;
+  }
+  
+  /* .popup_table, th, td {
+    border: 1px solid #888;
+    border-collapse: collapse;
+    text-align: center;
+  } */
+  
+  .close {
+    color: black !important;
+  }
+  
+  .my-account .recurring-profiles .addresses-primary {
+    width: 50%;
+    float: left;
+  }
+  .col-1 h3 {
+    color: #434343;
+    font: 14px/1.55 Gotham_Book_Regular, Lato,Helvetica Neue, Helvetica, Arial, sans-serif;
+  }
+  .my-account .box-account-content {
+    border-color: #e1e1e1;
+    padding: 2rem;
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+  }
+  .addresses-primary ol li ul li {
+    float: left;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+  .addresses-primary ol li ul {
+    display: inline-block;
+  }
+  .addresses-primary ol li ul li span {
+    cursor: text;
+  }
+  .recurring-profiles h2.legend {
+    color: #434343;
+    font: 14px/1.35 Gotham_Book_Regular, Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;
+  }
+  .recurring-profiles .input-field {
+    width: 50%;
+    float: left;
+    padding: 5px 15px 10px 15px;
+    height: 100px;
+    overflow: hidden;
+  }
+  .recurring-profiles .field-input {
+    width: 100%;
+    padding: 5px 10px;
+    height: 40px;
+    line-height: 28px;
+    font-size: 110%;
+  }
+  .recurring-profiles .input-field-full-width {
+    width: 100%;
+    float: left;
+    padding: 5px 15px 10px 15px;
+    height: auto;
+    overflow: hidden;
+  }
+  .my-account .input-checkbox {
+    float: left;
+    width: 100%;
+  }
+  .my-account li label {
+    color: #888;
+    font: 14px/1.55 Gotham_Book_Regular, Lato,Helvetica Neue, Helvetica, Arial, sans-serif;
+  }
+  .my-account input[type="checkbox"] {
+    margin-right: 6px;
+  }
+  .my-account em {
+    float: left;
+  }
+
+
+  @media only screen and (min-width:360px) and (max-width:780px){
+  .my-account .recurring-profiles .addresses-primary {
+
+    float: none;
+  }
+}

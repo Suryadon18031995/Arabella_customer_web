@@ -1,0 +1,11 @@
+// Show Cart Constants
+export const SALESREP_URL = `${process.env.APPLICATION_BFF_URL}/info/salesrep/list`;
+export const SALESREP_STORE_URL = `${process.env.APPLICATION_BFF_URL}/info/salesrep/stores`;
+export const SALESREP_LOGIN_URL = `${process.env.APPLICATION_BFF_URL}/salesrep/login`;
+export const REQUEST_SALESREP = 'REQUEST_SALESREP';
+export const RECEIVED_SALESREP = 'RECEIVED_SALESREP';
+export const RECEIVED_SALESREP_ERROR = 'RECEIVED_SALESREP_ERROR';
+
+export const REQUEST_SALESREP_LOGIN = 'REQUEST_SALESREP_LOGIN';
+export const RECEIVED_SALESREP_LOGIN = 'RECEIVED_SALESREP_LOGIN';
+export const RECEIVED_SALESREP_LOGIN_ERROR = 'RECEIVED_SALESREP_LOGIN_ERROR';
