@@ -7,6 +7,51 @@ class VendorProfile extends React.Component {
         liked: false,
         liksesCount: 8,
         comment: '',
+        replyComment: '',
+        id1: '',
+        id2: '',
+        commentsData: [
+            {
+                id: '1',
+                profilePic: 'https://www.jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2-768x768.jpeg',
+                name: 'Aneesh',
+                timestamp: 'Yesterday at 12:30AM',
+                comment: 'This has been very useful for my research. Thanks as well!',
+                replies: [
+                    {
+                        id: '11',
+                        profilePic: 'https://www.jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2-768x768.jpeg',
+                        name: 'Sumith',
+                        timestamp: 'Today at 12:45AM',
+                        comment: 'Elliot you are always so right :)',
+                    },
+                ],
+            },
+            {
+                id: '2',
+                profilePic: 'https://www.jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2-768x768.jpeg',
+                name: 'Anju',
+                timestamp: 'Yesterday at 01:30AM',
+                comment: 'Cool!',
+                replies: [
+                    {
+                        id: '21',
+                        profilePic: 'https://www.jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2-768x768.jpeg',
+                        name: 'Sanju',
+                        timestamp: 'Few Minutes BAck',
+                        comment: 'Thank you:)',
+                    },
+                ],
+            },
+            {
+                id: '3',
+                profilePic: 'https://www.jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2-768x768.jpeg',
+                name: 'Sony',
+                timestamp: 'Today at 01:30AM',
+                comment: 'Great!',
+                replies: [],
+            },
+        ],
     };
 
     handleLikeClick = () => {
@@ -21,15 +66,43 @@ class VendorProfile extends React.Component {
         console.log('Shared!');
     }
 
-    handleCommented = () => {
-        console.log('Commented!', this.state.comment);
+    handleCommentClick = () => {
+        const commentsData = [...this.state.commentsData];
+        commentsData.push({
+            id: commentsData.length + 1,
+            profilePic: 'https://www.jennstrends.com/wp-content/uploads/2013/10/bad-profile-pic-2-768x768.jpeg',
+            name: `Star ${commentsData.length}`,
+            timestamp: 'Just Now',
+            comment: this.state.comment,
+            replies: [],
+        });
+        this.setState({ commentsData, comment: '' });
     }
 
     handleCommentChange = (event) => {
-        // console.log('value:', event.target.value);
         this.setState({
             comment: event.target.value,
         });
+    }
+
+    handleReplyComment = (id1, id2) => {
+        // debugger
+        // console.log('clicked reply:', this.state.comment);
+        this.setState({
+            id1: id2 ? '' : id1,
+            id2: id2 || '',
+            replyComment: '',
+        });
+    }
+
+    handleReplyCommentChange = (event) => {
+        this.setState({
+            replyComment: event.target.value,
+        });
+    }
+
+    handleRepliedComment = (id) => {
+        console.log('clicked! replied!', this.state.replyComment, id);
     }
 
     render() {
@@ -50,13 +123,20 @@ class VendorProfile extends React.Component {
                     </div>
                     <div className='col-lg-10 col-md-10 col-sm-10 col-xs-10'>
                         <PostComponent profilePic={profilePic}
-                        liked={this.state.liked}
-                        liksesCount={this.state.liksesCount}
-                        comment={this.state.comment}
-                        handleLikeClick={this.handleLikeClick}
-                        handleShareClick={this.handleShareClick}
-                        handleCommented={this.handleCommented}
-                        handleCommentChange={this.handleCommentChange}
+                            commentsData={this.state.commentsData}
+                            id1={this.state.id1}
+                            id2={this.state.id2}
+                            liked={this.state.liked}
+                            liksesCount={this.state.liksesCount}
+                            comment={this.state.comment}
+                            replyComment={this.state.replyComment}
+                            handleLikeClick={this.handleLikeClick}
+                            handleShareClick={this.handleShareClick}
+                            handleCommented={this.handleCommentClick}
+                            handleCommentChange={this.handleCommentChange}
+                            handleReplyComment={this.handleReplyComment}
+                            handleRepliedComment={this.handleRepliedComment}
+                            handleReplyCommentChange={this.handleReplyCommentChange}
                         />
                     </div>
                 </div>
