@@ -125,7 +125,7 @@ class VendorRegistration extends React.Component {
     }
 
     validateForm = () => {
-        const errors = {};
+        const errors = { ...this.state.errors };
         // console.log('st:', this.state);
         if (!this.state.firstName) {
             errors.firstName = 'Required.';
@@ -171,7 +171,8 @@ class VendorRegistration extends React.Component {
     }
 
     handleProceedToCheckout = () => {
-        if (!Object.values(this.state.errors).join('') && this.validateForm()) {
+        const valid = this.validateForm();
+        if (!Object.values(this.state.errors).join('') && valid) {
             if (this.state.collectPayment) {
                 console.log('Payment of 500!', this.state);
                 const body = {
@@ -250,7 +251,7 @@ class VendorRegistration extends React.Component {
         return (
             <div className='container'>
                 <div className='col-lg-12 col-md-12 col-sm-12 col-xs-12 marginCustom'>
-                    <h1>Vendor Registration</h1>
+                    <h1>Artist Registration</h1>
                     {/* <form name="registerform">
                         <ul>
                             <li> */}
