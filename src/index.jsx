@@ -26,7 +26,7 @@ import reducer from './reducers';
 import EmptyLayout from './EmptyLayout.jsx';
 import HeaderLayout from './HeaderLayout.jsx';
 import ContactUsContainer from './containers/ContactUs.jsx';
-import VendorRegistration from './containers/VendorRegistration.jsx';
+// import VendorRegistration from './containers/VendorRegistration.jsx';
 import ReturnsAndRefundsPolicy from './containers/ReturnsAndRefundsPolicy.jsx';
 import OurVendors from './containers/OurVendors.jsx';
 import CategoryContainer from './containers/ShopByCategory/CategoryConatiner.jsx';
@@ -109,6 +109,8 @@ import PrimeTerms from './components/Prime/PrimeTerms.jsx';
 import PrimeMembershipProgram from './containers/PrimeMembershipPage.jsx';
 import PrimeMembershipPageBenefit from './containers/PrimeMembershipPageBenefit.jsx';
 import CCAvenueResponseHandler from './containers/MyAccount/CCAvenueResponse.jsx';
+import VendorProfile from './containers/VendorProfile/VendorProfile.jsx';
+import VendorRegistration from './containers/VendorProfile/VendorRegistration.jsx';
 /* My Account Containers END;  */
 
 library.add(faCircle, faCheckCircle);
@@ -535,12 +537,12 @@ ReactDom.render(
               path="/contacts"
               component={ContactUsContainer}
             />
-            <RouteWithLayout
+            {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
               path="/umicrosite/vendor/register/"
               component={VendorRegistration}
-            />
+            /> */}
             <RouteWithLayout
               layout={HeaderLayout}
               exact
@@ -702,6 +704,18 @@ ReactDom.render(
               exact
               path="/paypal"
               component={PayPalContainer}
+            />
+            <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/vendor-profile"
+              component={VendorProfile}
+            />
+            <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/vendor-registration"
+              component={VendorRegistration}
             />
             {/* <RouteWithLayout
               layout={HeaderLayout}

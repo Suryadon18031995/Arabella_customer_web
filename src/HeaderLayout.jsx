@@ -498,13 +498,13 @@ class HeaderLayout extends React.Component {
     //     console.log(error);
     //   });
     // }
-    this.props.getCategoriesData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      // sort: this.state.sortValue,
-      // pageNo: 1,
-    });
+    // this.props.getCategoriesData({
+    //   currencyCode: this.props.currencyCode,
+    //   apiToken: this.props.apiToken,
+    //   storeId: this.props.storeId,
+    //   // sort: this.state.sortValue,
+    //   // pageNo: 1,
+    // });
     if (this.props.cartCount) {
       this.setState({
         totalProdInCart: this.props.cartCount,
@@ -533,11 +533,11 @@ class HeaderLayout extends React.Component {
       this.setState({ totalProd: showCartResult });
     }
 
-    this.props.postTrackUrl({
-      // url: _get(this.props, 'location.pathname'),
-      url: window.location.href,
-      apiToken: this.props.apiToken,
-    });
+    // this.props.postTrackUrl({
+    //   // url: _get(this.props, 'location.pathname'),
+    //   url: window.location.href,
+    //   apiToken: this.props.apiToken,
+    // });
 
     document.addEventListener('click', this.handleClickOutside, true);
     this.setState(() => ({
@@ -1254,6 +1254,7 @@ class HeaderLayout extends React.Component {
                   <ul className={`dropdown-menu col-xs-12 ${menuClass3}`}>
                     {/* <li><Link onClick={this.mblMenu} to="/prebook-flower-subscription.html">Holiday Pre-book</Link></li> */}
                     <li><Link onClick={this.mblMenu} to="/annual-flower-subscription.html">Annual Subscription</Link></li>
+                    <li><Link onClick={this.mblMenu} to="/vendor-profile">Vendor Profile</Link></li>
                   </ul>
                 </li>
                 {/* <li className=""><Link onClick={this.mblMenu} to="/annual-flower-subscription.html"> Annual Subscription </Link></li> */}
@@ -1325,6 +1326,8 @@ class HeaderLayout extends React.Component {
                   <ul className="dropdown-content">
                     {/* <li><Link to="/prebook-flower-subscription.html" style={{ textTranform: 'none' }}>Holiday Pre-book</Link></li> */}
                     <li><Link to="/annual-flower-subscription.html">Annual Subscription</Link></li>
+                    <li><Link to="/vendor-profile">Vendor Profile</Link></li>
+                    <li><Link to="/vendor-registration">Vendor Registration</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown menu-large" id="dropdownMenuDesktop3">
