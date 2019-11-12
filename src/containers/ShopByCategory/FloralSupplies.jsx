@@ -126,7 +126,7 @@ class FloralSuppliesContainer extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let pageType = this.props.match.path.split('/').pop();
     let pageName;
     switch (pageType) {
@@ -304,7 +304,7 @@ class FloralSuppliesContainer extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(nextProps.filtersData)) {
       const shippingMethodsData = [];
       const filterMethodDataTemp = _get(nextProps.filtersData, 'method');

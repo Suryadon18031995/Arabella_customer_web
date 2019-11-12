@@ -187,7 +187,7 @@ class RegisterContainer extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps, 'stateListData'))) {
       if (_get(nextProps.stateListData, [0, 'code']) === 1) {
         this.setState({

@@ -162,7 +162,7 @@ class ArchivePost extends Component {
         }
     }
 
-    componentWillReceiveProps(nextprops) {
+    UNSAFE_componentWillReceiveProps(nextprops) {
         if (!_isEmpty(nextprops.blogPosts)) {
             const recentPosts = nextprops.blogPosts && nextprops.blogPosts.map(eachPost => ({
                 id: _get(eachPost, 'id'),

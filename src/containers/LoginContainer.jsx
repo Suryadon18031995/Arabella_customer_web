@@ -82,7 +82,7 @@ class LoginContainer extends React.Component {
     return formIsValid;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps, 'loginData'))) {
       this.setState({
         loginResult: _get(nextProps.loginData, [0, 'message']),

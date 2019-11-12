@@ -216,7 +216,7 @@ class MyCartContainer extends React.Component {
     this.props.getCartData({ apiToken: this.props.apiToken });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps, 'discountCouponData'))) {
       if (_get(nextProps, ['discountCouponData', 0, 'msg']) === 'success') {
         this.setState({

@@ -8,7 +8,7 @@ export default class FilterLabelList extends React.Component {
         url: this.props.location.url ? this.props.location.url.toLowercase() : '',
     };
     // eslint-disable-next-line class-methods-use-this
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const url = this.props.location.pathname ? this.props.location.pathname.toLowerCase() : undefined;
         if (url && (url === '/admin' || url === '/index.php/admin')) {
             window.location = 'https://bloomkonnect.com:8443/index.php/admin';

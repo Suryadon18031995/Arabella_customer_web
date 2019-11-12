@@ -44,7 +44,7 @@ class AddressBookContainer extends React.Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.getAllAddressData({
             apiToken: this.props.apiToken,
         });
@@ -70,7 +70,7 @@ class AddressBookContainer extends React.Component {
         telephone: _get(addressObj, 'telephone'),
     });
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps.allAddressData, 'result'))) {
             const allAddresses = _get(nextProps.allAddressData, ['result', 0]);
             const billingAddressId = _get(nextProps.allAddressData, 'billingAddressId');

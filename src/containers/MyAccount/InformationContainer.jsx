@@ -145,7 +145,7 @@ class InformationContainer extends Component {
         this.props.getAccountData({ apiToken: this.props.apiToken });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'accountInformationData'))) {
             if (_get(nextProps.accountInformationData, 'code') === 1) {
                 this.setState({

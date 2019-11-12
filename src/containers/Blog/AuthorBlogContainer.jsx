@@ -79,7 +79,7 @@ class AuthorBlogContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextprops) {
+  UNSAFE_componentWillReceiveProps(nextprops) {
     if (!_isEmpty(nextprops.eachPost)) {
       this.setState({
         posts: nextprops.eachPost,

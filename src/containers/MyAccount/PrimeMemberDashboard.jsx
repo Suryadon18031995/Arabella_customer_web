@@ -43,7 +43,7 @@ class PrimeMemberDashboard extends Component {
         this.props.fetchPrimeOrdersData({ apiToken: this.props.apiToken });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'primeOrdersData'))) {
             const primeOrderData = _get(nextProps, 'primeOrdersData.data');
             if (_get(primeOrderData, ['prime']) === '0') {

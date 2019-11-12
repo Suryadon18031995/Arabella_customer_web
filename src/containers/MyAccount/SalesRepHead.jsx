@@ -24,7 +24,7 @@ class SalesRepHead extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // this.props.getLogoutData({ apiToken: this.props.apiToken });
         this.props.getSalesRepLoginData({
             apiToken: this.props.salesRepToken,
@@ -32,7 +32,7 @@ class SalesRepHead extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'loginData'))) {
             this.props.clearCartReducer();
             this.setState({

@@ -27,7 +27,7 @@ class PayPalContainer extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const queryString = window.location.hash;
         // console.log('paypalRes', queryString);
         if (queryString) {

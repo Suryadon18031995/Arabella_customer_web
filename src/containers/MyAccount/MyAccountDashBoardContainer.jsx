@@ -37,7 +37,7 @@ class MyAccountDashBoardContainer extends React.Component {
             apiToken: _get(_get(this.props.loginData, '[0].result'), 'api_token'),
         });
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({
             profileData: _get(nextProps, 'userProfileData'),
         });

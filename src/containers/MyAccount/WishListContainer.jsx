@@ -36,7 +36,7 @@ class WishListContainer extends Component {
         document.title = 'My Wishlist';
         this.props.getWishlistData({ apiToken: this.props.apiToken });
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'wishListInfo'))) {
             this.setState({
                 result: _get(nextProps, 'wishListInfo'),

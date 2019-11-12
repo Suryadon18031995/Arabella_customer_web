@@ -104,7 +104,7 @@ class CategoryPost extends Component {
         }
     }
 
-    componentWillReceiveProps(nextprops) {
+    UNSAFE_componentWillReceiveProps(nextprops) {
         if (nextprops.blogPosts) {
             const recentPosts = nextprops.blogPosts && nextprops.blogPosts.map(eachPost => ({
                 id: _get(eachPost, 'id'),

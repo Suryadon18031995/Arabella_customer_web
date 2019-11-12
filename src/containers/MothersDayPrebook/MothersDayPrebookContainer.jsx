@@ -99,7 +99,7 @@ class MothersDayPrebookContainer extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.getFiltersData({
       currencyCode: this.props.currencyCode,
       apiToken: this.props.apiToken,
@@ -120,7 +120,7 @@ class MothersDayPrebookContainer extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(nextProps.filtersData)) {
       const shippingMethodsData = [];
       const filterMethodDataTemp = _get(nextProps.filtersData, 'method');

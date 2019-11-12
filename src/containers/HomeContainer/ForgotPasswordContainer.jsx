@@ -33,7 +33,7 @@ class ForgotPasswordContainer extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps, 'forgotPasswordData'))) {
       if (_get(nextProps, ['forgotPasswordData', 0, 'code']) !== 1) {
         this.setState({

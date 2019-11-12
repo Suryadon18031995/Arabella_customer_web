@@ -49,7 +49,7 @@ class TagsContainer extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.tagsData.data) && _get(nextProps.tagsData, 'code')) {
             this.setState({
                 data: _sortBy(_get(nextProps.tagsData, 'data'), 'name'),

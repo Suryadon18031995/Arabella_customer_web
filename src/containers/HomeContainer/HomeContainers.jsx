@@ -139,7 +139,7 @@ class HomeContainer extends React.Component {
     return products;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let newArrivals, freshDeals, bestSellers;
 
     newArrivals = this.populateArray(nextProps, 'newArrivalsSearchData', []);

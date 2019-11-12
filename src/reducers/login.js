@@ -36,6 +36,7 @@ const loginReducer = (state = {
     cartCount: 0,
     cartProducts: [],
     cartTotal: 0,
+    artistReg: {},
 }, action) => {
     switch (action.type) {
         case LOGIN_CONSTANTS.REQUEST_LOGIN_DATA:
@@ -360,6 +361,27 @@ const loginReducer = (state = {
         case LOGIN_CONSTANTS.UPDATE_PRIME_ID:
             return Object.assign({}, state, {
                 primeUser: action.data,
+            });
+
+        case LOGIN_CONSTANTS.ARTIST_EMAIL_CONSTANTS.REQUEST:
+            return Object.assign({}, state, {
+                isFetching: true,
+                type: action.type,
+                lastUpdated: action.receivedAt,
+            });
+        case LOGIN_CONSTANTS.ARTIST_EMAIL_CONSTANTS.RECEIVED:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                didInvalidate: false,
+                artistReg: action.data,
+                lastUpdated: action.receivedAt,
+            });
+        case LOGIN_CONSTANTS.ARTIST_EMAIL_CONSTANTS.RECEIVED_ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                error: action.error,
             });
 
         default:

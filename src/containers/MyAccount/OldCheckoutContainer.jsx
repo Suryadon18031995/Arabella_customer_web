@@ -427,7 +427,7 @@ class CheckOutContainer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'allAddressData'))) {
             const defaultBillInfo = _find(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: _get(nextProps, 'allAddressData.billingAddressId') });
             const defaultShipInfo = _find(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: _get(nextProps, 'allAddressData.defaultShippingId') });

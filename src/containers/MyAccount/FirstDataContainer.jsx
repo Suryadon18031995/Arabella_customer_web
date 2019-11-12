@@ -29,7 +29,7 @@ class FirstDataContainer extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // this.props.clearPlaceOrderData();
         const queryString = window.location.search;
         if (queryString) {

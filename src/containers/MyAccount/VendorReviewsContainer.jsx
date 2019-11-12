@@ -39,7 +39,7 @@ class VendorReviewsContainer extends Component {
         this.setState({ hoverLoad: false, firstLoad: true }, () => this.props.getReviewsData({ apiToken: this.props.apiToken }));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'myReviewsData')) && this.state.firstLoad) {
             this.setState({
                 reviews: _get(nextProps, 'myReviewsData.data'),

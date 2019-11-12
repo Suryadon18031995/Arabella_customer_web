@@ -125,7 +125,7 @@ class CategoryContainer extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const category = [];
     // category.push(_get(this.props, 'location.state.catId', ''));
     if (_get(this.props, 'location.state.catId', '') !== '409') {
@@ -177,7 +177,7 @@ class CategoryContainer extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(nextProps.filtersData)) {
       const shippingMethodsData = [];
       const filterMethodDataTemp = _get(nextProps.filtersData, 'method');

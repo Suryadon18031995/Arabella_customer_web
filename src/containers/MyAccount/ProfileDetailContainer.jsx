@@ -30,7 +30,7 @@ class ProfileDetailContainer extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.getRecuringProfileDetail({
             apiToken: this.props.apiToken,
             profileId: this.state.profileId,
@@ -44,7 +44,7 @@ class ProfileDetailContainer extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.recurringProfileData)) {
             if (_get(nextProps.recurringProfileData, 'status') === 'true') {
                 this.setState({

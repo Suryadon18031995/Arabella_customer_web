@@ -100,7 +100,7 @@ class ContactUsContainer extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'contactData'))) {
             if (_get(nextProps.contactData, 'status') === 'success') {
                 this.setState({

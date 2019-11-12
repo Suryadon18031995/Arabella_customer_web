@@ -104,7 +104,7 @@ const MapComponent = compose(
     mapElement: <div style={{ height: '100%' }} />,
   }),
   lifecycle({
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             // zoomToMarkers: (map) => {
             //     const bounds = new window.google.maps.LatLngBounds();

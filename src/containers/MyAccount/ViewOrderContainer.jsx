@@ -132,7 +132,7 @@ class ViewOrderContainer extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'viewOrderData'))) {
             if (_get(nextProps, ['viewOrderData', 0, 'code']) === 1) {
                 const orderDate = moment(_get(nextProps.viewOrderData, [0, 'order_date'])).format('MMMM Do YYYY');

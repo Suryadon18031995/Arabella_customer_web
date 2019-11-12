@@ -81,7 +81,7 @@ class VendorPendingReviewContainer extends Component {
         this.props.fetchVenderPendingReviewsData({ apiToken: this.props.apiToken, pageNo: this.state.currentPage });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.vendorReviewsData)) {
             const totalPages = _get(nextProps.vendorReviewsData, 'total_pages');
             const totalItems = _get(nextProps.vendorReviewsData, 'total_orders');

@@ -188,7 +188,7 @@ class VendorRegistration extends React.Component {
         this.props.getVendorRegisterUrl();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'categoriesListData'))) {
             if (_get(nextProps, 'categoriesListData.status') === 'true') {
                 this.setState({ vendorAddressUrl: _get(nextProps, 'categoriesListData.serverAddress') });

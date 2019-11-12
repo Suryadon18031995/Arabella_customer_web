@@ -40,14 +40,14 @@ class RecuringProfileContainer extends Component {
         });
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         document.title = 'Recurring Profiles';
         this.props.getRecuringProfileData({
             apiToken: this.props.apiToken,
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.recurringProfileData)) {
             if (_get(nextProps.recurringProfileData, 'status') === 'true') {
                 this.setState({

@@ -158,7 +158,7 @@ class SeasonalSubscriptionContainer extends React.Component {
   }).filter(element => (element !== null && element !== undefined));
   changeActiveItem = activeItemIndex => this.setState({ activeItemIndex });
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(nextProps.seasonalHead)) {
       const currDate = moment().format('YYYY-MM-DD hh:mm:ss'); // 2018-10-22 03:32:00
       let recivedData = _get(nextProps.seasonalHead, 'data', ''); // collection of dates.

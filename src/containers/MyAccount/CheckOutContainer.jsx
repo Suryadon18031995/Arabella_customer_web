@@ -488,7 +488,7 @@ class CheckOutContainer extends Component {
         this.props.getBraintreeClientToken();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'allAddressData'))) {
             const defaultBillingInfo = _find(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: _get(nextProps, 'allAddressData.billingAddressId') });
             let defaultShipInfo = _filter(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: this.props.storeId });

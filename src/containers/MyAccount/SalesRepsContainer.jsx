@@ -59,11 +59,11 @@ class SalesRepsContainer extends Component {
         // });
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.getSalesRepData({ apiToken: this.props.apiToken });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.type === 'RECEIVED_SALESREP_LOGIN' && (!nextProps.loginLastUpdated || (nextProps.loginLastUpdated > nextProps.salesLastUpdated))) {
             this.setState({
                 redirectToListing: true,

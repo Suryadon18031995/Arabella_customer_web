@@ -215,7 +215,7 @@ class TagsDetailContainer extends Component {
         }
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.tagsDetailsData)) {
             this.setState({
                 tagName: _get(nextProps, ['tagsDetailsData', 'data', 'tag_name']),

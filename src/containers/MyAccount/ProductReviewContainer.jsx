@@ -61,7 +61,7 @@ class ProductReviewContainer extends Component {
         }));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.productReviewsData) && this.state.firstLoad) {
             const totalPages = _get(nextProps.productReviewsData, 'total_pages');
             const totalItems = _get(nextProps.productReviewsData, 'total_orders');

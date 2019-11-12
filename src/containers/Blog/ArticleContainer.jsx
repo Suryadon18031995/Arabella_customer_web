@@ -157,7 +157,7 @@ class ArticleContainer extends Component {
         return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} at ${hours}:${date.getMinutes()} ${ampm}`;
     }
 
-    componentWillReceiveProps(nextprops) {
+    UNSAFE_componentWillReceiveProps(nextprops) {
         if (!_isEmpty(nextprops.commentsData)) {
             this.setState({ commentsData: nextprops.commentsData > 5 ? nextprops.commentsData.slice(0, 5) : nextprops.commentsData });
         }

@@ -231,7 +231,7 @@ class ProductDetailContainer extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(nextProps.productDetailsData)) {
       const productDetails = _get(nextProps.productDetailsData, `productDetail.result.${this.state.productId}`);
       if (!productDetails || _isEmpty(productDetails)) {
@@ -409,7 +409,7 @@ class ProductDetailContainer extends React.Component {
     });
   };
   // carousel settings
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState({
       children: [],
 

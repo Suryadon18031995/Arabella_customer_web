@@ -334,7 +334,7 @@ class HeaderLayout extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.state.totalProdInCart !== nextProps.cartCount) {
       this.setState({
         totalProdInCart: nextProps.cartCount,
@@ -476,7 +476,7 @@ class HeaderLayout extends React.Component {
     this.props.postNewsletterSubscription({ emailId: this.state.subscribeEmail });
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // if (_isEmpty(this.props.apiToken)) {
     //   fetch('https://geoip-db.com/json/')
     //   .then(response => response.json())

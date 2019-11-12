@@ -2,9 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import connect from 'react-redux/lib/connect/connect';
 import PostComponent from '../../components/VendorProfile/PostComponent.jsx';
 import profilePic from '../../assets/images/profile.png';
 import { mapCCAvenueData } from '../../utils/commonMapper';
+import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
+import { verifyEmailId } from '../../actions/login';
 
 class VendorRegistration extends React.Component {
     state = {
@@ -89,6 +92,7 @@ class VendorRegistration extends React.Component {
             this.setState({
                 errors: { ...this.state.errors, email: '' },
             });
+            this.props.verifyEmailId({ email: this.state.email });
         }
     }
 
@@ -234,6 +238,13 @@ class VendorRegistration extends React.Component {
         }
     }
 
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // console.log('next:', nextProps);
+        if (nextProps.artistReg) {
+            this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
+        }
+    }
+
     render() {
         // console.log('err:', this.state);
         return (
@@ -342,4 +353,28 @@ class VendorRegistration extends React.Component {
     }
 }
 
-export default VendorRegistration;
+const mapDispatchToProps = dispatch => ({
+    verifyEmailId: data => dispatch(verifyEmailId(data)),
+    // getCartData: data => dispatch(fetchFirstCartData(data)),
+});
+
+const mapStateToProps = (state) => {
+    const {
+        loginReducer,
+    } = state;
+
+    const {
+        artistReg,
+        isFetching: isLoading,
+    } = loginReducer || [];
+
+    // const error = !_isEmpty(loginError) || _isError(loginError);
+
+    return {
+        artistReg,
+        isLoading,
+        // error,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorHandler(VendorRegistration));

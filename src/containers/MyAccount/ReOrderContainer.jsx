@@ -211,7 +211,7 @@ class ReOrderContainer extends Component {
     this.props.getReOrderData({ apiToken: this.props.apiToken, incrementId: this.state.orderId, pageNo: 1 });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps, 'reorderData'))) {
       if (!_isEmpty(_get(nextProps, 'reorderData.status')) === true) {
         this.setState({ reOrderData: _get(nextProps, 'reorderData') });

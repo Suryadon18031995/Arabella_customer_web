@@ -61,7 +61,7 @@ class PastPurchaseContainer extends React.Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     document.title = 'Past Purchase';
     this.props.getPastPurchaseData({
       apiToken: this.props.apiToken,
@@ -71,7 +71,7 @@ class PastPurchaseContainer extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps.pastPurchaseData, 'data'))) {
       const detailsTemp = [];
       const deliveryDataTemp = [];

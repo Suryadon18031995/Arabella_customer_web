@@ -75,7 +75,7 @@ class MyFavouriteContainer extends React.Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'MyFavouritesInfo'))) {
             const productDetails = _get(nextProps, 'MyFavouritesInfo.result');
             const detailsTemp = [];

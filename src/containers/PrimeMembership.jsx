@@ -36,7 +36,7 @@ class PrimeMembership extends Component {
     document.title = 'Join Premium Membership';
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     /* list api response */
     if (!_isEmpty(nextProps.primePageData)) {
       this.setState({ primeProducts: _get(nextProps.primePageData, ['products', 'products']) });

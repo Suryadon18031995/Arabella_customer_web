@@ -122,7 +122,7 @@ class BestsellerContainer extends React.Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (_get(this.props.location, 'state.searchText')) {
             this.setState({
                 passedSearchedData: _get(this.props.location, 'state'),
@@ -249,7 +249,7 @@ class BestsellerContainer extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(nextProps.filtersData)) {
             const shippingMethodsData = [];
             const filterMethodDataTemp = _get(nextProps.filtersData, 'method');

@@ -32,7 +32,7 @@ class ReviewsContainer extends React.Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'recentViews'))) {
             this.setState({
                 recentViewsData: _get(nextProps, 'recentViews'),

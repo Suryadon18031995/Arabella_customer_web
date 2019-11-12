@@ -18,7 +18,7 @@ class AlertDialogSlide extends React.Component {
     open: this.props.open,
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       open: nextProps.open,
     });

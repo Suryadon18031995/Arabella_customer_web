@@ -227,7 +227,7 @@ class AddNewAddressContainer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'addAddressData'))) {
             const message = (_get(nextProps.addAddressData, 'code') === 1) ? 'Address Added Successfully.' : 'Add Address Failed.';
             this.setState({

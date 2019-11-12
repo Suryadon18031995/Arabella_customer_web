@@ -241,3 +241,18 @@ export const updatePrimeValue = (data, subreddit) => ({
     data,
     receivedAt: Date.now(),
 });
+
+export const verifyEmailId = (data, subreddit) => (dispatch) => {
+    const constants = _get(LOGIN_CONSTANTS, 'ARTIST_EMAIL_CONSTANTS');
+    return dispatch(dynamicActionWrapper({
+        path: _get(constants, 'URL'),
+        method: 'POST',
+        body: data,
+        initCb: _get(generateFns({ constants }), 'request'),
+        successCb: _get(generateFns({ constants }), 'recieved'),
+        failureCb: _get(generateFns({ constants }), 'recievedErr'),
+        subreddit,
+        wrapperActionType: 'REQUEST_ARTIST_EMAIL_WRAPPER',
+        redirect: 'follow',
+    }));
+};

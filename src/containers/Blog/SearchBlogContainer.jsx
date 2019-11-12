@@ -111,7 +111,7 @@ class SearchBlogContainer extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextprops) {
+    UNSAFE_componentWillReceiveProps(nextprops) {
         if (!_isEmpty(nextprops.commentsData)) {
             this.setState({ comments: nextprops.commentsData > 5 ? nextprops.commentsData.slice(0, 5) : nextprops.commentsData });
         }

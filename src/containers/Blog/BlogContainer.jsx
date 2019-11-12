@@ -59,7 +59,7 @@ class BlogContainer extends Component {
     this.props.fetchInstaFeedData();
   }
 
-  componentWillReceiveProps(nextprops) {
+  UNSAFE_componentWillReceiveProps(nextprops) {
     if (!_isEmpty(nextprops.blogPosts)) {
       if (_get(nextprops.blogPosts, 'code') === 404) {
         return this.setState({ apiBroke: true });

@@ -269,7 +269,7 @@ class MyOrderContainer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         let selectedTotal = 0;
         if (!_isEmpty(_get(nextProps, 'myOrderData'))) {
             const myOrderRes = _get(nextProps, 'myOrderData.data');

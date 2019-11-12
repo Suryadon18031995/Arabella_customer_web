@@ -150,7 +150,7 @@ class TrackOrderContainer extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(_get(nextProps, 'trackOrderData'))) {
       if (_get(nextProps.trackOrderData, [0, 'code']) === 1) {
         this.setState({

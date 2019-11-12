@@ -67,7 +67,7 @@ class MyRewardsContainer extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!_isEmpty(_get(nextProps, 'myRewardsData'))) {
             if (_get(nextProps.myRewardsData, 'code') === 1) {
                 this.setState({

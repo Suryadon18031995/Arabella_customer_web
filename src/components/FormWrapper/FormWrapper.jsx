@@ -45,7 +45,7 @@ export default class FormWrapper extends React.Component {
     };
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
 
   }
 
