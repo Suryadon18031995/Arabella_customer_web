@@ -245,9 +245,9 @@ export const updatePrimeValue = (data, subreddit) => ({
 export const verifyEmailId = (data, subreddit) => (dispatch) => {
     const constants = _get(LOGIN_CONSTANTS, 'ARTIST_EMAIL_CONSTANTS');
     return dispatch(dynamicActionWrapper({
-        path: _get(constants, 'URL'),
-        method: 'POST',
-        body: data,
+        path: `${_get(constants, 'URL')}${data.email}`,
+        method: 'GET',
+        // body: data,
         initCb: _get(generateFns({ constants }), 'request'),
         successCb: _get(generateFns({ constants }), 'recieved'),
         failureCb: _get(generateFns({ constants }), 'recievedErr'),
