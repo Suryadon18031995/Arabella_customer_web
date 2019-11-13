@@ -24,6 +24,7 @@ class VendorRegistration extends React.Component {
         gstNo: '',
         errors: {},
         collectPayment: true,
+        telephone: '',
     };
 
     handleLikeClick = () => {
@@ -126,52 +127,67 @@ class VendorRegistration extends React.Component {
 
     validateForm = () => {
         const errors = { ...this.state.errors };
+        let valueUp = false;
         // console.log('st:', this.state);
         if (!this.state.firstName) {
             errors.firstName = 'Required.';
+            valueUp = true;
         }
         if (!this.state.lastName) {
             errors.lastName = 'Required.';
+            valueUp = true;
         }
         if (!this.state.addressLine1) {
             errors.addressLine1 = 'Required.';
+            valueUp = true;
         }
         if (!this.state.addressLine2) {
             errors.addressLine2 = 'Required.';
+            valueUp = true;
         }
         if (!this.state.city) {
             errors.city = 'Required.';
+            valueUp = true;
         }
         if (!this.state.state) {
             errors.state = 'Required.';
+            valueUp = true;
         }
         if (!this.state.zipcode) {
             errors.zipcode = 'Required.';
+            valueUp = true;
         }
         if (!this.state.email) {
             errors.email = 'Required.';
+            valueUp = true;
         }
-        if (!this.state.gstNo) {
-            errors.gstNo = 'Required.';
-        }
+        // if (!this.state.gstNo) {
+        //     errors.gstNo = 'Required.';
+        //     valueUp = true;
+        // }
         if (!this.state.password) {
             errors.password = 'Required.';
+            valueUp = true;
         }
         if (!this.state.email) {
             errors.email = 'Required.';
+            valueUp = true;
         }
         if (!this.state.confirmPassword) {
             errors.confirmPassword = 'Required.';
+            valueUp = true;
         }
-        if (!_isEmpty(errors)) {
+        if (Object.values(this.state.errors).join('') || valueUp) {
             this.setState({ errors });
             return false;
         }
+        // debugger
         return true;
     }
 
     handleProceedToCheckout = () => {
         const valid = this.validateForm();
+        // debugger
         if (!Object.values(this.state.errors).join('') && valid) {
             if (this.state.collectPayment) {
                 console.log('Payment of 500!', this.state);
@@ -199,40 +215,53 @@ class VendorRegistration extends React.Component {
                     deliveryCountry: 'India',
                     // deliveryTel: '0123456789',
                     merchantParam1: 'Info.',
-                    merchantParam2: 'Info.',
+                    // merchantParam2: 'Info.',
                     merchantParam3: 'Info.',
                     merchantParam4: 'Info.',
                     promoCode: '',
                     customerIdentifier: '',
                     apiToken: 'ca6679c3f62279edf24855cacdc3c98b', // @todo change to custom id
+                    merchantParam2: JSON.stringify({
+                        name: `${_get(this.state, 'firstName')} ${_get(this.state, 'lastName')}`,
+                        street: `${_get(this.state, 'addressLine1')}, ${_get(this.state, 'addressLine2')}`,
+                        city: _get(this.state, 'city'),
+                        state: _get(this.state, 'state'),
+                        zipcode: _get(this.state, 'zipcode'),
+                        email: _get(this.state, 'email'),
+                        password: _get(this.state, 'password'),
+                        confirmPassword: _get(this.state, 'confirmPassword'),
+                        gstin: _get(this.state, 'gstNo'),
+                        country: 'India',
+                        telephone: _get(this.state, 'telephone', '8123572501'),
+                    }),
                 };
                 console.log('b:', body);
                 // debugger
-                // axios({
-                //     url: `${process.env.APPLICATION_BFF_URL}/payment/ccavenue/token`,
-                //     method: 'POST',
-                //     data: JSON.stringify(body),
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //         'Cache-Control': 'no-store',
-                //         'Access-Control-Allow-Origin': '*',
-                //         'Access-Control-Allow-Method': 'access-control-request-method' || '*',
-                //         'Access-Control-Allow-Headers': 'access-control-request-headers' || '*',
-                //     },
-                // })
-                //     .then((response) => {
-                //         console.log('res:', response.data);
+                axios({
+                    url: `${process.env.APPLICATION_BFF_URL}/payment/ccavenue/token`,
+                    method: 'POST',
+                    data: JSON.stringify(body),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-store',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Method': 'access-control-request-method' || '*',
+                        'Access-Control-Allow-Headers': 'access-control-request-headers' || '*',
+                    },
+                })
+                    .then((response) => {
+                        console.log('res:', response.data);
                 //         // let formData = new FormData();
                 //         // formData.append("username", "Groucho");
                 //         // formData.append("accountnum", 123456);
                 //         // console.log('form:', formData);
                 //         // document.getElementById("nonseamless").action = 'https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction';
                 //         // document.getElementById("encRequest").name  = 'b';
-                //         document.getElementById('encRequest').value = response.data.encRequest; //  'dc0458991d58466f303d07feb7fc6e590e3d47a48665415a59271dbe87ab994a650bc153873969fb73c717a574997a48a8eac310f094d1d07d9dea0f05fbda255ea2ab2c004b875142856e8743269adf0004f6531ccd30eb525c87477073c62e1a4b05a76350cb04d5c1429c3406aed42e6e48080afcea67d5b87950448bd44431ac88b700f0838bda353b835c5950345865bc8fa279224b17681ba9bd62a377630ce0d595b618d5058c31279bc2c403c3a7cdb8762dbefb5fff30479eaab22df3b12af725b1dc8d3c4dc14a859a53295f3e9c6577cba5291c50dd9119d4e18578bb61395b3aae538b849bf9fb0116254a32527193de6badad0b58665d291005ac8e310b5002325661775e8a1a800719ae446745319030b34cdcd778eb7a99daba82f09088af072adc88e2eba24955b85582e5081bf3e214ef53bc9cdab1539784fc7cc6db634d4dc1c5b294e85c01868c37bb36388547d62f28ea278c21bcf5d7d418d48a5b998cd3c0e65d34b3258f6da186ca854a8be4aa317902e61eb5e83fcd63252bce1f96e41b069dc787d7b69d60eea052c47d51908d4620d093b74f76a1bf3c66832b773f6cb0e9e1418908d1bb9aff94931dccdb6c07638d2c80e649fb3495b366e4cc55dd75ca749089a8359c38c3873d779ae520d3800d60a678e9ecffc345901fde26305cebf5f3a848288471abae7b7d31324fa2bea3c7364216b6e252c3e09df16ff4cf9742d0f83bba3864e5c83e56dcc8865b8cc7ce4283a0adbe0855efab8449df9378530e1ee7cef6dc4b8db2a9ca3f16aa81248cfb4a431f36c7a93727aafc480471a88bf8141d2f97b0fe240032bcb19bcb4e863cbce033d3934c70cc91dd39fba523d7ff2fd0eae2db0898961a9b85ef07beedd63bdefa22091bad43ea1cb2386e0e92210573032076959906c71a34a8f08019c1005b45ec2187275c4521a30a2df58da65fc8260eef50774895c8e128ae53dd9f4dfdc72472edbd004e96050adcfddab1a04ca9f74264fe111ef774bbc98750667badaaf8da7b208c0377ff2cda4af9b11f' //
+                        document.getElementById('encRequest').value = response.data.encRequest; //  'dc0458991d58466f303d07feb7fc6e590e3d47a48665415a59271dbe87ab994a650bc153873969fb73c717a574997a48a8eac310f094d1d07d9dea0f05fbda255ea2ab2c004b875142856e8743269adf0004f6531ccd30eb525c87477073c62e1a4b05a76350cb04d5c1429c3406aed42e6e48080afcea67d5b87950448bd44431ac88b700f0838bda353b835c5950345865bc8fa279224b17681ba9bd62a377630ce0d595b618d5058c31279bc2c403c3a7cdb8762dbefb5fff30479eaab22df3b12af725b1dc8d3c4dc14a859a53295f3e9c6577cba5291c50dd9119d4e18578bb61395b3aae538b849bf9fb0116254a32527193de6badad0b58665d291005ac8e310b5002325661775e8a1a800719ae446745319030b34cdcd778eb7a99daba82f09088af072adc88e2eba24955b85582e5081bf3e214ef53bc9cdab1539784fc7cc6db634d4dc1c5b294e85c01868c37bb36388547d62f28ea278c21bcf5d7d418d48a5b998cd3c0e65d34b3258f6da186ca854a8be4aa317902e61eb5e83fcd63252bce1f96e41b069dc787d7b69d60eea052c47d51908d4620d093b74f76a1bf3c66832b773f6cb0e9e1418908d1bb9aff94931dccdb6c07638d2c80e649fb3495b366e4cc55dd75ca749089a8359c38c3873d779ae520d3800d60a678e9ecffc345901fde26305cebf5f3a848288471abae7b7d31324fa2bea3c7364216b6e252c3e09df16ff4cf9742d0f83bba3864e5c83e56dcc8865b8cc7ce4283a0adbe0855efab8449df9378530e1ee7cef6dc4b8db2a9ca3f16aa81248cfb4a431f36c7a93727aafc480471a88bf8141d2f97b0fe240032bcb19bcb4e863cbce033d3934c70cc91dd39fba523d7ff2fd0eae2db0898961a9b85ef07beedd63bdefa22091bad43ea1cb2386e0e92210573032076959906c71a34a8f08019c1005b45ec2187275c4521a30a2df58da65fc8260eef50774895c8e128ae53dd9f4dfdc72472edbd004e96050adcfddab1a04ca9f74264fe111ef774bbc98750667badaaf8da7b208c0377ff2cda4af9b11f' //
                 //         // document.getElementById("access_code").name  = 'b';
-                //         document.getElementById('access_code').value = response.data.accessCode; // 'AVXL88GK63AI87LXIA'//
-                //         document.getElementById('nonseamless').submit();
-                //     });
+                        document.getElementById('access_code').value = response.data.accessCode; // 'AVXL88GK63AI87LXIA'//
+                        document.getElementById('nonseamless').submit();
+                    });
             } else {
                 // Register artists
             }
@@ -242,7 +271,7 @@ class VendorRegistration extends React.Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         // console.log('next:', nextProps);
         if (nextProps.artistReg) {
-            this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
+            // this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
         }
     }
 
@@ -331,7 +360,18 @@ class VendorRegistration extends React.Component {
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'confirmPassword')}</label>
                         </div>
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
-                            <label className="required">GST Number<em>*</em></label>
+                            <label className="required">Phone Number
+                            {/* <em>*</em> */}
+                            </label>
+                            <input name="telephone" id="telephone" title="Phone Number" className="field-input"
+                                onBlur={this.onBlur}
+                                type="text" onChange={this.handleChange} value={this.state.telephone} />
+                            <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'telephone')}</label>
+                        </div>
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
+                            <label className="required">GST Number
+                            {/* <em>*</em> */}
+                            </label>
                             <input name="gstNo" id="gstNo" title="GST Number" className="field-input"
                                 onBlur={this.onBlur}
                                 type="text" onChange={this.handleChange} value={this.state.gstNo} />
