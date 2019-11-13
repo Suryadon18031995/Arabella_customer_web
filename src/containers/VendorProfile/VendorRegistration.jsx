@@ -3,11 +3,10 @@ import axios from 'axios';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import connect from 'react-redux/lib/connect/connect';
-import PostComponent from '../../components/VendorProfile/PostComponent.jsx';
-import profilePic from '../../assets/images/profile.png';
-import { mapCCAvenueData } from '../../utils/commonMapper';
+// import { mapCCAvenueData } from '../../utils/commonMapper';
 import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
 import { verifyEmailId } from '../../actions/login';
+import { postAddToCartData, fetchFirstCartData } from '../../actions/cart';
 
 class VendorRegistration extends React.Component {
     state = {
@@ -25,29 +24,18 @@ class VendorRegistration extends React.Component {
         errors: {},
         collectPayment: true,
         telephone: '',
+        dummyProd: {
+            api: 'api',
+            apiToken: '190d57c560e942b32cb98d8b0f56d9a1',
+            productId: '1', // @ todo
+            quantity: 1,
+            selValNext: 'local_delivery,13-Nov-2019,1,500,500,500,500,13-Nov-2019,13-Nov-2019,,14164,,,,,Vendor,Registration,500', // @ todo
+        },
+        apiToken: '190d57c560e942b32cb98d8b0f56d9a1',
     };
 
-    handleLikeClick = () => {
-        console.log('Liked!');
-        this.setState(prevState => ({
-            liked: !prevState.liked,
-            liksesCount: prevState.liked ? prevState.liksesCount - 1 : prevState.liksesCount + 1,
-        }));
-    }
-
-    handleShareClick = () => {
-        console.log('Shared!');
-    }
-
-    handleCommented = () => {
-        console.log('Commented!', this.state.comment);
-    }
-
-    handleCommentChange = (event) => {
-        // console.log('value:', event.target.value);
-        this.setState({
-            comment: event.target.value,
-        });
+    componentDidMount() {
+        this.props.getCartData({ apiToken: this.props.apiToken });
     }
 
     handleChange = (event) => {
@@ -220,7 +208,7 @@ class VendorRegistration extends React.Component {
                     merchantParam4: 'Info.',
                     promoCode: '',
                     customerIdentifier: '',
-                    apiToken: 'ca6679c3f62279edf24855cacdc3c98b', // @todo change to custom id
+                    apiToken: '190d57c560e942b32cb98d8b0f56d9a1', // @todo change to custom id
                     merchantParam2: JSON.stringify({
                         name: `${_get(this.state, 'firstName')} ${_get(this.state, 'lastName')}`,
                         street: `${_get(this.state, 'addressLine1')}, ${_get(this.state, 'addressLine2')}`,
@@ -271,7 +259,18 @@ class VendorRegistration extends React.Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         // console.log('next:', nextProps);
         if (nextProps.artistReg) {
+            console.log('next artistReg:', nextProps.artistReg);
             // this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
+        }
+
+        // this.props.addToCart(this.state.dummyProd);
+
+        if (!_isEmpty(_get(nextProps, 'firstCartData'))) {
+            if (_get(nextProps, ['firstCartData', 'cart', 0, 'code']) === -2) {
+                // if (_get(nextProps, ['firstCartData', 'cart', 0, 'total_products_in_cart']) === 0) {
+                    this.props.addToCart(this.state.dummyProd);
+                // }
+            }
         }
     }
 
@@ -396,12 +395,13 @@ class VendorRegistration extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     verifyEmailId: data => dispatch(verifyEmailId(data)),
-    // getCartData: data => dispatch(fetchFirstCartData(data)),
+    getCartData: data => dispatch(fetchFirstCartData(data)),
+    addToCart: data => dispatch(postAddToCartData(data)),
 });
 
 const mapStateToProps = (state) => {
     const {
-        loginReducer,
+        loginReducer, cartReducer,
     } = state;
 
     const {
@@ -409,12 +409,19 @@ const mapStateToProps = (state) => {
         isFetching: isLoading,
     } = loginReducer || [];
 
+    const {
+        firstCartData,
+        // cartType,
+        // error: cartError,
+    } = cartReducer || [];
+
     // const error = !_isEmpty(loginError) || _isError(loginError);
 
     return {
         artistReg,
         isLoading,
         // error,
+        firstCartData,
     };
 };
 
