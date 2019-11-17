@@ -35,7 +35,7 @@ class VendorRegistration extends React.Component {
     };
 
     componentDidMount() {
-        this.props.getCartData({ apiToken: this.props.apiToken });
+        this.props.getCartData({ apiToken: this.state.apiToken });
     }
 
     handleChange = (event) => {
@@ -193,7 +193,7 @@ class VendorRegistration extends React.Component {
                     billingState: _get(this.state, 'state'),
                     billingZip: _get(this.state, 'zipcode'),
                     billingCountry: 'India' || _get(this.state, 'country'),
-                    // billingTel:  _get(this.state, 'telephone'),
+                    billingTel: _get(this.state, 'telephone'),
                     billingEmail: _get(this.state, 'email'),
                     deliveryName: `${_get(this.state, 'firstName')} ${_get(this.state, 'lastName')}`,
                     deliveryAddress: `${_get(this.state, 'addressLine1')}, ${_get(this.state, 'addressLine2')}`,
@@ -201,27 +201,27 @@ class VendorRegistration extends React.Component {
                     deliveryState: _get(this.state, 'state'),
                     deliveryZip: _get(this.state, 'zipcode'),
                     deliveryCountry: 'India',
-                    // deliveryTel: '0123456789',
-                    merchantParam1: 'Info.',
-                    // merchantParam2: 'Info.',
-                    merchantParam3: 'Info.',
-                    merchantParam4: 'Info.',
+                    deliveryTel: _get(this.state, 'telephone'),
+                    merchantParam1: '190d57c560e942b32cb98d8b0f56d9a1',
+                    merchantParam2: 'Info.',
+                    merchantParam3: _get(this.state, 'password'),
+                    merchantParam4: _get(this.state, 'gstNo'),
                     promoCode: '',
                     customerIdentifier: '',
                     apiToken: '190d57c560e942b32cb98d8b0f56d9a1', // @todo change to custom id
-                    merchantParam2: JSON.stringify({
-                        name: `${_get(this.state, 'firstName')} ${_get(this.state, 'lastName')}`,
-                        street: `${_get(this.state, 'addressLine1')}, ${_get(this.state, 'addressLine2')}`,
-                        city: _get(this.state, 'city'),
-                        state: _get(this.state, 'state'),
-                        zipcode: _get(this.state, 'zipcode'),
-                        email: _get(this.state, 'email'),
-                        password: _get(this.state, 'password'),
-                        confirmPassword: _get(this.state, 'confirmPassword'),
-                        gstin: _get(this.state, 'gstNo'),
-                        country: 'India',
-                        telephone: _get(this.state, 'telephone', '8123572501'),
-                    }),
+                    // merchantParam2: JSON.stringify({
+                    //     name: `${_get(this.state, 'firstName')} ${_get(this.state, 'lastName')}`,
+                    //     street: `${_get(this.state, 'addressLine1')}, ${_get(this.state, 'addressLine2')}`,
+                    //     city: _get(this.state, 'city'),
+                    //     state: _get(this.state, 'state'),
+                    //     zipcode: _get(this.state, 'zipcode'),
+                    //     email: _get(this.state, 'email'),
+                    //     password: _get(this.state, 'password'),
+                    //     confirmPassword: _get(this.state, 'confirmPassword'),
+                    //     gstin: _get(this.state, 'gstNo'),
+                    //     country: 'India',
+                    //     telephone: _get(this.state, 'telephone', '8123572501'),
+                    // }),
                 };
                 console.log('b:', body);
                 // debugger
@@ -258,9 +258,9 @@ class VendorRegistration extends React.Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         // console.log('next:', nextProps);
-        if (nextProps.artistReg) {
+        if (nextProps.artistReg && (_get(nextProps.artistReg, 'code') != 1)) {
             console.log('next artistReg:', nextProps.artistReg);
-            // this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
+            this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
         }
 
         // this.props.addToCart(this.state.dummyProd);
