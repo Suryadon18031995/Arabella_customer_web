@@ -1,7 +1,6 @@
 import React from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import '../../assets/stylesheets/tags.css';
 
 export default function TagsComponent(props) {
     return (

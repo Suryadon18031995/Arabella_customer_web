@@ -7,7 +7,6 @@ import _isError from 'lodash/isError';
 import Redirect from 'react-router/Redirect';
 import OneColumLeft from '../../components/MyAccount/OneColumnLeftMyAccount.jsx';
 import Dashboard from '../../components/MyAccount/MyAccountDashboard.jsx';
-import '../../assets/stylesheets/seasonal.less';
 import { fetchProfileData } from '../../actions/login';
 import BreadCrumbs from '../../components/Common/BreadCrumbs.jsx';
 import ErrorBoundary from '../ErrorBoundary.jsx';

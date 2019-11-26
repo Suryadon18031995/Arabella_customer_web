@@ -6,7 +6,7 @@ import Tab from 'react-bootstrap/lib/Tab';
 import Modal from 'react-bootstrap/lib/Modal';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
-import '../../assets/stylesheets/checkout.css';
+// import '../../assets/stylesheets/checkout.css';
 
 export default function MyOrderComponent(props) {
     return (

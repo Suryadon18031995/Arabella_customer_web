@@ -10,7 +10,6 @@ import Button from 'react-bootstrap/lib/Button';
 import MetaTags from 'react-meta-tags';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import '../../assets/stylesheets/productDetail.css';
 import '../../assets/stylesheets/DatePickerReact.css';
 import freshDeal from '../../assets/images/fresh-deals.png';
 import TdComponenet from './rowComponent.jsx';

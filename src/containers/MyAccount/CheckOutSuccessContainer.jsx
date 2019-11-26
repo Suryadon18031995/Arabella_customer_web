@@ -4,7 +4,7 @@ import _isError from 'lodash/isError';
 import _isEmpty from 'lodash/isEmpty';
 import Redirect from 'react-router/Redirect';
 import connect from 'react-redux/lib/connect/connect';
-import '../../assets/stylesheets/checkout.css';
+// import '../../assets/stylesheets/checkout.css';
 import { fetchPlaceOrderData, clearPlaceOrderReducer, updateProductQty } from '../../actions/placeOrder';
 import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
 import { flushCartViewData } from '../../actions/cart';

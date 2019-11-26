@@ -9,7 +9,7 @@ import OneColumLeft from '../../components/MyAccount/OneColumnLeftMyAccount.jsx'
 import VendorPendingReviews from '../../components/MyAccount/VendorPendingReviews.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
 // import Pagination from '../../components/Common/Pagination.jsx';
-import '../../assets/stylesheets/VendorPendingReviews.css';
+// import '../../assets/stylesheets/VendorPendingReviews.css';
 import { fetchVendorPendingReviewsData, fetchPostVendorPendingReviewData, fetchProductVendorReviews } from '../../actions/vendorReviews';
 import { mapVendorReviewData } from '../../utils/commonMapper';
 import BreadCrumbs from '../../components/Common/BreadCrumbs.jsx';

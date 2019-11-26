@@ -10,7 +10,6 @@ import HomeFooterContentComponent from '../../components/BKMComponent/HomeFooter
 import HomeWholeSaleComponent from '../../components/BKMComponent/HomeWholeSaleComponent.jsx';
 import HomeContentComponent from '../../components/BKMComponent/HomeContentComponent.jsx';
 import { requestUserLogout } from '../../actions/login';
-import '../../assets/stylesheets/homePage.css';
 import { fetchHomePageNewArrivalsProducts, fetchHomePageNewArrivalsSPProducts, fetchHomePageFreshDealsProducts, fetchHomePageFreshDealsSPProducts, fetchHomePageBestSellerProducts, fetchHomePageBestSellerSPProducts } from '../../actions/bkm_listing';
 import { customLoader as CustomLoader } from '../../components/Loader/Loader.jsx';
 import ErrorBoundary from '../ErrorBoundary.jsx';

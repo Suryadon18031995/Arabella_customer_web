@@ -3,7 +3,7 @@ import React from 'react';
 import _get from 'lodash/get';
 import moment from 'moment';
 import Gallery from 'react-grid-gallery';
-import '../../assets/stylesheets/blog.css';
+// import '../../assets/stylesheets/blog.css';
 
 export default function SidebarBlog(props) {
   return (
