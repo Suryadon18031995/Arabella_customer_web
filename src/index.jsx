@@ -111,6 +111,7 @@ import PrimeMembershipPageBenefit from './containers/PrimeMembershipPageBenefit.
 import CCAvenueResponseHandler from './containers/MyAccount/CCAvenueResponse.jsx';
 import VendorProfile from './containers/VendorProfile/VendorProfile.jsx';
 import VendorRegistration from './containers/VendorProfile/VendorRegistration.jsx';
+import ProductUpload from './containers/VendorProfile/ProductUpload.jsx';
 /* My Account Containers END;  */
 
 library.add(faCircle, faCheckCircle);
@@ -717,12 +718,12 @@ ReactDom.render(
               path="/vendor-registration"
               component={VendorRegistration}
             />
-            {/* <RouteWithLayout
-              layout={HeaderLayout}
+            <RouteWithLayout
+              layout={EmptyLayout}
               exact
-              path="/prebook"
-              component={MothersDayPrebookContainer}
-            /> */}
+              path="/product-upload"
+              component={ProductUpload}
+            />
             <RouteWithLayout
               layout={HeaderLayout}
               exact
