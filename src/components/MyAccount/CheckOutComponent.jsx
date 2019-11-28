@@ -10,7 +10,7 @@ import Panel from 'react-bootstrap/lib/Panel';
 import PanelGroup from 'react-bootstrap/lib/PanelGroup';
 import DropIn from 'braintree-web-drop-in-react';
 // import 'antd/dist/antd.css';
-import '../../assets/stylesheets/checkout.css';
+// import '../../assets/stylesheets/checkout.css';
 // import paypalImage from '../../assets/images/paypal.png';
 import creditCardImage from '../../assets/images/sprite-icon.svg';
 import authorizenetImage from '../../assets/images/authorizenet.png';

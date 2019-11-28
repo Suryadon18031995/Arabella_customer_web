@@ -16,7 +16,7 @@ import ListingComponent from '../../components/BKMComponent/ListingComponent.jsx
 import FilterComponent from '../../components/BKMComponent/FilterComponent.jsx';
 import { fetchBKMListingData, fetchFilterCategoryData } from '../../actions/bkm_listing';
 import { mapAddToCartApiData, mapProductSearchData } from '../../utils/commonMapper';
-import '../../assets/stylesheets/FreshDeals.less';
+// import '../../assets/stylesheets/FreshDeals.less';
 import { postAddToCartData, setCartTypeData, flushCartViewData, clearCartData } from '../../actions/cart';
 import { fetchAddToFavsData } from '../../actions/myfavourites';
 import { fetchAddToWishlistData } from '../../actions/wishList';

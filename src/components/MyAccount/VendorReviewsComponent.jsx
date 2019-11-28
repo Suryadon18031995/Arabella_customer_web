@@ -4,7 +4,6 @@ import _isEmpty from 'lodash/isEmpty';
 import StarRatings from 'react-star-ratings';
 import BootstrapTable from 'react-bootstrap-table/lib/BootstrapTable';
 import TableHeaderColumn from 'react-bootstrap-table/lib/TableHeaderColumn';
-import '../../assets/stylesheets/vendorReviews.css';
 
 const displayStars = (cell, row, enumObject, index, props) => (
     <div>

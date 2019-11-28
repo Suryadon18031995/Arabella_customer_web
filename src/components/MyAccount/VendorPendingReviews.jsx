@@ -9,7 +9,6 @@ import BootstrapTable from 'react-bootstrap-table/lib/BootstrapTable';
 import TableHeaderColumn from 'react-bootstrap-table/lib/TableHeaderColumn';
 import StarRatings from 'react-star-ratings';
 import Pagination from '../../components/Common/Pagination.jsx';
-import '../../assets/stylesheets/vendorReviews.css';
 
 const displayProductStars = (cell, row, props) => (
     <div>

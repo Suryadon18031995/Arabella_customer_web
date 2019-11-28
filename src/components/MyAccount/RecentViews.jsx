@@ -5,7 +5,6 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 // import _reverse from 'lodash/reverse';
 import StarRatings from 'react-star-ratings';
-import '../../assets/stylesheets/recents.css';
 
 export default function RecentReviews(props) {
     // const productsData = _reverse(_get(props.recentViewsData, 'products'));

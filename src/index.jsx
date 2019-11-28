@@ -67,14 +67,9 @@ import ErrorContainer from './containers/ErrorContainer.jsx';
 // import PrimeMembership from './containers/PrimeMembership.jsx';
 
 import './assets/stylesheets/main.css';
-import './assets/stylesheets/myAccount.css';
 import './assets/stylesheets/main.less';
 import ProductDetailContainer from './containers/ProductContainer/ProductDetailContainer.jsx';
 import ProfileDetailContainer from './containers/MyAccount/ProfileDetailContainer.jsx';
-/* Seasonal subscription container */
-import SeasonalSubscriptionContainer from './containers/Subscription/SeasonalSubscriptionContainer.jsx';
-import AnnualSubscriptionContainer from './containers/Subscription/AnnualSubscriptionContainer.jsx';
-import PrebookSubscriptionContainer from './containers/Subscription/PrebookSubscriptionContainer.jsx';
 /* My Account Containers START:  */
 import MyAccountDashBoardContainer from './containers/MyAccount/MyAccountDashBoardContainer.jsx';
 import InformationContainer from './containers/MyAccount/InformationContainer.jsx';
@@ -102,12 +97,11 @@ import SalesRepHead from './containers/MyAccount/SalesRepHead.jsx';
 // import MothersDayPrebookContainer from './containers/MothersDayPrebook/MothersDayPrebookContainer.jsx';
 import NotFoundComponent from './components/NotFound.jsx';
 import AdminPage from './containers/AdminPage.jsx';
-import PrimeMemberDashboard from './containers/MyAccount/PrimeMemberDashboard.jsx';
+// import PrimeMemberDashboard from './containers/MyAccount/PrimeMemberDashboard.jsx';
 import SubscriptionTerms from './components/SeasonalSubscription/SubscriptionTerms.jsx';
-import PrebookTerms from './components/SeasonalSubscription/PrebookTerms.jsx';
-import PrimeTerms from './components/Prime/PrimeTerms.jsx';
+// import PrimeTerms from './components/Prime/PrimeTerms.jsx';
 import PrimeMembershipProgram from './containers/PrimeMembershipPage.jsx';
-import PrimeMembershipPageBenefit from './containers/PrimeMembershipPageBenefit.jsx';
+// import PrimeMembershipPageBenefit from './containers/PrimeMembershipPageBenefit.jsx';
 import CCAvenueResponseHandler from './containers/MyAccount/CCAvenueResponse.jsx';
 import VendorProfile from './containers/VendorProfile/VendorProfile.jsx';
 import VendorRegistration from './containers/VendorProfile/VendorRegistration.jsx';
@@ -216,18 +210,7 @@ ReactDom.render(
               path="/wholesale-flowers/fresh-deals.html"
               component={FreshDealsContainer}
             />
-            <RouteWithLayout
-              layout={HeaderLayout}
-              exact
-              path="/seasonal-flower-subscription.html"
-              component={SeasonalSubscriptionContainer}
-            />
-            <RouteWithLayout
-              layout={HeaderLayout}
-              exact
-              path="/annual-flower-subscription.html"
-              component={AnnualSubscriptionContainer}
-            />
+            
             <RouteWithLayout
               layout={HeaderLayout}
               exact
@@ -240,12 +223,12 @@ ReactDom.render(
               path="/prebook-flower-subscription-terms.html"
               component={PrebookTerms}
             /> */}
-            <RouteWithLayout
+            {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
               path="/premium-terms.html"
               component={PrimeTerms}
-            />
+            /> */}
             {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
@@ -259,12 +242,12 @@ ReactDom.render(
               path="/customer/account"
               component={MyAccountDashBoardContainer}
             />
-            <RouteWithLayout
+            {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
               path="/customer/account/premium"
               component={PrimeMemberDashboard}
-            />
+            /> */}
             <RouteWithLayout
               layout={HeaderLayout}
               exact
@@ -436,12 +419,12 @@ ReactDom.render(
               path="/ccAvenueCancelHandler"
               component={CCAvenueResponseHandler}
             />
-            <RouteWithLayout
+            {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
               path="/premium-member-benefits.html"
               component={PrimeMembershipPageBenefit}
-            />
+            /> */}
             <RouteWithLayout
               layout={EmptyLayout}
               exact

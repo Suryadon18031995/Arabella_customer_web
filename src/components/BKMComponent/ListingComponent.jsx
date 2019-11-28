@@ -7,7 +7,7 @@ import MetaTags from 'react-meta-tags';
 import { LoaderListingPage } from '../../components/Loader/Loader.jsx';
 import ProductComponent from './Product.jsx';
 import ProductGridComponent from './ProductGridComponent.jsx';
-import '../../assets/stylesheets/ProductListing.css';
+// import '../../assets/stylesheets/ProductListing.css';
 import iDescArrow from '../../assets/images/i_desc_arrow.png';
 import iAscArrow from  '../../assets/images/i_asc_arrow.png';
 

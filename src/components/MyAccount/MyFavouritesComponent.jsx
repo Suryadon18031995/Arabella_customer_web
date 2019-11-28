@@ -9,7 +9,7 @@ import Datetime from 'react-datetime';
 import '../../assets/stylesheets/DatePickerReact.css';
 import TdComponenet from '../../components/ProductComponent/rowComponent.jsx';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import '../../assets/stylesheets/Myfavrts.css';
+// import '../../assets/stylesheets/Myfavrts.css';
 
 export default function MyFavouritesComponent(props) {
     // console.log("deliveryy data", props.productDetails);

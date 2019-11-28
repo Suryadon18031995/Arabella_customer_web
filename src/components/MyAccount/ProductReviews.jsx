@@ -8,7 +8,6 @@ import StarRatings from 'react-star-ratings';
 import Modal from 'react-bootstrap/lib/Modal';
 import Button from 'react-bootstrap/lib/Button';
 import Link from 'react-router-dom/Link';
-import '../../assets/stylesheets/productReviews.css';
 
 const formatImgCell = (cell, row) => (
     <div> <a href={`/${row.url_key}.html`}><img src={row.img_url} style={{ width: '100%' }}></img> </a></div>

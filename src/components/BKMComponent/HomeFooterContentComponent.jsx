@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../assets/stylesheets/homePage.css';
 
 const homeFooterContentComponent = () => (
         <div className="hp-footer-content">

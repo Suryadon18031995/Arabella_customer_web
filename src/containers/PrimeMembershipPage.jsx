@@ -8,7 +8,6 @@ import _get from 'lodash/get';
 import MetaTags from 'react-meta-tags';
 // import PrimeProduct from '../components/BKMComponent/PrimeProduct.jsx';
 import PrimeIndex from '../components/Prime/PrimeIndex.jsx';
-import '../assets/stylesheets/seasonal.less';
 import { fetchPrimePageProducts } from '../actions/bkm_listing';
 import { postAddToCartData } from '../actions/cart';
 import { receiveShowLoginModalData, updateCartData, setCartId } from '../actions/login';

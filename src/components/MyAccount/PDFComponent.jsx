@@ -5,7 +5,6 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import Modal from 'react-bootstrap/lib/Modal';
 import _values from 'lodash/values';
-import '../../assets/stylesheets/pdf.css';
 import bannerImg from '../../assets/images/bloom_logo.png';
 // import BootstrapTable from 'react-bootstrap-table/lib/BootstrapTable';
 

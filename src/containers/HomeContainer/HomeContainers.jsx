@@ -10,11 +10,19 @@ import HomeFooterContentComponent from '../../components/BKMComponent/HomeFooter
 import HomeWholeSaleComponent from '../../components/BKMComponent/HomeWholeSaleComponent.jsx';
 import HomeContentComponent from '../../components/BKMComponent/HomeContentComponent.jsx';
 import { requestUserLogout } from '../../actions/login';
-import '../../assets/stylesheets/homePage.css';
 import { fetchHomePageNewArrivalsProducts, fetchHomePageNewArrivalsSPProducts, fetchHomePageFreshDealsProducts, fetchHomePageFreshDealsSPProducts, fetchHomePageBestSellerProducts, fetchHomePageBestSellerSPProducts } from '../../actions/bkm_listing';
 import { customLoader as CustomLoader } from '../../components/Loader/Loader.jsx';
 import ErrorBoundary from '../ErrorBoundary.jsx';
 import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
+import artistBanner from '../../assets/images/artist_banner.png';
+import logoIcon from '../../assets/images/LOGO.png';
+import navBarIcon from '../../assets/images/navbar-icon-three.png';
+import arrowIcon from '../../assets/images/aRROW.png';
+import joinHandsIcon from '../../assets/images/Banner-9.png';
+import banner11 from '../../assets/images/Banner-11.png';
+import banner12 from '../../assets/images/Banner-12.png';
+import banner13 from '../../assets/images/Banner-13.png';
+import banner14 from '../../assets/images/Banner-14.png';
 
 class HomeContainer extends React.Component {
   constructor(props) {
@@ -32,7 +40,7 @@ class HomeContainer extends React.Component {
   }
 
   componentDidMount() {
-    document.title = 'Wholesale Flowers, Bulk Fresh Flowers | Bloomkonnect.com';
+    document.title = 'Artist Marketplace';
     const lessThanOneDayAgo = (date) => {
       const DAY = 1000 * 60 * 60 * 24; // 24 hours login time
       const oneDayBefore = Date.now() - DAY;
@@ -43,73 +51,65 @@ class HomeContainer extends React.Component {
     }
 
     // New Arrivals  
-    this.props.getBkmListSearchData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      pageType: 'newarrival',
-      sort: this.state.sortValue,
-      pageNo: 1,
-      zipcode: _get(this.props, 'zipcode'),
-    });
+    // this.props.getBkmListSearchData({
+    //   currencyCode: this.props.currencyCode,
+    //   apiToken: this.props.apiToken,
+    //   storeId: this.props.storeId,
+    //   pageType: 'newarrival',
+    //   sort: this.state.sortValue,
+    //   pageNo: 1,
+    //   zipcode: _get(this.props, 'zipcode'),
+    // });
 
-    this.props.getBkmNewArrivalsSPSearchData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      pageType: 'newarrival',
-      sort: this.state.sortValue,
-      pageNo: 2,
-      zipcode: _get(this.props, 'zipcode'),
-    });
+    // this.props.getBkmNewArrivalsSPSearchData({
+    //   currencyCode: this.props.currencyCode,
+    //   apiToken: this.props.apiToken,
+    //   storeId: this.props.storeId,
+    //   pageType: 'newarrival',
+    //   sort: this.state.sortValue,
+    //   pageNo: 2,
+    //   zipcode: _get(this.props, 'zipcode'),
+    // });
 
     // New Arrivals
 
     // Best Seller
 
-    this.props.getBkmBestSellerSearchData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      pageType: 'bseller',
-      sort: this.state.sortValue,
-      pageNo: 1,
-      zipcode: _get(this.props, 'zipcode'),
-    });
+    // this.props.getBkmBestSellerSearchData({
+    //   currencyCode: this.props.currencyCode,
+    //   apiToken: this.props.apiToken,
+    //   storeId: this.props.storeId,
+    //   pageType: 'bseller',
+    //   sort: this.state.sortValue,
+    //   pageNo: 1,
+    //   zipcode: _get(this.props, 'zipcode'),
+    // });
 
-    this.props.getBkmBestSellerSPSearchData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      pageType: 'bseller',
-      sort: this.state.sortValue,
-      pageNo: 2,
-      zipcode: _get(this.props, 'zipcode'),
-    });
+    // this.props.getBkmBestSellerSPSearchData({
+    //   currencyCode: this.props.currencyCode,
+    //   apiToken: this.props.apiToken,
+    //   storeId: this.props.storeId,
+    //   pageType: 'bseller',
+    //   sort: this.state.sortValue,
+    //   pageNo: 2,
+    //   zipcode: _get(this.props, 'zipcode'),
+    // });
 
     // Best Seller
 
     // Fresh Deals
 
-    this.props.getBkmFreshDealsSearchData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      deals: 'true',
-      sort: this.state.sortValue,
-      pageNo: 1,
-      zipcode: _get(this.props, 'zipcode'),
-    });
+    // this.props.getBkmFreshDealsSearchData({
+    //   currencyCode: this.props.currencyCode,
+    //   apiToken: this.props.apiToken,
+    //   storeId: this.props.storeId,
+    //   deals: 'true',
+    //   sort: this.state.sortValue,
+    //   pageNo: 1,
+    //   zipcode: _get(this.props, 'zipcode'),
+    // });
 
-    this.props.getBkmFreshDealsSPSearchData({
-      currencyCode: this.props.currencyCode,
-      apiToken: this.props.apiToken,
-      storeId: this.props.storeId,
-      deals: 'true',
-      sort: this.state.sortValue,
-      pageNo: 2,
-      zipcode: _get(this.props, 'zipcode'),
-    });
+   
     // Fresh Deals
   }
 
@@ -225,25 +225,217 @@ class HomeContainer extends React.Component {
     }
 
     return (
-      <div className="container-fluid no-padding">
-        <MetaTags>
-          {/* 
-            <title>Page 1</title> 
-            */}
-          <meta name="description" content="BloomKonnect’s global marketplace offering a wide selection of fresh flowers from farms around the world with supply-chain sources globally to deliver flowers to the US and Singapore." />
-        </MetaTags>
-        <ErrorBoundary>
-          <HomeComponent />
-          <div className="main-prod">
-            <HomeWholeSaleComponent />
+      <div>
+        <div className='artist-banner'>
+          {/* <img src={artistBanner} alt='Artist Marketplace'/> */}
+          <div className='row artist-header'>
+            <div className="col">
+              <img src={logoIcon} alt='Logo' />
+            </div>
+            <div className="col-6">
+            </div>
+            <div className="col-2">
+              <span className='font-weight-bold'><span className='span-orange'>PARTNER </span>WITH US!</span>
+            </div>
+            <div className="col">
+              <button type="button">
+                MENU
+            <img src={navBarIcon} alt='' height='30' />
+              </button>
+            </div>
+            {/* <div className="col">
+           </div> */}
           </div>
-          <div className="main-prod">
-            {checkBSLoading}
+          <div className='banner-text'>
+            <span>FunKar</span> marketplace for artists, particularly those artists who are highly talented
+              but never got a big stage to showcase their talent or rather we would say never got
+              a small stage to monetize their talent.
+            <div className='mt-5'>
+              <button type="button" className="btn custom-class-button">SCROLL DOWN</button>
+            </div>
           </div>
-          <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
-            <HomeFooterContentComponent />
+        </div>
+        <div className='search-bar-artist searchbar-artist mt-3'>
+          <div className='center-search-div'>
+          <div className='row'>
+            <div className='col-6 search-artist-span pr-0 text-right search-artist-span-size font-weight-bold'>
+              Find Ev
+            </div>
+            <div className='col-6 pl-0 search-artist-span-size font-weight-bold'>
+              ents <u>In</u>
+            </div>
           </div>
-        </ErrorBoundary>
+          <div className='mt-3 search-input-artist text-center'>
+              <input placeholder='Bangalore, Karnataka, India' />
+              <button type="button" className="btn custom-class-button">LETS GEAR UP</button>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-3 ml-3 mr-3 mb-3">
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td><hr className='hr-color'/></td>
+                  <td className='hr-td-content'>Our Platform</td>
+                  <td><hr className='hr-color'/></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div className='row ml-3 mr-3'>
+           <div className='col-4 category-img-custom buy-banner p-0'>
+            <div className='cat-custom-div'>
+              <div className='bottom-alignment-custom'>
+              <div>Buy Artifacts</div>
+              <img src={arrowIcon} alt=''/>
+              </div>
+            </div>
+           </div>
+           <div className='col-4 category-img-custom rent-banner p-0'>
+            <div className='cat-custom-div'>
+            <div className='bottom-alignment-custom'>
+            <div>Rent Artifacts</div>
+              <img src={arrowIcon} alt=''/>
+              </div>
+            </div>
+           </div>
+           <div className='col-4 category-img-custom exchange-banner p-0'>
+            <div className='cat-custom-div'>
+            <div className='bottom-alignment-custom'>
+            <div>Cultural Exchange Program</div>
+              <img src={arrowIcon} alt=''/>
+              </div>
+            </div>
+           </div>
+           <div className='col-4 category-img-custom surprise-banner p-0'>
+            <div className='cat-custom-div'>
+            <div className='bottom-alignment-custom'>
+            <div>Surprise Your Loved Ones</div>
+              <img src={arrowIcon} alt=''/>
+              </div>
+            </div>
+           </div>
+           <div className='col-4 category-img-custom train-banner p-0'>
+            <div className='cat-custom-div'>
+            <div className='bottom-alignment-custom'>
+            <div>Train And Socialize</div>
+              <img src={arrowIcon} alt=''/>
+              </div>
+            </div>
+           </div>
+           <div className='col-4 category-img-custom buy-banner p-0'>
+            <div className='cat-custom-div'>
+            <div className='bottom-alignment-custom'>
+            <div>XXXXXXXX</div>
+              <img src={arrowIcon} alt=''/>
+              </div>
+            </div>
+           </div>
+        </div>
+
+        <div className='row mt-5'>
+          <div className='col-6 join-hands p-0'>
+          <div className='center-search-div text-center'>
+              <div className='partner-with-us font-weight-bold'>Partner With <span>Us!</span></div>
+              <button type="button" className="btn custom-class-button">SIGN UP</button>
+            </div>
+          </div>
+          <div className='col-6 p-0'>
+            <img src={joinHandsIcon} alt='' width='100%'/>
+          </div>
+        </div>
+
+        <div className="mt-3 ml-3 mr-3 mb-3">
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td><hr className='hr-color'/></td>
+                  <td className='hr-td-content'>Our Recent <span>#FUNKAR#</span> events</td>
+                  <td><hr className='hr-color'/></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div className='row text-center'>
+           <div className='col-2'>
+              <button type="button" className="btn btn-outline-dark">#PORTRAIT ARTIST</button>
+           </div>
+           <div className='col-2'>
+              <button type="button" className="btn custom-class-button">#PAINTERS</button>
+           </div>
+           <div className='col-2'>
+              <button type="button" className="btn btn-outline-dark">#SAND ARTIST</button>
+           </div>
+           <div className='col-2'>
+              <button type="button" className="btn btn-outline-dark">#SCULPTORS</button>
+           </div>
+           <div className='col-2'>
+              <button type="button" className="btn btn-outline-dark">#SINGERS</button>
+           </div>
+           <div className='col-2'>
+              <button type="button" className="btn btn-outline-dark">#CARNATIC MUSIC</button>
+           </div>
+        </div>
+
+        <div className='row mt-5 text-center see-more-img'>
+          <div className='col-3'>
+           <img src={banner11} alt=''/>
+          </div>
+          <div className='col-3'>
+           <img src={banner12} alt=''/>
+          </div>
+          <div className='col-3'>
+           <img src={banner13} alt=''/>
+          </div>
+          <div className='col-3'>
+           <img src={banner14} alt=''/>
+          </div>
+        </div>
+
+        <div className='mt-5 mb-5 text-center'>
+          SEE MORE
+          <hr />
+        </div>
+
+        <div className='row'>
+           <div className='col-6 stay-touch'>
+            <div className='stay-touch-div font-weight-bold'>
+              WELCOME<br/>
+              TO A WORLD OF<br/>
+              <span>ARTISAN</span>
+            </div>
+           </div>
+           <div className='col-6 stay-touch-right'>
+              <h2>Get stay in touch.</h2>
+              <hr/>
+              <div className='mt-3'>
+              Ready to book Events Near Bengaluru , KA? Have questions
+              about one of our Artiasan? <span>Send us a note below and we’ll
+              respond as quickly as possible.</span>
+              </div>
+              <div className='mt-3'>
+                <input placeholder='First Name' style={{ width: '45%' }}/>
+                <input placeholder='Last Name' style={{ width: '45%', float: 'right' }}/>
+              </div>
+              <div className='mt-3'>
+                <input placeholder='Email'/>
+              </div>
+              <div className='mt-3'>
+                <input placeholder='Phone'/>
+              </div>
+              <div className='mt-3'>
+                <input placeholder='Enquiry'/>
+              </div>
+              <div className='mt-3'>
+                <textarea placeholder='Message' rows='6'/>
+              </div>
+              <button type="button" className="btn custom-class-button">SEND</button>
+           </div>
+        </div>
+
       </div>
     );
   }

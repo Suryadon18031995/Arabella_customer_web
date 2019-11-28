@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../assets/stylesheets/homePage.css';
 import ProductCardComponent from './ProductCardComponent.jsx';
 import Hydrangea from '../../assets/images/cat-image1.png';
 import Alstroemeria from '../../assets/images/cat-image2.png';

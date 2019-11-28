@@ -2,8 +2,6 @@
 import React from 'react';
 import Link from 'react-router-dom/Link';
 import Carousel from 'react-bootstrap/lib/Carousel';
-// import homeImage from '../../assets/images/Home.jpg';
-import '../../assets/stylesheets/headers.css';
 
 export default function HomeComponent() {
     return (
