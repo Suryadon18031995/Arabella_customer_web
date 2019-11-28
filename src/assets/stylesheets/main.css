@@ -91,3 +91,240 @@
   @media (min-width: 768px) {
     
   }
+
+  /* Footer CSS starts */
+
+  .footer-section-custom hr{
+    border-top: 2px solid #143d59;
+  }
+
+    /* Footer CSS ends */
+
+     /* Home page CSS starts */
+
+  /* .artist-banner img{
+    width: 100%;
+  } */
+
+  .artist-header{
+    padding: 25px;
+  }
+
+  .artist-header span{
+    color: white;
+    font-size: 30px;
+  }
+
+  .artist-header button{
+    float: right;
+    color: white;
+    /* border-color: white; */
+    background-color: transparent;
+    border: 2px solid #fff;
+    padding: 10px;
+  }
+
+  .artist-banner{
+    background-image: url('../images/artist_banner.png');
+    background-size: 100% 100%;
+    height: 803px;
+    background-repeat: no-repeat;
+  }
+
+  .artist-banner .banner-text{
+    text-align:center;
+			position:absolute;
+			transform: translate(-50%, -50%);
+			top:50%;
+      left:50%;
+      color: white;
+      font-size: 25px;
+  }
+
+  .artist-banner .banner-text span, .artist-header .span-orange{
+    color: #f06530;
+  }
+
+  .custom-class-button, .custom-class-button:hover{
+    color: white;
+    background-color: #f06530;
+  }
+
+  .searchbar-artist{
+    background-image: url('../images/Banner-2.png');
+    background-size: 50% 100%;
+    height: 678px;
+    background-repeat: no-repeat;
+  }
+
+  .search-input-artist{
+    display: block;
+    margin: auto;
+  }
+  .search-input-artist input{ 
+      margin-right: 10px;
+      line-height: 4;
+      width: 50%;
+  }
+
+  .search-input-artist button{ 
+    line-height: 4;
+    width: 20%;
+}
+
+.search-artist-span{
+  color: #fff;
+}
+
+.search-artist-span-size{
+  font-size: 50px;
+  letter-spacing: 5px;
+}
+
+.search-artist-span-size u{
+  text-decoration-color: #f06530;
+}
+
+.center-search-div{
+    position:relative;
+    transform: translate(-50%, -50%);
+    top:50%;
+    left:50%;
+}
+
+.hr-color{
+  border-color: #141414;
+}
+
+.hr-td-content{
+  width:1px;
+  padding: 0 10px;
+  white-space: nowrap;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.category-img-custom{
+    background-size: 100% 100%;
+    height: 410px;
+    background-repeat: no-repeat;
+}
+
+.buy-banner{
+  background-image: url('../images/Banner-3.png');
+}
+
+.rent-banner{
+  background-image: url('../images/Banner-4.png');
+}
+
+.exchange-banner{
+  background-image: url('../images/Banner-5.png');
+}
+
+.surprise-banner{
+  background-image: url('../images/Banner-6.png');
+}
+
+.train-banner{
+  background-image: url('../images/Banner-7.png');
+}
+
+.cat-custom-div{
+  background-color: rgba(0,0,0,.30);
+  margin: 30px;
+  height: 350px;
+  text-align: right;
+  justify-content: right;
+  display: flex;
+}
+
+.bottom-alignment-custom{
+  align-self: flex-end; 
+  width: 100%;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.cat-custom-div div{ 
+  color: #fff;
+  font-weight: 700;
+  font-size: 35px;
+}
+
+.join-hands{
+  background-color: #dddddd;
+}
+
+.join-hands span{
+  color: #f06530;
+}
+
+.join-hands .partner-with-us{
+  font-size: 50px;
+  letter-spacing: 5px;
+  margin-bottom: 10px;
+}
+
+.hr-td-content span{
+  color: #f06530;
+}
+
+.see-more-img img{
+  border: 1px solid black;
+    padding: 5px;
+}
+
+.stay-touch{
+  background-size: 100% 100%;
+    height: 727px;
+    background-repeat: no-repeat;
+    background-image: url('../images/Banner-15.png');
+}
+
+.stay-touch-right{
+  background-color: #143d59;
+  color: #fff;
+  padding: 30px;
+}
+
+.stay-touch-div{
+  text-align:center;
+			position:absolute;
+			transform: translate(-50%, -50%);
+			top:50%;
+      left:50%;
+      background-color: white;
+      font-size: 30px;
+      width: 50%;
+      padding: 50px 0;
+      letter-spacing: 2px;
+}
+
+.stay-touch-div span{
+  color: #f06530;
+}
+
+.stay-touch-right span{
+  color: #f06530;
+}
+
+.stay-touch-right button{
+  float: right;
+}
+
+.stay-touch-right input{
+  width: 100%;
+  line-height: 3;
+}
+
+.stay-touch-right textarea{
+  width: 100%;
+  resize: none;
+}
+
+.stay-touch-right div:first-child{
+  font-size: 16px;
+}
+
+    /* Home page CSS ends */

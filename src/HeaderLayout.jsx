@@ -344,12 +344,12 @@ class HeaderLayout extends React.Component {
     }
     if (!_isEmpty(_get(nextProps, 'firstCartData')) && this.props.cartType !== 'RECEIVED_ADD_TO_CART' && this.props.cartType !== 'REQUEST_ADD_TO_CART' && this.props.cartCount !== _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0)) {
       // if (_get(nextProps, ['firstCartData', 'cart', 0, 'code']) === 1) {
-        this.props.updateCart({
-          show: false,
-          cartCount: _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0),
-          cartTotal: _get(nextProps.firstCartData, ['cart', 0, 'subtotal'], 0),
-          cartProducts: _get(nextProps.firstCartData, ['cart', 0, 'result'], []),
-        });
+      this.props.updateCart({
+        show: false,
+        cartCount: _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0),
+        cartTotal: _get(nextProps.firstCartData, ['cart', 0, 'subtotal'], 0),
+        cartProducts: _get(nextProps.firstCartData, ['cart', 0, 'result'], []),
+      });
       // }
     }
     if (!_isEmpty(_get(nextProps, 'loginData')) && this.state.popupCall && nextProps.match.path !== '/view-cart') {
@@ -633,14 +633,14 @@ class HeaderLayout extends React.Component {
   * Alert if clicked on outside of element
   */
   handleClickOutside = (event) => {
-    const domNode = document.getElementById('dropdownMenuDesktop3');
-    const domNode1 = document.getElementById('dropdownMenuMobile3');
-    if (!domNode && !domNode.contains(event.target) && !domNode1 && !domNode1.contains(event.target)) {
-      this.setState({ isOpen: false });
-    }
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.setState(() => ({ mouseEvent: false, searchText: '' }));
-    }
+    // const domNode = document.getElementById('dropdownMenuDesktop3');
+    // const domNode1 = document.getElementById('dropdownMenuMobile3');
+    // if (!domNode && !domNode.contains(event.target) && !domNode1 && !domNode1.contains(event.target)) {
+    //   this.setState({ isOpen: false });
+    // }
+    // if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    //   this.setState(() => ({ mouseEvent: false, searchText: '' }));
+    // }
   }
   handleClose() {
     this.setState({ show: false });
@@ -744,714 +744,79 @@ class HeaderLayout extends React.Component {
     return (
       <div className="App">
 
-        <div className={`navbar navbar-custom ${this.state.navbarFixedTop}`} role="navigation" id="slideNav">
-          <div className="container-fluid">
-            <div className="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-              <a className={this.state.condition ? 'navbar-toggle hemburger-menu animated' : 'navbar-toggle hemburger-menu'} onClick={this.mblMenu} >
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </a>
-              <Link id="bkmLogo" className="bkm-logo" to="/">Project name</Link>
-              <div className="pull-right visible-xs">
-                <Link to="/view-cart" className="btn btn-deffault cart-mbl">
-                  <span className="cart-qty">0</span>
-                  <span className="cart-icon">
-                    <i className="fa fa-shopping-cart" ></i>
-                  </span>
-                </Link>
-              </div>
-            </div>
-
-            <div id="slidemenu" className={this.state.condition ? 'col-lg-8 col-sm-8 col-md-8 animated' : 'col-lg-8 col-sm-8 col-md-8'}>
-              <div className={this.props.apiToken ? 'custom-search-pincode col-lg-7 col-sm-8 col-md-7 hidden-xs' : 'custom-search-pincode col-lg-9 col-sm-9 col-md-9 hidden-xs'} >
-                <div className="col-lg-offset-1 col-lg-9 col-lg-offset-2 col-sm-offset-1 col-sm-9 col-sm-offset-2 col-md-offset-1 col-md-9 col-md-offset-2 col-xs-12">
-                  <div className="search-container" ref={this.setWrapperRef}>
-
-                    <input
-                      type="text"
-                      className={`search-input ${(this.props.searchLoading && (this.props.searchType === 'REQUEST_CATEGORY_SEARCH_RESULT')) ? 'search-loader' : ''}`}
-                      placeholder="Search Item here"
-                      value={searchText}
-                      onChange={this.onSearchTextChange}
-                      onKeyUp={event => this.keyPress(event)}
-                      onMouseDown={event => this.handleMouseEvent(event)}
-                    />
-                    <i className={`${(this.props.searchLoading && (this.props.searchType === 'REQUEST_CATEGORY_SEARCH_RESULT')) ? 'custom-spinner' : ''}`} area-hidden='true' />
-
-                    <button type="submit" onClick={this.handleClickSearch}><i className="fa fa-search"></i></button>
-                    {prodList && prodListData && mouseEvent &&
-                      <Suggetion
-                        searchedData={searchedData}
-                        handleAllResultRedirection={this.handleAllResultRedirection}
-                        showProductDetailPage={this.showProductDetailPage}
-                      />
-                    }
-                  </div>
-                </div>
-
-                {/* <div className={this.props.apiToken ? 'col-lg-5 col-sm-5 col-md-5 col-xs-6' : 'col-lg-3 col-sm-3 col-md-3 col-xs-6'}>
-                  <div className="dropdown globe" id="dropdownMenuMobile1">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true" >
-                      <i className="fa fa-globe" aria-hidden="true"></i>BloomKonnect Marketplace
-                    </button>
-                    <div className="dropdown-content">
-                      <a className="dropdown-item">China </a>
-                      <a className="dropdown-item" >BloomKonnect Marketplace</a>
-                      <a className="dropdown-item">España</a>
-                    </div>
-                  </div>
-                </div> */}
-
-                {/* {this.props.apiToken ? '' : <div className="col-lg-2 col-sm-2 col-md-2 col-xs-6">
-                  <div className="deliver-pincode" >
-                    <i className="fa fa-map-marker " aria-hidden="true"></i> {deliverToZip}
-
-
-                    <Modal show={this.state.showPopup} onHide={this.handlePopupClose}>
-                      <div className="deliveryZipPopup">
-                        <div className="pin-container a-center form-inline">
-                          <button className="pin-container-close fa fa-close" onClick={this.handlePopupClose}></button>
-                          <h2>Enter a Zip Code</h2>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="zipcode"
-                            id="zipcode"
-                            onChange={this.handleChange}
-                            value={this.state.zipcode}
-                          />
-                          <button
-                            type="submit"
-                            title="Submit"
-                            onClick={() => this.handleChangeZip()}
-                          >
-                            Apply
-                  </button>
-                        </div>
-                      </div>
-                    </Modal>
-                  </div>
-                </div>
-                } */}
-              </div>
-              <div className={this.props.apiToken ? 'custom-sign-register col-lg-5 col-sm-4 col-md-5 no-padding' : 'custom-sign-register col-lg-3 col-sm-3 col-md-3 no-padding'}>
-
-                <div>{(!this.props.apiToken) ?
-
-                  <div>
-                    <div className="width-auto col-lg-4 col-xs-8">
-
-                      <a id="link-Register" onClick={() => this.handleShow('register')} title="Register" className="icon"><i className="fa fa-sign-out" aria-hidden="true"></i> Register Now</a>
-                    </div>
-                    <div className="width-auto col-lg-1 hidden-xs">
-                      <span className="icon-bar">|</span>
-                    </div>
-                    <div className="width-auto col-lg-4 col-xs-4">
-                      <a id="link-login" onClick={() => this.handleShow('login')} title="Login" className="icon"><i className="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-                    </div>
-                    <div className="width-auto col-lg-4 hidden-lg hidden-sm hidden-md hidden-xs">
-                      <span className="icon-bar">|</span>
-                    </div>
-                    <div className="width-auto col-lg-4 col-xs-4 hidden-lg hidden-sm">
-                      {this.props.apiToken && <Link to="/view-cart" className="icon cart-mbl-inner"><i className="fa fa-shopping-cart" ></i> 0  Cart</Link>
-                      }</div>
-                  </div>
-
-                  :
-
-                  // { /* condition */ }
-                  <div>
-
-                    <div className="dropdown authenticate-dropbtn link-account">
-                      <Link onClick={this.mblMenu} to="/view-cart" className="btn icon cart-mbl-inner"><i className="fa fa-shopping-cart" ></i>    My Cart({this.state.totalProdInCart}) </Link>
-                      <div className="authenticate-dropdown-content" id="myCartId">
-                        {/* <div className="em-container-js-topcart topcart-popup" id="ss-topcart-popup" style={linkStyle}> */}
-                        <div className="topcart-popup-content">
-                          {this.state.totalProdInCart === 0 ? (
-                            <div className="topcart-content">
-                              <p
-                                className="amount-content"
-                                style={{ color: '#fdb927' }}
-                              >
-                                {' '}
-                                (You have no items in your shopping cart.)
-                        </p>
-                            </div>
-                          ) : (
-                              <div>
-                                <div className="topcart-content">
-                                  <p className="amount-content ">
-                                    {' '}
-                                    (There are{' '}
-                                    <button onClick={this.handleClick}>
-                                      {this.state.totalProdInCart} items
-                            </button>{' '}
-                                    in your shopping cart.)
-                          </p>
-                                  <ol className="em-topcart-list">
-                                    {
-                                      // this.state.loginShow &&
-                                      this.state.totalProd &&
-                                      this.state.totalProd.map((thisProd, index) => (
-                                        <li className="item" key={index}>
-                                          {this.state.showRemoveIcon && <a onClick={() => this.removeProduct(thisProd.cart_rid)} title='Remove This item'>
-                                            <i className="fa fa-times-circle"></i>
-                                          </a>}
-                                          <div className="product-image">
-                                            <Link to={`/${thisProd.url_key}.html`} title={thisProd.name} className="product-image">
-                                              <img src={thisProd.image} width="75" alt={thisProd.name} />
-                                            </Link>
-                                          </div>
-                                          <div className="product-details">
-                                            <p className="product-name">
-                                              <Link to={`/${thisProd.url_key}.html`}>{thisProd.name}</Link>
-                                            </p>
-                                            <strong>
-                                              {thisProd.qty * thisProd.qty_per_box}
-                                            </strong>{' '}
-                                            x{' '}
-                                            <span className="price">
-                                              {thisProd.product_price_currency}
-                                            </span>
-                                          </div>
-                                        </li>
-                                      ))}
-                                  </ol>
-                                </div>
-                                <div className="actions">
-                                  <p className="subtotal">
-                                    <span className="cart_subTotal">Cart Subtotal</span>
-                                    <span className="price">
-                                      ${this.state.subtotal}
-                                    </span>
-                                  </p>
-                                  <div className="wrapper_bottom_button">
-                                    <div className="goto-cart">
-                                      <button onClick={this.handleClick}>
-                                        <span>
-                                          {/* <i style={{ fontSize: '20px' }} className="fa">
-                                            &#xf07a;
-                                                          </i> */}
-                                          <i className="fa">
-                                            &#xf07a;
-                                                          </i>
-                                          <span> My Cart</span>
-                                        </span>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                        </div>
-                        {/* </div> */}
-                      </div>
-
-                    </div>
-                    <div className={this.props.apiToken ? 'icon dropdown menu-large logged-inuser' : 'dropdown menu-large logged-inuser'} id='myAccountMenu'>
-                      <div className="dropdown" >
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                        > <Link onClick={this.mblMenu} to='/customer/account'><span className='my-account-link-color'><i className="fa fa-user" /> My Account   </span></Link></button>
-                        <div className='my-account-dropdown-content' >
-
-                          <div className="secondary-dropdown" id='wishlistCart'>
-                            <button className="authenticate-dropbtn">
-                              <a><i style={{ fontSize: '20px' }} className="fa" >&#xf004;</i> My Wish List ({this.state.wishListTotalProduct ? this.state.wishListTotalProduct : 0})</a>
-                            </button>
-                            <div className="my-account-secondry-dropdown-content" >
-                              <span className="secondary-head">Wish List</span>
-                              <ul>
-                                {
-                                  this.state.wishListProduct &&
-                                  this.state.wishListProduct.map((wishListPro, index) => (
-                                    <li key={index}>
-                                      <div className="product-image">
-                                        <Link
-                                          to={`/${wishListPro.url_key}.html`}
-                                          title={wishListPro.name}
-                                          className="product-image"
-                                        >
-                                          <img
-                                            src={wishListPro.image}
-                                            width="75"
-                                            alt={wishListPro.name}
-                                          />
-                                        </Link>
-                                      </div>
-                                      <div className="product-details">
-                                        <p className="product-name">
-                                          <Link to={`/${wishListPro.url_key}.html`}>{wishListPro.name}</Link>
-                                        </p>
-                                      </div>
-                                    </li>
-                                  ))}
-                              </ul>
-                              <Link className="secondary-add-btn" to="/customer/account/wishlist" target="_blank">     <span className="secondary-bottom">My Wish List</span></Link>
-                            </div>
-                          </div>
-                          <div className="secondary-dropdown" id='favouritesCart'>
-                            <button className="authenticate-dropbtn">
-                              <a><i style={{ fontSize: '20px' }} className="fa" >&#xf006;</i> My Favorites ({this.state.favouriteTotalProduct ? this.state.favouriteTotalProduct : 0})</a>
-                            </button>
-                            <div className="my-account-secondry-dropdown-content">
-                              <span className="secondary-head">My Favourite</span>
-                              <ul>
-                                {
-                                  _get(this.state, 'favouriteProducts', []) &&
-                                  this.state.favouriteProducts &&
-                                  this.state.favouriteProducts.map((favouriteProd, index) => (
-                                    index < 3 && <li key={index}>
-                                      <div className="product-image">
-                                        <Link
-                                          to={`/${favouriteProd.url_key}.html`}
-                                          title={favouriteProd.name}
-                                          className="product-image"
-                                        >
-                                          <img
-                                            src={favouriteProd.image}
-                                            width="75"
-                                            alt={favouriteProd.name}
-                                          />
-                                        </Link>
-                                      </div>
-                                      <div className="product-details">
-                                        <p className="product-name">
-                                          <Link to={`/${favouriteProd.url_key}.html`}>{favouriteProd.name}</Link>
-                                        </p>
-                                      </div>
-                                    </li>
-                                  ))}
-                              </ul>
-                              <Link className="secondary-add-btn" to="/customer/account/favourites" target="_blank">     <span className="secondary-bottom">My Favourite</span></Link>
-                            </div>
-                          </div>
-                          <Link to="/customer/account"><i className="fa fa-user"></i>  My Account</Link>
-                          {this.props.primeUser === '1' && <Link to="/customer/account/premium"><i className="fa fa-user"></i>  Premium Member</Link>}
-                          {this.props.salesRepFlag && <Link to="/customer/account/head"><i className="fa fa-user"></i> Back To Sales Rep</Link>}
-                          <Link to="/customer/pastPurchase"><img src={ReorderImage} /> Past Purchases</Link>
-                          <Link className="dropdown-item" to='/logoutSuccess'>   <i className="fa fa-sign-out"></i> logout</Link>
-                        </div>
-                      </div>
-                    </div>
-                    {this.props.primeUser === '1' && <div className='dropdown prime-label'>Premium Member</div>}
-                    <div className="dropdown authenticate-dropbtn hidden-lg hidden-sm hidden-md">
-                      <Link onClick={this.mblMenu} to='/logoutSuccess'>
-                        <span className='my-account-link-color icon'>
-                          <i className="fa fa-sign-out" /> Log out   </span>
-                      </Link>
-                    </div>
-                  </div>
-                }</div>
-              </div>
-
-              {/* modal */}
-              <Modal style={{ marginTop: '75px' }}
-                show={this.state.show}
-                onHide={this.handleClose}
-                onExit={this.handleExit}
-              >
-                <div className="modal-content">
-
-                  <div className="popup-content" id="em-popup">
-                    {/* <img className="login-popup-bgimage"
-                    alt=""
-                    src={PopupImage}
-                  /> */}
-                    {this.props.isLoading && <LoginLoader />}
-                    <div className="popup-subscribe">
-                      <Modal.Header
-                        closeButton
-                        style={{
-                          marginTop: '-5%',
-                          marginBottom: '26px',
-                        }}
-                      />
-                      <div className="em-wrapper-newsletter">
-                        <div className="em-newsletter-style05">
-                          <div className="block-subscribe err">
-                            <div id="em-popup-login">
-                              <div className="em-block-title">
-                                <h2 className="text-left" style={{ paddingLeft: '10px' }}>
-                                  <span>
-                                    <b>LOGIN</b>
-                                  </span>
-                                </h2>
-                              </div>
-                              <div className="block-content">
-                                <div className="form-subscribe-content">
-                                  <div className="em-block-title">
-                                    <h6 className="text-left" style={{ font: '11px/1.35 Gotham_Book_Regular, Raleway,Lato,Helvetica, Arial, sans-serif', margin: '0 0 1rem' }}>
-                                      Welcome To Our New Portal!{' '}
-                                      <br />
-                                      For Existing Customers,
-                                      Please Use Your Email ID
-                                      Instead Of Your Username To
-                                      Login.
-                                                  </h6>
-                                  </div>
-                                  {this.state.showError && (
-                                    <ul className="messages">
-                                      <li className="error-msg">
-                                        <ul>
-                                          <li>
-                                            <span>
-                                              Invalid login or
-                                              password.
-                                                          </span>
-                                          </li>
-                                        </ul>
-                                      </li>
-                                    </ul>
-                                  )}
-                                  <div className="input-box">
-                                    <label>Email</label>
-                                    <input
-                                      type="email"
-                                      name="login[username]"
-                                      id="email"
-                                      title="Login"
-                                      value={this.state.email}
-                                      onChange={
-                                        this.handleInputChange
-                                      }
-                                      onKeyUp={this.loginDataFun.bind(this)}
-                                      className="input-text required-entry validate-email"
-                                    />
-                                    <span
-                                      style={{ color: 'red' }}
-                                    >
-                                      {this.state.errors.email}
-                                    </span>
-                                  </div>
-                                  <div className="input-box">
-                                    <label>Password</label>
-                                    <input
-                                      type="password"
-                                      name="login[password]"
-                                      id="pass"
-                                      title="Login"
-                                      value={this.state.password}
-                                      onChange={
-                                        this.handleInputChange
-                                      }
-                                      onKeyUp={this.loginDataFun.bind(this)}
-                                      className="input-text required-entry validate-password"
-                                    />
-                                    <span
-                                      style={{ color: 'red' }}
-                                    >
-                                      {this.state.errors.pass}
-                                    </span>
-                                  </div>
-                                  <div
-                                    className="input-box text-right"
-                                    style={{
-                                      margin: '-15px 0 8%',
-                                    }}
-                                  >
-                                    <Link
-                                      className=""
-                                      to="/forgotPassword"
-                                      onClick={this.forgotPassword}
-                                    >
-                                      Forgot Password ?
-                                                  </Link>
-                                  </div>
-                                  <div className="actions">
-                                    <button id="send2" className="login-btn" name="send" type="submit" title="Login" onClick={() => this.loginclickFun()}>
-                                      <span>
-                                        <span>Login</span>
-                                      </span>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div id="em-popup-nologin">
-                              <div className="block-content">
-                                <div className="form-subscribe-content">
-                                  <div className="em-block-title">
-                                    <h2 className="text-left">
-                                      <span>
-                                        <b>REGISTER TODAY</b>
-                                      </span>
-                                    </h2>
-                                  </div>
-                                  <div className="em-block-title">
-                                    <h6 className="text-left">
-                                      Please register here to see
-                                      market prices
-                                                  </h6>
-                                  </div>
-                                  <div className="actions reg-form">
-                                    <Link
-                                      to="/register"
-                                      onClick={this.showRegister}
-                                      id="sshow-register-form"
-                                      className="button-link"
-                                    >
-                                      REGISTER
-                                                  </Link>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Modal>
-
-              <ul className="nav navbar-nav hidden-lg hidden-sm hidden-md col-xs-12">
-                {/* <li className=""><a onClick={this.mblMenu} href="/seasonal-flower-subscription.html">Seasonal Subscription</a></li> */}
-                {/* <li className=""><a onClick={this.mblMenu} href="/prebook">Mother's Day Pre-Book</a></li> */}
-                <li className=""><Link onClick={this.mblMenu} to="/wholesale-flowers/fresh-deals.html"><i className="fa fa-list"></i> Fresh Deals</Link></li>
-
-                <li className="category dropdown menu-large" id="dropdownMenuMobile3" >
-                  <a className="dropdown-toggle" data-toggle="dropdown" id='dropdownMenuMobileLink3'
-                    aria-haspopup="true"><i className="fa fa-list"></i> Shop by Flowers
-                   <i className="fa fa-angle-down pull-right" onClick={this.toggleOpen}></i>
-                  </a>
-                  <div className={`megamenu row ${menuClass}`}>
-                    <CategoriesComponenet
-                      cateGoriesList={this.state.cateGoriesList}
-                      mblMenu={this.mblMenu} />
-                  </div>
-                </li>
-                <li className="dropdown menu-large" id="dropdownMenuMobile2">
-                  <a className="dropdown-toggle" data-toggle="dropdown"><i className="fa fa-list"></i> Shop by Category
-                  <i className="fa fa-angle-down pull-right" onClick={this.toggleOpen1} ></i>
-                  </a>
-                  <ul className={`dropdown-menu col-xs-12 ${menuClass1}`}>
-                    <li><Link onClick={this.mblMenu} to="/new-arrivals.html"> New Arrivals </Link></li>
-                    {/* <li><a onClick={this.mblMenu} href="/preMadeBouquets"> Pre-Made Bouquets </a></li> */}
-                    {/* <li><a onClick={this.mblMenu} href="/nextday-delivery"> Next Day Delivery </a></li> */}
-                    <li><Link onClick={this.mblMenu} to="/best-seller.html">Bestsellers Collection</Link></li>
-                    {/* <li><a onClick={this.mblMenu} href="/FallCollectionContainer">Fall Collection</a></li> */}
-                    <li><Link onClick={this.mblMenu} to="/wedding-flowers.html">Wedding Flowers</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/wholesale-flowers/floral-supplies.html">Floral Supplies</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/wholesale-flowers/local-delivery.html">Local Delivery</Link></li>
-                    {/* <li><a onClick={this.mblMenu} href="/seasonal-flower-subscription.html">Seasonal Subscription</a></li> */}
-                    {/* <li><a onClick={this.mblMenu} href="/annual-flower-subscription.html">Annual Subscription</a></li> */}
-                    {/* <li><a onClick={this.mblMenu} href="/prebook-flower-subscription.html">Prebook Subscription</a></li> */}
-                  </ul>
-                </li>
-                <li className=""><Link onClick={this.mblMenu} to="/nextday-delivery.html"> Next Day Delivery </Link></li>
-                <li className=""><Link onClick={this.mblMenu} to="/premium-membership.html"> BKM Premium Member </Link></li>
-                <li className="dropdown menu-large " id="dropdownMenuMobile4">
-                  <a className="dropdown-toggle " data-toggle="dropdown"><i className="fa fa-list"></i> Subscribe & Save
-                <i className="fa fa-angle-down pull-right" onClick={this.toggleOpen3}></i>
-                  </a>
-                  <ul className={`dropdown-menu col-xs-12 ${menuClass3}`}>
-                    {/* <li><Link onClick={this.mblMenu} to="/prebook-flower-subscription.html">Holiday Pre-book</Link></li> */}
-                    <li><Link onClick={this.mblMenu} to="/annual-flower-subscription.html">Annual Subscription</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/vendor-profile">Vendor Profile</Link></li>
-                  </ul>
-                </li>
-                {/* <li className=""><Link onClick={this.mblMenu} to="/annual-flower-subscription.html"> Annual Subscription </Link></li> */}
-                <li className="dropdown menu-large " id="dropdownMenuMobile3">
-                  <a className="dropdown-toggle " data-toggle="dropdown"><i className="fa fa-list"></i> Why bloomkonnect
-                <i className="fa fa-angle-down pull-right" onClick={this.toggleOpen2}></i>
-                  </a>
-                  <ul className={`dropdown-menu col-xs-12 ${menuClass2}`}>
-                    <li><Link onClick={this.mblMenu} to="/about-us">About Us</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/about-us#howitwork">How it Works</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/about-us#features">Benefits</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/about-us#pricing">Pricing</Link></li>
-                    <li><Link onClick={this.mblMenu} to="/sustainable_floral_fund">Sustainability</Link></li>
-                  </ul>
-                </li>
-              </ul>
-
-            </div>
-            <div className="col-lg-12 col-sm-12 hidden-xs">
-              <ul className="nav navbar-nav desktop-only" id="desktopOnly">
-                {/* <li className=""><a href="/seasonal-flower-subscription.html">Seasonal Subscription</a></li> */}
-                {/* <li className=""><a href="/prebook">Mother's day prebook</a></li> */}
-                <li className=""><Link to="/wholesale-flowers/fresh-deals.html">Fresh Deals</Link></li>
-
-                <li className="category" id="dropdownMenuDesktop3">
-                  <Link className="dropdown-toggle" type="button"
-                    id="dropdownMenuButtonDesktopLink3"
-                    data-toggle="dropdown"
-                    aria-haspopup="true" to="/wholesale-flowers.html">Shop by Flowers
-                    <i className="fa fa-angle-down pull-right custom-arrow"
-                      onMouseEnter={this.handleMouseEnter}
-                      onMouseLeave={this.handleMouseLeave}
-                    ></i>
-                  </Link>
-                  <div className="dropdown-content custom-translate"
-                    id={this.state.showLargeDropDowns}
-                    onMouseEnter={this.handleMouseEnter}
-                    onMouseLeave={this.handleMouseLeave}>
-                    <CategoriesComponenet
-                      cateGoriesList={this.state.cateGoriesList} />
-                  </div>
-                </li>
-                <li className="dropdown menu-large" id="dropdownMenuDesktop2">
-                  <a className="dropdown-toggle" data-toggle="dropdown">Shop by Category
-                  <i className="fa fa-angle-down pull-right custom-arrow" ></i>
-                  </a>
-                  <ul className="dropdown-content">
-                    <li><Link to="/new-arrivals.html"> New Arrivals </Link></li>
-                    {/* <li><a href="/preMadeBouquets"> Pre-Made Bouquets </a></li> */}
-                    {/* <li><a href="/nextday-delivery"> Next Day Delivery </a></li> */}
-                    <li><Link to="/best-seller.html">Bestsellers Collection</Link></li>
-                    {/* <li><a href="/FallCollectionContainer">Fall Collection</a></li> */}
-                    <li><Link to="/wedding-flowers.html">Wedding Flowers</Link></li>
-                    <li><Link to="/wholesale-flowers/floral-supplies.html">Floral Supplies</Link></li>
-                    <li><Link to="/wholesale-flowers/local-delivery.html">Local Delivery</Link></li>
-                    {/* <li><Link to="/seasonal-flower-subscription.html">Seasonal Subscription</Link></li> */}
-                    {/* <li><Link to="/annual-flower-subscription.html">Annual Subscription</Link></li> */}
-                    {/* <li><Link to="/prebook-flower-subscription.html">Prebook Subscription</Link></li> */}
-
-                    {/* <li className=""><Link to="/premium-membership.html"> Premium </Link></li> */}
-                  </ul>
-                </li>
-                <li className=""><Link to="/nextday-delivery.html"> Next Day Delivery </Link></li>
-                <li className=""><Link to="/premium-membership.html"> BKM Premium Member </Link></li>
-                <li className="dropdown menu-large" id="dropdownMenuDesktop4">
-                  <a className="dropdown-toggle highlighted-col" data-toggle="dropdown">Subscribe & Save
-                  <span className="pull-right"><i className="fa fa-angle-down pull-right custom-arrow" ></i></span>
-                  </a>
-                  <ul className="dropdown-content">
-                    {/* <li><Link to="/prebook-flower-subscription.html" style={{ textTranform: 'none' }}>Holiday Pre-book</Link></li> */}
-                    <li><Link to="/annual-flower-subscription.html">Annual Subscription</Link></li>
-                    <li><Link to="/vendor-profile">Vendor Profile</Link></li>
-                    <li><Link to="/vendor-registration">Vendor Registration</Link></li>
-                  </ul>
-                </li>
-                <li className="dropdown menu-large" id="dropdownMenuDesktop3">
-                  <a className="dropdown-toggle" data-toggle="dropdown">Why bloomkonnect
-                  <span className="pull-right"><i className="fa fa-angle-down pull-right custom-arrow" ></i></span>
-                  </a>
-                  <ul className="dropdown-content">
-                    <li><Link to="/about-us">About Us</Link></li>
-                    <li><Link to="/about-us#howitwork">How it Works</Link></li>
-                    <li><Link to="/about-us#features">Benefits</Link></li>
-                    <li><Link to="/about-us#pricing">Pricing</Link></li>
-                    <li><Link to="/sustainable_floral_fund">Sustainability</Link></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div className={this.state.condition ? 'menu-overlay animated' : 'menu-overlay'} > </div>
-          </div>
-        </div>
         <div>
-          {this.state.newsletterSubscriptionMessage ?
-            <ul className={this.state.newsletterSubscriptionStatus === 'false' ? '' : 'review-success'}>
-              <li className={this.state.newsletterSubscriptionStatus === 'false' ? 'error-subscriptionmsg' : 'success-msg'}>
-                <ul>
-                  <li className='review-success-li'>
-                    <span>
-                      <span className={this.state.newsletterSubscriptionStatus === 'false' ? 'glyphicon glyphicon-alert icon-span' : 'glyphicon glyphicon-ok icon-span'} />
-                      {this.state.newsletterSubscriptionMessage}
-                    </span>
-                  </li>
-                </ul>
-              </li>
-            </ul> : ''}
+          
+
         </div>
+
         {this.props.children}
-        <div className="em-footer-bottom">
-          <div className="fotter-container container">
-            <div className="row-one a-center">
-              <ul>
-                <li><Link to="/track-order">Track Order</Link>|</li>
-                <li><Link to="/contacts">Contact Us</Link>|</li>
-                <li><Link to="/privacy-policy">Privacy Policy</Link>|</li>
-                <li><Link to="/term-and-conditions">Terms & Conditions</Link>|</li>
-                <li><Link to="/vendors">Our Vendors</Link>|</li>
-                {/* <li><Link to="/umicrosite/vendor/register/">Vendor Registration</Link>|</li> */}
-                <li><a href="https://bloomkonnect.com:8443/umicrosite/vendor/register/">Vendor Registration</a>|</li>
-                <li><Link to="/faq-vendor">FAQ Vendor</Link>|</li>
-                <li><Link to="/faq-customer">FAQ Customer</Link>|</li>
-                <li><Link to="/sustainable_floral_fund">Sustainability</Link>|</li>
-                <li><Link to="/returns-and-refunds-policy">Returns and Refunds Policy</Link>|</li>
-                <li><Link to="/blog">Blog</Link></li>
+
+        <div className="footer-section-custom mt-4">
+          <hr />
+          <div className="row">
+            <div className="col">
+              <ul className='list-unstyled text-center'>
+                <li className='mt-4 font-weight-bold'>
+                  COMPANY
+              </li>
+                <li className='mt-4'>
+                  About Us
+              </li>
+                <li className='mt-4'>
+                  Blog
+              </li>
+                <li className='mt-4'>
+                  Press
+              </li>
+                <li className='mt-4'>
+                  Careers
+              </li>
               </ul>
             </div>
-            <div className="row-two">
-              <div className="block col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center mobile-only">
-                <input
-                  className="email-search-input"
-                  name="email"
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                  placeholder="Sign-up For Our Email Newsletter"
-                  type="text"
-                  value={this.state.subscribeEmail}
-                  onChange={this.handleEmailChange}
-                />
-                <button type="submit" className="email-submit-input" onClick={this.handleSubscribe}>
-                  Subscribe
-                </button>
-              </div>
-              <div className="block col-lg-4 col-md-4 col-sm-12 col-xs-12 footer-images-logo">
-                <img src={PaypalImage} alt='Payapal' />
-                <img src={SecureImage} alt='Secure' />
-                <img src={GodaddyImage} alt='Godaddy' />
-              </div>
-              <div className="block social-icon col-lg-4 col-md-4 col-sm-12 col-xs-12 right">
-                <span className="social-title">Stay Connected with Us!</span>
-                <ul>
-                  <li>
-                    <a
-                      title="Facebook"
-                      href="https://www.facebook.com/BloomKonnect-354654801406029/"
-                      target="_blank"
-                    >
-                      <span className="social-icon fa fa-facebook fa-2x" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      title="Twitter"
-                      href="https://twitter.com/bloomkonnect"
-                      target="_blank"
-                    >
-                      <span className="social-icon fa fa-twitter fa-2x" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      title="Instagram"
-                      href="https://www.instagram.com/bloomkonnect/"
-                      target="_blank"
-                    >
-                      <span className="social-icon fa fa-instagram fa-2x" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      title="Pintrest"
-                      href="https://www.pinterest.com/bloomkonnect/"
-                      target="_blank"
-                    >
-                      <span className="social-icon fa fa-pinterest fa-2x" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
+            <div className="col">
+              <ul className='list-unstyled text-center'>
+                <li className='mt-4 font-weight-bold'>
+                  SUPPORT
+              </li>
+                <li className='mt-4'>
+                  FAQ
+              </li>
+                <li className='mt-4'>
+                  Ressend Confirmation Email
+              </li>
+                <li className='mt-4'>
+                  Reschedule My Ticket
+              </li>
+                <li className='mt-4'>
+                  Gift Card Balance
+              </li>
+              </ul>
             </div>
-            <div className="col-sm-12 col-xs-12" >
-              <center>
-                Copyright @ 2016| BloomKonnect | All rights reserved
-              </center>
-              <div className="back-top-top">
-                <ScrollApp />
-              </div>
+            <div className="col">
+              <ul className='list-unstyled text-center'>
+                <li className='mt-4 font-weight-bold'>
+                  SUPPORT
+              </li>
+                <li className='mt-4'>
+                  Launch Your Own Business
+              </li>
+                <li className='mt-4'>
+                  Become a Venue
+              </li>
+                <li className='mt-4'>
+                  Local Partner Login
+              </li>
+              </ul>
+            </div>
+            <div className="col">
+              <ul className='list-unstyled text-center'>
+                <li className='mt-4 font-weight-bold'>
+                  Follow us online
+              </li>
+                <li className='mt-4'>
+
+                </li>
+              </ul>
             </div>
           </div>
         </div>
