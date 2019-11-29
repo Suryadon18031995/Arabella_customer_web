@@ -395,9 +395,9 @@ class HomeContainer extends React.Component {
           </div>
         </div>
 
-        <div className='mt-5 mb-5 text-center'>
+        <div className='mt-5 mb-5 text-center font-weight-bold see-more-hr'>
           SEE MORE
-          <hr />
+          <hr className=''/>
         </div>
 
         <div className='row'>
@@ -432,7 +432,9 @@ class HomeContainer extends React.Component {
               <div className='mt-3'>
                 <textarea placeholder='Message' rows='6'/>
               </div>
+              <div className='mt-3'>
               <button type="button" className="btn custom-class-button">SEND</button>
+              </div>
            </div>
         </div>
 

@@ -327,4 +327,13 @@
   font-size: 16px;
 }
 
+.see-more-hr hr{
+  width: 5%;
+  border-top: 3px solid #f06530;
+}
+
+.see-more-hr{
+  font-size: 24px;
+}
+
     /* Home page CSS ends */
