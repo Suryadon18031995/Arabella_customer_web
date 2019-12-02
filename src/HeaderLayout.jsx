@@ -1,5 +1,7 @@
 import React from 'react';
-import Modal from 'react-bootstrap/lib/Modal';
+// import Modal from 'react-bootstrap/lib/Modal';
+// import Modal from 'react-bootstrap-modal';
+// import Button from 'react-bootstrap/lib/Button';
 import connect from 'react-redux/lib/connect/connect';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -7,6 +9,8 @@ import _isError from 'lodash/isError';
 import _groupBy from 'lodash/groupBy';
 import Redirect from 'react-router/Redirect';
 import Link from 'react-router-dom/Link';
+import logoIcon from './assets/images/LOGO.png';
+import navBarIcon from './assets/images/navbar-icon-three.png';
 import {
   fetchLoginData,
   receiveHideLoginModalData,
@@ -51,6 +55,7 @@ class HeaderLayout extends React.Component {
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.mblMenu = this.mblMenu.bind(this);
     this.state = {
+      showLogin: false,
       zipcode: undefined,
       zipcodeInit: undefined,
       show: false,
@@ -703,6 +708,10 @@ class HeaderLayout extends React.Component {
     this.setState({ showLargeDropDowns: '' });
   }
 
+  showLoginModal = () => this.setState(prevState => ({
+    showLogin: !prevState.showLogin,
+  }));
+
   // eslint-disable-next-line class-methods-use-this
   render() {
     const menuClass = `dropdown-menu ${this.state.isOpen ? 'show' : ''}`;
@@ -740,15 +749,50 @@ class HeaderLayout extends React.Component {
         </div>
       );
     }
-
+// console.log(this.props.location.pathname);
     return (
       <div className="App">
 
         <div>
-          
-
+          {/* <button onClick={this.showLoginModal}>Login</button> */}
+          {this.props.location.pathname !== '/' ? <div className='row artist-header'>
+            <div className="col">
+              <Link to='/'>
+              <img src={logoIcon} alt='Logo' />
+              </Link>
+            </div>
+            <div className="col-6">
+            </div>
+            <div className="col-2">
+              <span className='font-weight-bold white-color-head'><span className='span-orange'>PARTNER </span>WITH US!</span>
+            </div>
+            <div className="col white-color-head-button">
+              <button type="button">
+                MENU
+            <img src={navBarIcon} alt='' height='30' />
+              </button>
+            </div>
+          </div>:
+          <div className='row artist-header'>
+          <div className="col">
+            <Link to='/'>
+            <img src={logoIcon} alt='Logo' />
+            </Link>
+          </div>
+          <div className="col-6">
+          </div>
+          <div className="col-2">
+            <span className='font-weight-bold'><span className='span-orange'>PARTNER </span>WITH US!</span>
+          </div>
+          <div className="col">
+            <button type="button">
+              MENU
+          <img src={navBarIcon} alt='' height='30' />
+            </button>
+          </div>
+        </div>}
         </div>
-
+        
         {this.props.children}
 
         <div className="footer-section-custom mt-4">

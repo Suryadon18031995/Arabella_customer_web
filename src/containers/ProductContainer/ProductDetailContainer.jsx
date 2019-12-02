@@ -13,7 +13,14 @@ import _find from 'lodash/find';
 import _sortBy from 'lodash/sortBy';
 import _endsWith from 'lodash/endsWith';
 import moment from 'moment';
+import StarRatings from 'react-star-ratings';
+import HrCommon from '../../components/Common/HrCommon.jsx';
 import ProductDetailComponent from '../../components/ProductComponent/ProductDetailComponent.jsx';
+import detailIcon from '../../assets/images/8.png';
+import banner11 from '../../assets/images/Banner-11.png';
+import banner12 from '../../assets/images/Banner-12.png';
+import banner13 from '../../assets/images/Banner-13.png';
+import banner14 from '../../assets/images/Banner-14.png';
 import Loader from '../../components/Loader/Loader.jsx';
 import {
   fetchProductDetails,
@@ -69,7 +76,16 @@ class ProductDetailContainer extends React.Component {
       storeName: this.props.storeName,
       showImageModal: false,
       productImageUrl: undefined,
-      breadCrumbsList: [],
+      breadCrumbsList: [
+        {
+          link: '/',
+          name: 'HOME',
+        },
+        {
+          link: undefined,
+          name: 'BUY ARTIFACTS',
+        },
+      ],
       currentUrl: undefined,
       freshdeal: false,
       responsive: { 480: { items: 2 }, 760: { items: 3 }, 900: { items: 4 } },
@@ -288,11 +304,11 @@ class ProductDetailContainer extends React.Component {
         const breadCrumbsList = [
           {
             link: '/',
-            name: 'home',
+            name: 'HOME',
           },
           {
             link: undefined,
-            name: _get(productDetails, 'info.name'),
+            name: 'BUY ARTIFACTS',
           },
         ];
         if (this.state.currentUrl && this.state.currentUrl !== window.location.href) {
@@ -626,9 +642,9 @@ class ProductDetailContainer extends React.Component {
     if (this.state.handleProductDetailClick) {
       return <Redirect push to="/" />;
     }
-    if (this.state.redirectNotFound) {
-      return <Redirect to="/404" />;
-    }
+    // if (this.state.redirectNotFound) {
+    //   return <Redirect to="/404" />;
+    // }
     if (this.props.history.location.hash === '#reviewForm' && this.inputRef.current !== null) {
       // this.inputRef.current.scrollIntoView({ block: 'end', behavior: 'smooth' });
       window.scrollTo({
@@ -664,7 +680,76 @@ class ProductDetailContainer extends React.Component {
       <div>
         <BreadCrumbs
           list={this.state.breadCrumbsList} />
-        <ErrorBoundary>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+              <img src={detailIcon} alt='' width='100%' />
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+              <h3>PRODUCT TITLE</h3>
+              <hr />
+              <div>
+                Lorem i psum dolor si t a met, consectetuer a di p i sci nge li t , sed
+di a m nonummy ni bh eui smod Lorem i psum do lo r si t am et , co nsec-
+tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d co nsec-
+tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d co nsec-
+tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
+                </div>
+              <hr />
+              <div>
+                Based on 43 Reviews 4.6 out of 5 
+                <StarRatings
+                                rating={4.6}
+                                starDimension="16px"
+                                starSpacing="2px"
+                                starEmptyColor="#434343"
+                                starRatedColor="#f06530"
+                            />
+              </div>
+              <div className='mt-3 font-weight-bold price-tag'>
+              ₹ 1, 000. 00
+              </div>
+              <div className='mt-3'>
+              Qty <input type='number' />
+              </div>
+              <div className='mt-3'>
+             Sizes<br/>
+             <input type='text' /> 
+             Inches/Cm
+              </div>
+              <div className='mt-3'>
+              Colors
+              </div>
+              <div className='mt-3 detail-page-add'>
+              <button type="button" className="btn custom-class-button">ADD TO CART</button>
+              <span>
+                Free Shipping
+              </span><br/>
+              <span>
+                Secure Payment
+              </span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <HrCommon title='You Might Like' />
+            <div className='row text-center detail-you-might-like'>
+              <div className='col-3'>
+                <img src={banner11} alt='' />
+              </div>
+              <div className='col-3'>
+                <img src={banner12} alt='' />
+              </div>
+              <div className='col-3'>
+                <img src={banner13} alt='' />
+              </div>
+              <div className='col-3'>
+                <img src={banner14} alt='' />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <ErrorBoundary>
           <ProductDetailComponent
             // ref={this.inputRef}
             primeUser={this.props.primeUser}
@@ -745,7 +830,7 @@ class ProductDetailContainer extends React.Component {
             handleCloseModal={this.handleCloseModal}
             handleMethodChange={this.handleMethodChange}
           />
-        </ErrorBoundary>
+        </ErrorBoundary> */}
       </div>
     );
   }

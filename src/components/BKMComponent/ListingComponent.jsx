@@ -12,13 +12,13 @@ import iDescArrow from '../../assets/images/i_desc_arrow.png';
 import iAscArrow from  '../../assets/images/i_asc_arrow.png';
 
 export default function ListingComponent(props) {
-    if (_get(props, 'isLoading') && props.pageNo === 1) {
-        return (
-            <div className="text-center">
-                <LoaderListingPage />
-            </div>
-        );
-    }
+    // if (_get(props, 'isLoading') && props.pageNo === 1) {
+    //     return (
+    //         <div className="text-center">
+    //             <LoaderListingPage />
+    //         </div>
+    //     );
+    // }
     if (props.totalProductCount === 0 && !_get(props, 'isLoading')) {
         return (
             <div className="no-products-to-display">
@@ -27,7 +27,7 @@ export default function ListingComponent(props) {
         );
     }
     return (
-        <div className="listingComponent" >
+        <div className="listingComponent row" >
              <MetaTags>
             {/* <title>Page 1</title> */}
             <meta name="description" content={props.metaDesc} />
@@ -36,7 +36,7 @@ export default function ListingComponent(props) {
             {/* <div className='shop-flowers-title'>
                 <h1>Shop Flowers</h1>
             </div> */}
-            {props.farmInfo ? <div className="farm-info">
+            {/* {props.farmInfo ? <div className="farm-info">
                 <img src="https://d2ob14u1yb5v44.cloudfront.net/media/vendor/250/Vendor-Banner2.jpg" alt='Vendor Banner'/>
                 <h1>
                     {_get(props.farmInfo, 'farm_name')}
@@ -102,21 +102,21 @@ export default function ListingComponent(props) {
                        </div>      
                     </Tab>
                 </Tabs>
-            </div> : null}
-            <div className="sorter">
-                {/* style={{ padding: '7px', borderColor: '#e1e1e1' }} */}
+            </div> : null} */}
+            {/* <div className="sorter">
+              
                 <p className="view-mode">
                     <a onClick={() => props.handleViewClick('list')} title="List" className={props.viewType === 'list' ? 'list color-yellow-class' : 'list default-color'} >List</a>
                     <a onClick={() => props.handleViewClick('grid')} title="Grid" className={props.viewType === 'grid' ? 'grid color-yellow-class' : 'grid default-color'}>Grid</a>
                     <span onClick={() => props.handleViewClick('compressed')} className="newmode" title="Compressed View">
                         <a className={props.viewType === 'compressed' ? 'color-yellow-class' : 'default-color'}>
                             <i className="fa fa-bars" aria-hidden="true" />
-                            {/* style={{ marginTop: '5px' }} */}
+                          
                         </a>
                     </span>
                 </p>
                 <div className="sortdir">
-                    {/* style={{ float: 'right', marginRight: '52px' }} */}
+                   
                     <div className="sort-dir-span" onClick={props.sortingOrderClick}>
                         {props.showAscendSort && <span title="Set Descending Direction" className="sortdesc">
                             <img src={ iAscArrow } alt="Set Descending Direction" className="v-middle" />
@@ -137,9 +137,9 @@ export default function ListingComponent(props) {
                         </select>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
-            {(props.viewType === 'list' || props.viewType === 'compressed') &&
+            {/* {(props.viewType === 'list' || props.viewType === 'compressed') &&
                 <div className="category-products" id="myDiv">
                     <ol className="products-list" id="products-list">
                         {
@@ -183,7 +183,7 @@ export default function ListingComponent(props) {
                             })}
                     </ol>
                 </div>
-            }
+            } */}
 
             {
                 props.viewType === 'grid' &&
@@ -205,9 +205,9 @@ export default function ListingComponent(props) {
                     />)
             }
             {/* <div id="nomore" style={{ display: 'none' }}><p className="note-msg">("There are no products matching the selection.")</p></div> */}
-            <div className={props.applyFilter ? 'sticky-note blink' : 'sticky-note'} id="sticky-note">
+            {/* <div className={props.applyFilter ? 'sticky-note blink' : 'sticky-note'} id="sticky-note">
                 <span className="custom-filter-apply" onClick={props.handleCustomFilter}>Apply Filter</span>
-            </div>
+            </div> */}
         </div>
     );
 }
