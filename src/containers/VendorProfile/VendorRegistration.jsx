@@ -278,7 +278,7 @@ class VendorRegistration extends React.Component {
         // console.log('err:', this.state);
         return (
             <div className='container'>
-                <div className='col-lg-12 col-md-12 col-sm-12 col-xs-12 marginCustom'>
+                <div className='col-lg-12 col-md-12 col-sm-12 col-xs-12 marginCustom artist-reg-page'>
                     <h1>Artist Registration</h1>
                     {/* <form name="registerform">
                         <ul>
@@ -314,21 +314,21 @@ class VendorRegistration extends React.Component {
                                 type="text" onChange={this.handleChange} value={this.state.addressLine2} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'addressLine2')}</label>
                         </div>
-                        <div className="col-lg-4 col-md-4 col-xs-4 col-sm-4 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">State<em>*</em></label>
                             <input name="state" id="state" title="State" className="field-input"
                                 onBlur={this.onBlur}
                                 type="text" onChange={this.handleChange} value={this.state.state} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'state')}</label>
                         </div>
-                        <div className="col-lg-4 col-md-4 col-xs-4 col-sm-4 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">City<em>*</em></label>
                             <input name="city" id="city" title="City" className="field-input"
                                 onBlur={this.onBlur}
                                 type="text" onChange={this.handleChange} value={this.state.city} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'city')}</label>
                         </div>
-                        <div className="col-lg-4 col-md-4 col-xs-4 col-sm-4 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">Zipcode<em>*</em></label>
                             <input name="zipcode" id="zipcode" title="Zipcode" className="field-input"
                                 onBlur={this.onBlur}
@@ -336,7 +336,7 @@ class VendorRegistration extends React.Component {
                                 type="text" onChange={this.handleChange} value={this.state.zipcode} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'zipcode')}</label>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">Email Id<em>*</em></label>
                             <input name="email" id="email" title="Email Id" className="field-input"
                                 onBlur={this.onBlur}
@@ -344,21 +344,21 @@ class VendorRegistration extends React.Component {
                                 type="text" onChange={this.handleChange} value={this.state.email} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'email')}</label>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">Password<em>*</em></label>
                             <input name="password" id="password" title="Password" className="field-input"
                                 onBlur={this.onBlur}
                                 type="password" onChange={this.handleChange} value={this.state.password} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'password')}</label>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">Confirm Password<em>*</em></label>
                             <input name="confirmPassword" id="confirmPassword" title="Confirm Password" className="field-input"
                                 onBlur={this.comparePassword}
                                 type="password" onChange={this.handleChange} value={this.state.confirmPassword} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'confirmPassword')}</label>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">Phone Number
                             {/* <em>*</em> */}
                             </label>
@@ -367,7 +367,7 @@ class VendorRegistration extends React.Component {
                                 type="text" onChange={this.handleChange} value={this.state.telephone} />
                             <br /><label style={{ color: 'red' }}>{_get(this.state.errors, 'telephone')}</label>
                         </div>
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 vendor-fields">
+                        <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields">
                             <label className="required">GST Number
                             {/* <em>*</em> */}
                             </label>
@@ -380,9 +380,11 @@ class VendorRegistration extends React.Component {
                     {/* </li>
                         </ul>
                     </form> */}
-                    <button className='btn btn-primary reg-button' onClick={this.handleProceedToCheckout}>
+                    <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6 vendor-fields text-center">
+                    <button className='btn btn-outline-primary reg-button' onClick={this.handleProceedToCheckout}>
                         {this.state.collectPayment ? 'Proceed for payment!' : 'Register'}
                     </button>
+                    </div>
                 </div>
                 <form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
                     <input type="hidden" id="encRequest" name="encRequest" value="' + encRequest + '" />

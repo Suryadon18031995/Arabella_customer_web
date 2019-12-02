@@ -4,6 +4,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import _isError from 'lodash/isError';
 import { Link } from 'react-router-dom';
+import Redirect from 'react-router/Redirect';
 import MetaTags from 'react-meta-tags';
 import HomeComponent from '../../components/BKMComponent/HomeComponent.jsx';
 import HomeFooterContentComponent from '../../components/BKMComponent/HomeFooterContentComponent.jsx';
@@ -35,7 +36,9 @@ class HomeContainer extends React.Component {
       activeItemIndexNA: 0,
       activeItemIndexBS: 0,
       activeItemIndexFD: 0,
-      responsive: { 480: { items: 2 }, 760: { items: 3 }, 900: { items: 4 } }
+      responsive: { 480: { items: 2 }, 760: { items: 3 }, 900: { items: 4 } },
+      redirectToRegistration: false,
+      redirectToListing: false,
     };
   }
 
@@ -181,54 +184,28 @@ class HomeContainer extends React.Component {
       </div>
     </Link>);
 
+handleSignUp = () => this.setState({ redirectToRegistration: true });
+
+handleListingRedirect = () => this.setState({ redirectToListing: true });
+
   render() {
-    const {
-      activeItemIndexNA,
-      activeItemIndexBS,
-      activeItemIndexFD,
-      childrenNA,
-      childrenBS,
-      childrenFD,
-      responsive
-    } = this.state;
-
-    let checkBSLoading;
-
-    if (_get(this, 'props.isLoading')) {
-      checkBSLoading = (
-        <div>
-          <CustomLoader />
-          <CustomLoader />
-          <CustomLoader />
-        </div>
-      );
-    } else {
-      checkBSLoading = (
-        <div>
-          <HomeContentComponent
-            rowTitle="FRESH DEALS"
-            children={this.state.childrenFD}
-            responsive={this.state.responsive}
-          />
-          <HomeContentComponent
-            rowTitle="NEW ARRIVALS"
-            children={this.state.childrenNA}
-            responsive={this.state.responsive}
-          />
-          <HomeContentComponent
-            rowTitle="BEST SELLERS"
-            children={this.state.childrenBS}
-            responsive={this.state.responsive}
-          />
-        </div>
-      );
+    if (this.state.redirectToRegistration) {
+        return (
+          <Redirect to='/vendor-registration'/>
+        );
     }
+
+    if (this.state.redirectToListing) {
+      return (
+        <Redirect to='/listing-products'/>
+      );
+  }
 
     return (
       <div>
         <div className='artist-banner'>
           {/* <img src={artistBanner} alt='Artist Marketplace'/> */}
-          <div className='row artist-header'>
+          {/* <div className='row artist-header'>
             <div className="col">
               <img src={logoIcon} alt='Logo' />
             </div>
@@ -243,15 +220,13 @@ class HomeContainer extends React.Component {
             <img src={navBarIcon} alt='' height='30' />
               </button>
             </div>
-            {/* <div className="col">
-           </div> */}
-          </div>
+          </div> */}
           <div className='banner-text'>
             <span>FunKar</span> marketplace for artists, particularly those artists who are highly talented
               but never got a big stage to showcase their talent or rather we would say never got
               a small stage to monetize their talent.
             <div className='mt-5'>
-              <button type="button" className="btn custom-class-button">SCROLL DOWN</button>
+              <button type="button" className="btn custom-class-button" onClick={this.handleListingRedirect}>Browse Products</button>
             </div>
           </div>
         </div>
@@ -339,7 +314,7 @@ class HomeContainer extends React.Component {
           <div className='col-6 join-hands p-0'>
           <div className='center-search-div text-center'>
               <div className='partner-with-us font-weight-bold'>Partner With <span>Us!</span></div>
-              <button type="button" className="btn custom-class-button">SIGN UP</button>
+              <button type="button" className="btn custom-class-button" onClick={this.handleSignUp}>SIGN UP</button>
             </div>
           </div>
           <div className='col-6 p-0'>
