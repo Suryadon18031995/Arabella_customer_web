@@ -32,7 +32,7 @@ function FilterLabelList(props) {
 
 function FilterLabelListWithSearch(props) {
     return (
-        <ol className='category-sidebar'>
+        <ol className='category-sidebar list-unstyled'>
             {/* <div>
                 <span className='glyphicon glyphicon-search search-icon-filter' />
                 <input className='cat-search' name={props.filterName} type='text' placeholder='Search' onChange={props.handleCategorySearch} />

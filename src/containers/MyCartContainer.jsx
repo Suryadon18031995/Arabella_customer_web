@@ -58,7 +58,7 @@ class MyCartContainer extends React.Component {
       breadCrumbsList: [
         {
           link: '/',
-          name: 'home',
+          name: 'HOME',
         },
         {
           link: undefined,

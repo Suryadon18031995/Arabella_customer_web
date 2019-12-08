@@ -104,11 +104,29 @@
 
     /* Footer CSS ends */
 
+    body{
+      background-color: #fff;
+    }
+
+    /* header layout css */
+    .cust-margin-login{
+      margin: 20px 0;
+    }
+
+    .cust-margin-login button{
+      margin: 0 10px;
+    }
+    /* header layout css */
+
      /* Home page CSS starts */
 
   /* .artist-banner img{
     width: 100%;
   } */
+
+  .color-link-head a{
+    color: white;
+  }
 
   .artist-header{
     padding: 25px;
@@ -455,3 +473,79 @@
       font-size: 30px;
     }
     /* Details page css stops */
+
+    .float-right{
+      float: right;
+    }
+
+    /* checkout page css starts */
+
+.order-summary{
+  color: #fff;
+  padding: 20px;
+  background-color: #143d59;
+}
+
+.bordered-summary{
+  border: 1px solid black;
+}
+.bordered-summary-top{
+  border-top: 1px solid black;
+  padding: 20px;
+}
+
+.checkout-steps{
+  background-color: #dddddd;
+  padding: 10px;
+}
+
+.step-2-section textarea{
+  width: 100%;
+}
+.payment-type{
+  margin: 10px 0;
+}
+.address-block{
+  padding: 10px 0;
+}
+.address-block .firstname{
+  /* width: 45%; */
+  float:left;
+}
+
+.address-block .lastname{
+  /* width: 45%; */
+  float: right;
+}
+.address-block .company input, .address-block .address input{
+  width: 100%;
+  /* float:left; */
+}
+.address-block .city, .address-block .state, .address-block .zipcode{
+  width: 30%;
+  float: left;
+}
+.address-block .state{
+  margin-left: 20px;
+}
+.address-block .zipcode{
+  float: right;
+}
+.address-block .city input, .address-block .state select, .address-block .zipcode input{
+  width: 100%;
+  /* float: left; */
+}
+.process-btn{
+  text-align: center;
+}
+.creditnumber input{
+  width: 100%;
+  margin-bottom: 5px;
+}
+.creditcard-expiry, .creditcard-expiry-year{
+  width: 30%;
+  float: left;
+}
+
+
+    /* checkout page css ends */

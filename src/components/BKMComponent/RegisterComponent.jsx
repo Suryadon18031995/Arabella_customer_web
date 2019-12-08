@@ -5,7 +5,7 @@ import lazyLoader from  '../../assets/images/lazy-loader.gif';
 // import BigLogo from '../../assets/images/bloom_logo_white.png';
 // import SmallLogo from '../../assets/images/bloom_logo_small.png';
 
-const Recaptcha = require('react-recaptcha');
+// const Recaptcha = require('react-recaptcha');
 
 let recaptchaStyle;
 export default function RegisterComponent(props) {
@@ -15,15 +15,15 @@ export default function RegisterComponent(props) {
     recaptchaStyle = { cursor: 'pointer' };
   }
   return (
-    <div className="register">
-        <div className={`overlay ${ props.isFetching ? '' : 'hide'}`}>
+    <div className="register text-center">
+        {/* <div className={`overlay ${ props.isFetching ? '' : 'hide'}`}>
           <span className="infinite-loader-class">
               <img
                 src={ lazyLoader }
                 alt="lazy-loader"
               />
           </span>
-        </div>
+        </div> */}
       <div>
         {/* register content  */}
 
@@ -89,13 +89,13 @@ export default function RegisterComponent(props) {
             <div className="field" id="subcription">
               <div className="subscription-field"> <input className="subcription-input" type="checkbox" id="subcription_input" name="subcriptionChecked" onChange={props.handleCheck} defaultChecked={props.state.checked} /> <span id="subcription-text">Sign Up for our Newsletter: Receive Exclusive Offers, Products Updates and More!</span></div>
             </div>
-            <Recaptcha
+            {/* <Recaptcha
               sitekey="6LcrZloUAAAAALSE-gz7e89KW4zdPdTr5DxdZ0Hh"
               // "6LftiX0UAAAAACou7ozaXnd-ljZjnqES11xlA-i0"
               render="explicit"
               verifyCallback={props.verifyCallback}
               onloadCallback={props.callback}
-            />
+            /> */}
             <div className="buttons-set register-submit-btn">
               <Button type="submit" style={recaptchaStyle} title="Submit" id="submitForm" onClick={props.customerRegisterData}><span><span>Submit</span></span></Button>
 
@@ -105,95 +105,6 @@ export default function RegisterComponent(props) {
           </div>
         </div>
 
-        <div className="em-footer-bottom  main-prod">
-          <div className="fotter-container">
-            <div className="row-one">
-              <center>
-                <ul>
-                  <li>
-                    <a href="/track-order">Track Order</a>|
-                  </li>
-                  <li>
-                    <a href="/contacts">Contact Us</a>|
-                  </li>
-                  <li>
-                    <a href="/privacy-policy">Privacy Policy</a>|
-                  </li>
-                  <li>
-                    <a href="/term-and-conditions">Terms & Conditions</a>|
-                  </li>
-                  <li>
-                    <a href="/vendors">Our Vendors</a>|
-                  </li>
-                  <li>
-                    {/* <a href="/umicrosite/vendor/register/">Vendor Registration</a>| */}
-                    <a href="https://bloomkonnect.com:8443/umicrosite/vendor/register/">Vendor Registration</a>|
-                  </li>
-                  <li>
-                    <a href="/faq-vendor">FAQ Vendor</a>|
-                  </li>
-                  <li><a href="/faq-customer">FAQ Customer</a></li>|
-                  <li>
-                    <a href="/sustainable_floral_fund">Sustainability</a>|
-                  </li>
-                  <li>
-                    <a href="/returns-and-refunds-policy">
-                      Returns and Refunds Policy
-                    </a>|
-                  </li>
-                  <li> <a href="/blog">Blog</a></li>
-                </ul>
-              </center>
-            </div>
-            <div className="row-two">
-              <div className="block">
-                <ul className="subscribe-div"> <li><input
-                  className="email-search-input"
-                  name="email"
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                  placeholder="Sign-up For Our Email Newsletter"
-                  type="text" /></li>
-                  <li>
-                    <button type="submit" className="email-submit-input">
-                      Subscribe
-                    </button>
-                  </li>
-
-                </ul>
-              </div>
-              <div className="block">
-                <ul className="share">
-                  <li className="text">Stay Connected with Us!</li>
-                  <li className="links">
-                    <a title="Facebook" href="https://www.facebook.com/BloomKonnect-354654801406029/" target="_blank" >
-                      <span className="social-icon fa fa-facebook fa-2x" />
-                    </a>
-                  </li>
-                  <li className="links">
-                    <a title="Twitter" href="https://twitter.com/bloomkonnect" target="_blank" >
-                      <span className="social-icon fa fa-twitter fa-2x" />
-                    </a>
-                  </li>
-                  <li className="links">
-                    <a title="Instagram" href="https://www.instagram.com/bloomkonnect/" target="_blank" >
-                      <span className="social-icon fa fa-instagram fa-2x" />
-                    </a>
-                  </li>
-                  <li className="links">
-                    <a title="Pintrest" href="https://www.pinterest.com/bloomkonnect/" target="_blank" >
-                      <span className="social-icon fa fa-pinterest fa-2x" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <center>
-              Copyright @ 2016| BloomKonnect | All rights reserved
-            </center>
-          </div>
-        </div>
       </div>
     </div>
 
