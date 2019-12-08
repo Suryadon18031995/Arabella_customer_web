@@ -12,108 +12,9 @@ export default function MyCartComponent(props) {
         const subTotal = _get(props.cartResult, [0, 'subtotal']);
         return (
             <div className="cart">
-
-                <div className='row'>
-                    <div className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>
-                    {
-                                result.map((thisCart, index) => {
-                        return (<div className='row' key={index}>
-                        <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                            <img src={thisCart.image} alt=''/>
-                        </div>
-                        <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                        <React.Fragment>
-                                                <h2 className="cart-product-name">
-                                                    <a href={`/${thisCart.url_key}.html`} className="cart-prod-name">{thisCart.name}</a>
-                                                </h2>
-                                                <p className="cart-sku">SKU : {thisCart.sku}</p>
-                                                <p>Price: {thisCart.row_total}</p>
-                                                {/* <p className="cart-deli-date">Delivery Date : {moment(thisCart.delivery_date, 'YYYY-MM-DD').format('DD MMM YYYY')}<img className="cart-calendar" src={ calendarImage }></img></p> */}
-                                                {/* <p className="cart-deli">Delivery Method : {thisCart.delivery_method}</p> */}
-                                                <div style={{ cursor: 'pointer' }} onClick={() => props.removeProduct(thisCart.cart_rid)} title='Remove Item'>Delete</div>
-                                                </React.Fragment>
-                        </div>
-                        </div>
-                        )})}
-                    </div>
-                    <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3'>
-                        <div>Apply Promocode or Discount</div>
-                        <div className='text-center'>
-                        <input className="discount-input" id="coupon_code" title="coupon_code" name="coupon_code" value={props.discountCouponValue} onChange={props.handleInputChange} />
-                        <span>{props.errors.discountCouponValue}</span>
-                                            <button type="button" className="btn custom-class-button mt-3" title="Apply Coupon" onClick={props.applyDiscountCoupon} value="Apply Coupon"><span><span className="apply-coupoun-btn">Apply Coupon</span></span></button>&nbsp;&nbsp;
-                                            {
-                                                props.couponRes &&
-                                                <button type="button" className="btn custom-class-button" title="Cancel Coupon" onClick={props.cancelDiscountCoupon} value="Cancel Coupon"><span><span>Cancel Coupon</span></span></button>
-                                            }
-                                        
-                        </div>
-
-                        <table id="total-table" className='mt-5'>
-                                    <colgroup>
-                                        <col />
-                                        <col style={{ width: '1%' }} />
-                                    </colgroup>
-                                    <tfoot>
-                                        <tr>
-                                            <td className="a-right" colSpan={1}> <strong className="grand-total">Grand Total</strong></td>
-                                            <td className="float-right"> <strong><span className="price" style={{ font: '20px/1.35 Gotham_Book_Regular, Raleway, Helvetica Neue, Helvetica, Arial, sans-serif' }}>${props.grandTotal}</span></strong></td>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {props.primeUser === '1' ? <tr>
-                                            <td className="a-right" colSpan={1}> You will earn:</td>
-                                            <td className="a-right"> <span className="prices">{_get(props.cartResult, [0, 'reviewedpoint_earn'])}</span></td>
-                                        </tr> : null}
-                                        <tr>
-                                            <td className="a-right" colSpan={1}> Subtotal</td>
-                                            <td className="float-right"> <span className="prices">${subTotal}</span></td>
-                                        </tr>
-                                        {props.cartResult && _get(props.cartResult, [0, 'coupon_code']) && _get(props.cartResult, [0, 'coupon_code']) === 'NA' && props.discountVal && parseFloat(props.discountVal) > 0 &&
-                                        <tr>
-                                            <td className="a-right" colSpan={1}> Discount (Custom Box Discount)</td>
-                                            <td className="a-right"> <span className="prices">-${props.discountVal}</span></td>
-                                        </tr>
-                                        }
-                                        {
-                                            props.couponRes && _get(props.cartResult, [0, 'coupon_code']) && _get(props.cartResult, [0, 'coupon_code']) !== 'NA' &&
-                                            <tr>
-                                                <td colSpan={1} className="a-right"> Discount ({props.coupCode})</td>
-                                                <td className="a-right"> <span className="prices">-${props.discountVal}</span></td>
-                                            </tr>
-                                        }
-
-                                            <tr>
-                                                <td colSpan={1} className="a-right"> Shipping & Handling Fee</td>
-                                                <td className="float-right">
-                                                {/* {
-                                                    props.primeUser !== '1' ?
-                                                        <span className="prices">
-                                                            ${_get(props.cartResult, [0, 'fee_amount'])}
-                                                        </span> :
-                                                        <span className="prices">
-                                                            <strike>
-                                                                ${_get(props.cartResult, [0, 'fee_amount'])}
-                                                            </strike>
-                                                        </span>
-                                                } */}
-                                                Free
-                                                </td>
-                                            </tr>
-
-                                    </tbody>
-                                </table>
-
-                        <button type="button" title="Proceed to Checkout" onClick={props.handleCheckOut} className="btn custom-class-button mt-5"><span><span>Proceed to Checkout</span></span></button>
-
-                    </div>
+                <div className="cart-title">
+                    <h1>Shopping Cart</h1>
                 </div>
-
-
-
-
-
-                
                 {props.move &&
                     <ul className="cart-messages">
                         <li className="cart-success-msg">
@@ -135,7 +36,7 @@ export default function MyCartComponent(props) {
                 }
                 <div>
                     <table className="cart-table">
-                        {/* <thead>
+                        <thead>
                             <tr>
                                 <th>
                                     <span>Product Name</span>
@@ -153,21 +54,21 @@ export default function MyCartComponent(props) {
                                 </th>
                                 <th colSpan={1} style={{ borderRight: '1px solid grey' }}>Subtotal</th>
                             </tr>
-                        </thead> */}
+                        </thead>
                         <tfoot>
                             <tr style={{ border: 'none' }}>
                                 <td colSpan={50} style={{ paddingTop: '10px' }}>
-                                    <button type="button"
-                                        className="btn btn-outline-warning"
+                                    <Button type="button"
+                                        className="continue-btn btn-shop"
                                         onClick={props.continueShopping} title="Continue Shopping">
                                         <span><span className="apply-coupoun-btn">Continue Shopping</span></span>
-                                    </button>
-                                    <button type="submit"
-                                        className="btn btn-outline-warning ml-3"
+                                    </Button>
+                                    <Button type="submit"
+                                        className="update-qty-btn btn-shop"
                                         onClick={index => props.updateCart(index)}
                                         name="update_cart_action" value="update_qty" title="Update Shopping Cart">
                                         <span><span className="apply-coupoun-btn">Update Shopping Cart</span></span>
-                                    </button>
+                                    </Button>
                                     {/* <Button type="submit"
                                         className="update-qty-btn btn-shop"
                                         onClick={() => props.clearShoppingCart()}
@@ -177,7 +78,7 @@ export default function MyCartComponent(props) {
                                 </td>
                             </tr>
                         </tfoot>
-                        {/* <tbody>
+                        <tbody>
                             {
                                 result.map((thisCart, index) => {
                                     let trStyle;
@@ -275,8 +176,119 @@ export default function MyCartComponent(props) {
                                     </tr>;
                                 })
                             }
-                        </tbody> */}
+                        </tbody>
                     </table>
+                </div>
+
+                {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2>Spend Your Points</h2>
+                    <div className='col-lg-12 col-md-12 col-sm-12 col-xs-12 rewards-box'>
+                        <div className='col-lg-6 col-md-6 col-sm-12 col-xs-12 slider-div'>
+                            <span>Choose how many points to spend:</span>
+                            <span>Each of 100 Points gets <strong>$1.00</strong> discount</span>
+                            <span>
+                            <Slider
+                                min={1}
+                                max={20}
+                                onChange={props.onChange}
+                                value={typeof inputValue === 'number' ? 20 : 0}
+                            />
+                            </span>
+                            <span>You will spend
+                            <input type='number' />
+                                Points</span>
+                            <span>Maximize my discount with points</span>
+                        </div>
+                        <div className='col-lg-6 col-md-6 col-sm-12 col-xs-12'>
+                            P/s: You will not earn any points when using points to spend!
+                            Each of 100 Points gets $1.00 discount
+                    </div>
+                    </div>
+                </div> */}
+
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cart-collaterals">
+                    <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 mycart-discountcode">
+                        <div className="col-sm-12 col-md-12">
+                            <div className="discount em-box-cart">
+                                <h2>Discount Codes</h2>
+                                <div className="discount-form em-box">
+                                    <label htmlFor="coupon_code">Enter your discount code if you have one.</label>
+                                    <div className="input-box"> <input className="discount-input" id="coupon_code" title="coupon_code" name="coupon_code" value={props.discountCouponValue} onChange={props.handleInputChange} /><br /><span>{props.errors.discountCouponValue}</span></div>
+                                    <div className="buttons-sets">
+                                        <div className="col-lg-12">
+                                            <Button type="submit" title="Apply Coupon" onClick={props.applyDiscountCoupon} value="Apply Coupon"><span><span className="apply-coupoun-btn">Apply Coupon</span></span></Button>&nbsp;&nbsp;
+                                            {
+                                                props.couponRes &&
+                                                <Button type="submit" title="Cancel Coupon" onClick={props.cancelDiscountCoupon} value="Cancel Coupon"><span><span>Cancel Coupon</span></span></Button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-lg-8 col-md-8 col-sm-6 col-xs-12 cart-down mycart-discountcode">
+                        <div className="em-box-cart">
+                            <h2>Order Total</h2>
+                            <div className="em-box">
+                                <table id="total-table">
+                                    <colgroup>
+                                        <col />
+                                        <col style={{ width: '1%' }} />
+                                    </colgroup>
+                                    <tfoot>
+                                        <tr>
+                                            <td className="a-right" colSpan={1}> <strong className="grand-total">Grand Total</strong></td>
+                                            <td className="a-right"> <strong><span className="price" style={{ font: '20px/1.35 Gotham_Book_Regular, Raleway, Helvetica Neue, Helvetica, Arial, sans-serif' }}>${props.grandTotal}</span></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {props.primeUser === '1' ? <tr>
+                                            <td className="a-right" colSpan={1}> You will earn:</td>
+                                            <td className="a-right"> <span className="prices">{_get(props.cartResult, [0, 'reviewedpoint_earn'])}</span></td>
+                                        </tr> : null}
+                                        <tr>
+                                            <td className="a-right" colSpan={1}> Subtotal</td>
+                                            <td className="a-right"> <span className="prices">${subTotal}</span></td>
+                                        </tr>
+                                        {props.cartResult && _get(props.cartResult, [0, 'coupon_code']) && _get(props.cartResult, [0, 'coupon_code']) === 'NA' && props.discountVal && parseFloat(props.discountVal) > 0 &&
+                                        <tr>
+                                            <td className="a-right" colSpan={1}> Discount (Custom Box Discount)</td>
+                                            <td className="a-right"> <span className="prices">-${props.discountVal}</span></td>
+                                        </tr>
+                                        }
+                                        {
+                                            props.couponRes && _get(props.cartResult, [0, 'coupon_code']) && _get(props.cartResult, [0, 'coupon_code']) !== 'NA' &&
+                                            <tr>
+                                                <td colSpan={1} className="a-right"> Discount ({props.coupCode})</td>
+                                                <td className="a-right"> <span className="prices">-${props.discountVal}</span></td>
+                                            </tr>
+                                        }
+
+                                            <tr>
+                                                <td colSpan={1} className="a-right"> Shipping & Handling Fee</td>
+                                                <td className="a-right">
+                                                {
+                                                    props.primeUser !== '1' ?
+                                                        <span className="prices">
+                                                            ${_get(props.cartResult, [0, 'fee_amount'])}
+                                                        </span> :
+                                                        <span className="prices">
+                                                            <strike>
+                                                                ${_get(props.cartResult, [0, 'fee_amount'])}
+                                                            </strike>
+                                                        </span>
+                                                }
+                                                </td>
+                                            </tr>
+
+                                    </tbody>
+                                </table>
+                                <Button type="button" title="Proceed to Checkout" onClick={props.handleCheckOut} className="proceed-checkout-btn"><span><span>Proceed to Checkout</span></span></Button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

@@ -110,11 +110,11 @@ class ShopByFlowersContainer extends React.Component {
       breadCrumbsList: [
         {
           link: '/',
-          name: 'home',
+          name: 'HOME',
         },
         {
           link: undefined,
-          name: 'Buy Artifacts',
+          name: 'BUY ARTIFACTS',
         },
       ],
       // cartType: _get(this.props, 'cartType.cartType') ? _get(this.props, 'cartType.cartType') : undefined,
