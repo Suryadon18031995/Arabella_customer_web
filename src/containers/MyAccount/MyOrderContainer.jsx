@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import JsPDF from 'jspdf';
+// import JsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -238,28 +238,28 @@ class MyOrderContainer extends Component {
     }
 
     processDownLoadPdf = (req) => {
-        this.setState({
-            pdfData: req,
-        });
-        if (this.state.downloadPdf && _get(req, ['result', 'table_data'])) {
-            const invoiceNo = _get(req, ['result, inv_number']);
-            const input = document.getElementById('pdfPage');
-            input.setAttribute('style', 'display: block;');
-            html2canvas(input)
-                .then((canvas) => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new JsPDF(); // 'p', 'px', 'a4');
-                    const width = pdf.internal.pageSize.getWidth();
-                    const height = pdf.internal.pageSize.getHeight();
-                    pdf.addImage(imgData, 'PNG', 5, 10, width, (100));
-                    if (this.state.showPdf) {
-                        pdf.save('Consolidated_Statement.pdf');
-                    } else {
-                        pdf.save(`${_get(req, 'result.inv_number')}.pdf`);
-                    }
-                    input.setAttribute('style', 'display: none;');
-                });
-        }
+        // this.setState({
+        //     pdfData: req,
+        // });
+        // if (this.state.downloadPdf && _get(req, ['result', 'table_data'])) {
+        //     const invoiceNo = _get(req, ['result, inv_number']);
+        //     const input = document.getElementById('pdfPage');
+        //     input.setAttribute('style', 'display: block;');
+        //     html2canvas(input)
+        //         .then((canvas) => {
+        //             const imgData = canvas.toDataURL('image/png');
+        //             const pdf = new JsPDF(); // 'p', 'px', 'a4');
+        //             const width = pdf.internal.pageSize.getWidth();
+        //             const height = pdf.internal.pageSize.getHeight();
+        //             pdf.addImage(imgData, 'PNG', 5, 10, width, (100));
+        //             if (this.state.showPdf) {
+        //                 pdf.save('Consolidated_Statement.pdf');
+        //             } else {
+        //                 pdf.save(`${_get(req, 'result.inv_number')}.pdf`);
+        //             }
+        //             input.setAttribute('style', 'display: none;');
+        //         });
+        // }
     }
 
     handleCancelSubscriptionOrder = (boxCount, entityId) => {

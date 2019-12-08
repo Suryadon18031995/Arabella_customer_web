@@ -27,25 +27,15 @@ export default function MyOrderComponent(props) {
     }
     return (
         <div className="checkout">
-            <div className="page-title-checkout">
-                <h1>Checkout</h1>
-            </div>
-            <div className="bill-pay">
-                <PanelGroup>
-                    <Panel eventKey={1} expanded
-                        // expanded={props.expandIndex === 1 }
-                        onToggle={() => this.handleCollapse(1)}>
-                        <div className="accordionItemHeading">
-                            <Panel.Heading className="ship-title">
-                                <Panel.Title onClick={() => props.handleCollapse(1)}>
-                                    {/* <Panel.Title> */}
-                                    <i className="fa fa-caret-down"></i>{' '} Step 1 &nbsp; Shipping Information
-                </Panel.Title>
-                            </Panel.Heading>
-                        </div>
-                        <div>
-                            <Panel.Body collapsible>
-                                <div className="ship-block">
+
+        <div className='row'>
+            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+            <div>
+                <div className='checkout-steps'>
+                {/* <i className="fa fa-caret-down"></i> */}
+                {' '} Step 1 &nbsp; Shipping Information
+                </div>
+                                <div className="ship-block p-3">
                                     <span>{_get(props.defaultShipInfo, 'firstname')}</span>
                                     <span>{_get(props.defaultShipInfo, 'lastname')}</span><br />
                                     <span>{_get(props.defaultShipInfo, 'company')}</span><br />
@@ -58,95 +48,35 @@ export default function MyOrderComponent(props) {
                                 <div>
                                     {/* <Button className="checkout-continue" onClick={props.handleContinue}>CONTINUE</Button> */}
                                 </div>
-                            </Panel.Body>
-                        </div>
-                    </Panel>
-                    <Panel eventKey={2} expanded
-                        // expanded={props.expandIndex === 2}
-                        onToggle={() => this.handleCollapse(2)}>
-                        <div className="accordionItemHeading">
-                            <Panel.Heading className="pay-title">
-                                <Panel.Title onClick={() => props.handleCollapse(2)}>
-                                    {/* <Panel.Title> */}
-                                    <i className="fa fa-caret-down"></i>{' '} Step 2 &nbsp; Notes on Order
-                </Panel.Title>
-                            </Panel.Heading>
-                            <Panel.Body collapsible>
-                                <div className="step a-item">
+                           </div>
+
+                           <div>
+                <div className='checkout-steps'>
+                {/* <i className="fa fa-caret-down"></i> */}
+                {' '} Step 2 &nbsp; Notes on Order
+                </div>
+                <div className="step a-item p-3">
                                     <label className="notes-on-order">
                                         {/* Send special instructions or a note. */}
                                         Customers Notes
-                    </label>
+                                    </label>
+                                    <div className='step-2-section'>
                                     <textarea className="notes-on-order-textarea" type="text" id="cusrefid" maxLength="300" name="cusrefid" placeholder="Use this space to include notes for yourself in regards to this order"></textarea>
+                                    </div>
                                     <label className="fd-phone" id="cusrefid_feedback">Limit 300 characters</label>
                                 </div>
+                                {/* <div>Edit | Delete | Add new Address</div> */}
                                 <div>
-                                    {/* <Button className="checkout-continue" onClick={props.handleNotesContinue}>CONTINUE</Button> */}
+                                    {/* <Button className="checkout-continue" onClick={props.handleContinue}>CONTINUE</Button> */}
                                 </div>
-                            </Panel.Body>
-                        </div>
-                    </Panel>
-                    {props.primeUser === '1' && props.cartType === 'normal' ? <Panel eventKey={4} expanded
-                        onToggle={() => this.handleCollapse(4)}>
-                        <div className="accordionItemHeading">
-                            <Panel.Heading className="pay-title">
-                                <Panel.Title onClick={() => props.handleCollapse(4)}>
-                                    <i className="fa fa-caret-down"></i>{' '} Step 3 &nbsp; Spend Your Points
-                                </Panel.Title>
-                            </Panel.Heading>
-                            <Panel.Body collapsible>
-                                <div className="step a-item rewards-box">
-                                    {props.enableSpendPoint ? null : <label className='blink'>You don't have sufficient points to redeem</label>}
-                                    {/* {props.cartType !== 'normal' ? <label>You can redeem your points to normal orders only</label> : null} */}
-                                    <label>Choose how many points to spend:</label>
-                                    <label>Each of 100 Points gets <strong>$1.00</strong> discount</label>
-                                    <label>
-                                        <Slider
-                                            disabled={!props.enableSpendPoint}
-                                            min={props.minReward}
-                                            max={props.maxReward > props.pointBalance ? props.pointBalance : props.maxReward }
-                                            onChange={props.onSliderChange}
-                                            value={typeof props.rewardPointsUsed === 'number' ? props.rewardPointsUsed : 0}
-                                        />
-                                    </label>
-                                    <label>
-                                        You will spend
-                                        <input type='number' value={props.rewardPointsUsed}
-                                        min={props.minReward}
-                                        max={props.maxReward > props.pointBalance ? props.pointBalance : props.maxReward }
-                                        disabled={!props.enableSpendPoint}
-                                         onChange={props.onInputValueChange}/>
-                                        Points
-                                        </label>
-                                    <label>
-                                        <input type='checkbox'
-                                        disabled={!props.enableSpendPoint}
-                                        checked={props.rewardsChecked}
-                                        onChange={props.handleRewardsCheckChange}/>
-                                        Maximize my discount with points
-                                        </label>
-                                    <label>P/s: You can earn points on Grand Total amount after considering all deductions like Discounts or payment via Points.
-                                        Each of 100 Points gets $1.00 discount</label>
-                                </div>
-                                <div>
-                                </div>
-                            </Panel.Body>
-                        </div>
-                    </Panel> : null}
-                    <Panel eventKey={3} expanded
-                        // expanded={props.expandIndex === 3}
-                        onToggle={() => this.handleCollapse(3)}>
-                        <div className="accordionItemHeading">
-                            <Panel.Heading className="pay-title">
-                                <Panel.Title onClick={() => props.handleCollapse(3)}>
-                                    {/* <Panel.Title> */}
-                                    <i className="fa fa-caret-down"></i>{' '} Step {props.primeUser === '1' && props.cartType === 'normal' ? 4 : 3} &nbsp; Payment Information
-                </Panel.Title>
-                            </Panel.Heading>
-                        </div>
-                        <div>
-                            <Panel.Body collapsible>
-                                <div>
+                           </div>
+
+                           <div>
+                <div className='checkout-steps'>
+                {/* <i className="fa fa-caret-down"></i> */}
+                {' '} Step 3 &nbsp; Payment Information
+                </div>
+                <div>
                                     {/* <div className="ship">
                     <input type="checkbox" name="shipAddress" onChange={props.handleShipAddress}
                     defaultChecked={props.showShipAddress}/>
@@ -157,7 +87,7 @@ export default function MyOrderComponent(props) {
                                         <span>Card may be charged immediately,  See information under Transaction Type to the right.</span>
                                     </div>}
                                     <div className="payment-type">
-                                        {props.payMethod && Object.keys(props.payMethod).indexOf('firstdataglobalgateway') !== -1 &&
+                                        {/* {props.payMethod && Object.keys(props.payMethod).indexOf('firstdataglobalgateway') !== -1 &&
                                         <div className="firstData">
                                             <input type="radio"
                                                 name="firstdataglobalgateway"
@@ -165,9 +95,9 @@ export default function MyOrderComponent(props) {
                                                 checked={props.paymentType === 'firstdataglobalgateway'} />
                                             <img src={creditCardImage}></img>
                                         </div>
-                                        }
+                                        } */}
                                         {props.payMethod && // Object.keys(props.payMethod).indexOf('firstdataglobalgateway') !== -1 &&
-                                        <div className="firstData">
+                                        <div className="firstData pl-3">
                                             <input type="radio"
                                                 name="ccavenue"
                                                 onChange={props.getPaymentType}
@@ -213,8 +143,8 @@ export default function MyOrderComponent(props) {
                                         </div>
                                         } */}
                                     </div>
-                                    <div className="address-block">
-                                        <div className="firstname">
+                                    <div className="address-block pl-3">
+                                        <div className="firstname mb-3">
                                             <input id="firstname"
                                                 placeholder="First name*"
                                                 name="firstname"
@@ -225,7 +155,7 @@ export default function MyOrderComponent(props) {
                                                 type="text" />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'firstname')}</span>
                                         </div>
-                                        <div className="lastname">
+                                        <div className="lastname mb-3">
                                             <input id="lastname"
                                                 placeholder="Last name*"
                                                 name="lastname"
@@ -235,14 +165,14 @@ export default function MyOrderComponent(props) {
                                                 className="order-input" type="text" />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'lastname')}</span>
                                         </div>
-                                        <div className="company">
+                                        <div className="company mb-3">
                                             <input id="company"
                                                 placeholder="Company name"
                                                 name="company"
                                                 value={_get(props.defaultBillingInfo, 'company')}
                                                 onChange={props.handleAddressChange} title="Company" className="order-input" type="text" />
                                         </div>
-                                        <div className="address">
+                                        <div className="address mb-3">
                                             <input id="address_line1"
                                                 placeholder="Street Address*"
                                                 name="address_line1"
@@ -251,7 +181,7 @@ export default function MyOrderComponent(props) {
                                                 title="Address" className="order-input" type="text" />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'address')}</span>
                                         </div>
-                                        <div className="city">
+                                        <div className="city mb-3">
                                             <input id="city"
                                                 placeholder="City*"
                                                 name="city"
@@ -260,7 +190,7 @@ export default function MyOrderComponent(props) {
                                                 title="City" className="order-input" type="text" />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'city')}</span>
                                         </div>
-                                        <div className="state">
+                                        <div className="state mb-3">
                                             {/* <input id="state" placeholder="State*" name="state" value={_get(props, 'state')} onChange={props.handleAddressChange} title="State" className="order-input" type="text" /> */}
                                             <RegionDropdown
                                                 defaultOptionLabel={_get(props.defaultBillingInfo, 'state')}
@@ -272,7 +202,7 @@ export default function MyOrderComponent(props) {
                                                 onChange={val => props.handleSelectState(val)} />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'state')}</span>
                                         </div>
-                                        <div className="zipcode">
+                                        <div className="zipcode mb-3">
                                             <input id="zipcode"
                                                 placeholder="Zip Code*"
                                                 name="zipcode"
@@ -281,7 +211,7 @@ export default function MyOrderComponent(props) {
                                                 title="Zip Code" className="order-input" type="text" maxLength={7} />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'zipcode')}</span>
                                         </div>
-                                        <div className="country">
+                                        <div className="country mb-3">
                                             {/* <input id="country" placeholder="Country*" name="country" value={_get(props, 'country')} onChange={props.handleAddressChange} title="Country" className="order-input" type="text" /> */}
                                             <CountryDropdown
                                                 defaultOptionLabel="United States"
@@ -292,7 +222,7 @@ export default function MyOrderComponent(props) {
                                                 id="country_name" />
                                             <span style={{ color: 'red' }}>{_get(props.errors, 'country')}</span>
                                         </div>
-                                        <div className="phone">
+                                        <div className="phone mb-3">
                                             <input id="telephone"
                                                 placeholder="Phone*"
                                                 name="telephone"
@@ -361,8 +291,8 @@ export default function MyOrderComponent(props) {
                                         }
                                     </div>
                                     {props.showCredit &&
-                                        <div className="creditcard-block">
-                                            <h3>Credit Card</h3>
+                                        <div className="creditcard-block pl-3 mb-1">
+                                            <h5>Credit Card</h5>
                                             <div className="creditnumber">
                                                 <input id="creditnumber"
                                                     placeholder="Credit Card Number*"
@@ -417,7 +347,7 @@ export default function MyOrderComponent(props) {
                                         />
                                         {/* <button onClick={props.buy}>Buy</button> */}
                                         </div>}
-                                    <div className="terms">
+                                    <div className="terms pl-3">
                                         <input type="checkbox"
                                             name="termscheck" onChange={props.handleTermsCheck} defaultChecked={props.checked} />
                                         {props.cartType !== 'subscription' ? <label className="terms-check">Terms and Conditions (I’ve read and agreed to the <a target="_blank" href={props.cartType === 'prime' ? '/premium-terms.html' : '/term-and-conditions'} className="terms-condi-a">
@@ -425,98 +355,41 @@ export default function MyOrderComponent(props) {
                                         <span className="terms-check">I agree to the <a href="/annual-flower-subscription-terms.html" target="_blank" className="">
                                         <strong><u>terms and conditions</u></strong></a> of the annual subscription plan including the $199.99 per box early termination fee and skip fees.</span>}
                                     </div>
-                                    {/* {props.paymentType === 'paypal' ? <div id="paypal-checkout-button" className="paypal-checkout-button">
-                                        <PayPalButton
-                                            env={props.env}
-                                            productionID={props.productionId}
-                                            sandboxID={props.sandboxID}
-                                            transactions={props.transactions}
-                                            amount={props.checkoutTotal}
-                                            currency={props.currencyCode}
-                                            onPaymentStart={props.onPaymentStart}
-                                            onPaymentSuccess={props.onPaymentSuccess}
-                                            onPaymentError={props.onPaymentError}
-                                        />
-                                    </div> : */}
-                                        <div>
-                                            <Button className="checkout-process" onClick={props.handleProcessOrder}>PROCESS ORDER</Button>
+                                    </div>
+                           </div>
+                           <div className='process-btn'>
+                                            <button className="checkout-process btn btn-outline-warning" onClick={props.handleProcessOrder}>PROCESS ORDER</button>
                                         </div>
-                                    {/* } */}
-                                </div>
-                            </Panel.Body>
-                        </div>
-                    </Panel>
-                </PanelGroup>
+
             </div>
-            <div className="order-summary">
-                <div><h2>Order Summary</h2></div>
-                <div className="order-block">
-                    <table className="checkout-table">
-                        <thead>
-                            <tr>
-                                <th> Product Image</th>
-                                <th>Product Name</th>
-                                {props.cartType !== 'prime' && <th>Delivery Date</th>}
-                                <th>Price</th>
-                                <th>Qty</th>
-                                <th>Sub Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {_get(props, 'result') &&
-                                Object.entries(_get(props, 'result')).map((cart, key) => <tr key={key}>
-                                    <td><img src={cart[1].image} style={{ width: '85px' }}></img></td>
-                                    <td style={{ width: '17%', color: '#fbb04d' }}>{cart[1].name}</td>
-                                    {props.cartType !== 'prime' && <td>
-                                        {props.cartType === 'subscription' ?
-                                        <React.Fragment>
-                                        First Delivery Date: {cart[1].delivery_date}
-                                        <br />
-                                        Last Delivery Date: {moment(cart[1].delivery_date, 'YYYY-MM-DD').add(props.cycles - 2, 'w').format('YYYY-MM-DD')}
-                                        </React.Fragment>
-                                        : cart[1].delivery_date}
-                                    </td>}
-                                    <td>{cart[1].product_price_currency}</td>
-                                    <td>{cart[1].qty * cart[1].qty_per_box}</td>
-                                    <td>{cart[1].row_total}</td>
-                                </tr>)
-                            }
-                        </tbody>
-                    </table>
-                    <div className="order-total">
-                        <span>SubTotal : <span className='right-aligned-span'>${_get(props, 'subTotal')}</span></span><br />
-                        {
-                            props.couponCode && props.discount && parseFloat(props.discount) > 0 &&
-                            <Fragment><span>Discount({props.couponCode}) : <span className='right-aligned-span'>-${_get(props, 'discount')}</span></span><br /></Fragment>
-                        }
-
-                        <Fragment>
-                            <span>Shipping & Handling Fee :
-                                    {props.primeUser !== '1' ? <span className='right-aligned-span'>${props.feeAmount}</span>
-                                    :
-                                    <span className='right-aligned-span'><strike>${props.feeAmount}</strike></span>}
-                            </span><br />
-                        </Fragment>
-
-                        {props.primeUser === '1' ? <Fragment>
-                            {props.rewardPointsUsed > 0 ? <Fragment><span>Use point ({props.rewardPointsUsed} Points):
-                                    <span className='right-aligned-span'>-${props.rewardPointsUsed / 100}</span>
-                            </span><br />
-                                <span>You will earn:
-                                    <span className='right-aligned-span'>{Math.round(_get(props, 'grandTotal') - (props.rewardPointsUsed / 100))} Points</span>
-                                </span><br /></Fragment> :
-                                <Fragment><span>You will earn:
-                            <span className='right-aligned-span'>{props.earnPoints}</span>
-                                </span><br /></Fragment>
-                            }
-                        </Fragment> : null}
-
-                        <span>Grand Total : <span className='right-aligned-span'>${props.rewardPointsUsed > 0 ? (_get(props, 'grandTotal') - (props.rewardPointsUsed / 100)).toFixed(2) : _get(props, 'grandTotal') }</span></span>
-                    </div>
+            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                <div className='order-summary'>
+                    ORDER SUMMARY
                 </div>
-                <div className="transaction-type">
-                    <ul>
-                        <li>
+                <div className='bordered-summary'>
+                {_get(props, 'result') &&
+                                Object.entries(_get(props, 'result')).map((cart, key) =>(
+                                    <React.Fragment key={key}>
+                                    <div>
+                                        <h6 className='pl-3 pt-3 pb-3'>{cart[1].name}</h6>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6 pl-4'>
+                                        <img src={cart[1].image} style={{ width: '85px' }}></img>
+                                        </div>
+                                        <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6 pr-4'>
+                                            <div>Delivery Date:<span className='float-right'>{cart[1].delivery_date}</span></div>
+                                            <div>Price:<span className='float-right'>{cart[1].row_total}</span></div>
+                                            <div>Discount:<span className='float-right'>n/a</span></div>
+                                            <div>Delivery:<span className='float-right'>n/a</span></div>
+                                        </div>
+                                    </div>
+                                    </React.Fragment>
+                                ))}
+                                <div className='pl-3 pr-2 font-weight-bold pt-3 pb-3'>Sub Total:<span className='float-right'>{_get(props, 'subTotal')}</span></div>
+                    <div className='bordered-summary-top'>
+                    <ul className='list-unstyled'>
+                        <li className='pb-3'>
                             <span><strong> Transaction Type :</strong></span>
                         </li>
                         <li>
@@ -561,9 +434,102 @@ export default function MyOrderComponent(props) {
                             </small>
                             </label>
                         </li> : null}
-                    </ul>
+                    </ul>    
+                        </div>            
                 </div>
             </div>
+        </div>
+
+
+
+
+
+
+
+            {/* <div className="bill-pay">
+                <PanelGroup>
+                    {props.primeUser === '1' && props.cartType === 'normal' ? <Panel eventKey={4} expanded
+                        onToggle={() => this.handleCollapse(4)}>
+                        <div className="accordionItemHeading">
+                            <Panel.Heading className="pay-title">
+                                <Panel.Title onClick={() => props.handleCollapse(4)}>
+                                    <i className="fa fa-caret-down"></i>{' '} Step 3 &nbsp; Spend Your Points
+                                </Panel.Title>
+                            </Panel.Heading>
+                            <Panel.Body collapsible>
+                                <div className="step a-item rewards-box">
+                                    {props.enableSpendPoint ? null : <label className='blink'>You don't have sufficient points to redeem</label>}
+                                    <label>Choose how many points to spend:</label>
+                                    <label>Each of 100 Points gets <strong>$1.00</strong> discount</label>
+                                    <label>
+                                        <Slider
+                                            disabled={!props.enableSpendPoint}
+                                            min={props.minReward}
+                                            max={props.maxReward > props.pointBalance ? props.pointBalance : props.maxReward }
+                                            onChange={props.onSliderChange}
+                                            value={typeof props.rewardPointsUsed === 'number' ? props.rewardPointsUsed : 0}
+                                        />
+                                    </label>
+                                    <label>
+                                        You will spend
+                                        <input type='number' value={props.rewardPointsUsed}
+                                        min={props.minReward}
+                                        max={props.maxReward > props.pointBalance ? props.pointBalance : props.maxReward }
+                                        disabled={!props.enableSpendPoint}
+                                         onChange={props.onInputValueChange}/>
+                                        Points
+                                        </label>
+                                    <label>
+                                        <input type='checkbox'
+                                        disabled={!props.enableSpendPoint}
+                                        checked={props.rewardsChecked}
+                                        onChange={props.handleRewardsCheckChange}/>
+                                        Maximize my discount with points
+                                        </label>
+                                    <label>P/s: You can earn points on Grand Total amount after considering all deductions like Discounts or payment via Points.
+                                        Each of 100 Points gets $1.00 discount</label>
+                                </div>
+                                <div>
+                                </div>
+                            </Panel.Body>
+                        </div>
+                    </Panel> : null}
+                </PanelGroup>
+            </div> */}
+            {/* <div className="order-summary">
+                <div className="order-block">
+                    <div className="order-total">
+                        <span>SubTotal : <span className='right-aligned-span'>${_get(props, 'subTotal')}</span></span><br />
+                        {
+                            props.couponCode && props.discount && parseFloat(props.discount) > 0 &&
+                            <Fragment><span>Discount({props.couponCode}) : <span className='right-aligned-span'>-${_get(props, 'discount')}</span></span><br /></Fragment>
+                        }
+
+                        <Fragment>
+                            <span>Shipping & Handling Fee :
+                                    {props.primeUser !== '1' ? <span className='right-aligned-span'>${props.feeAmount}</span>
+                                    :
+                                    <span className='right-aligned-span'><strike>${props.feeAmount}</strike></span>}
+                            </span><br />
+                        </Fragment>
+
+                        {props.primeUser === '1' ? <Fragment>
+                            {props.rewardPointsUsed > 0 ? <Fragment><span>Use point ({props.rewardPointsUsed} Points):
+                                    <span className='right-aligned-span'>-${props.rewardPointsUsed / 100}</span>
+                            </span><br />
+                                <span>You will earn:
+                                    <span className='right-aligned-span'>{Math.round(_get(props, 'grandTotal') - (props.rewardPointsUsed / 100))} Points</span>
+                                </span><br /></Fragment> :
+                                <Fragment><span>You will earn:
+                            <span className='right-aligned-span'>{props.earnPoints}</span>
+                                </span><br /></Fragment>
+                            }
+                        </Fragment> : null}
+
+                        <span>Grand Total : <span className='right-aligned-span'>${props.rewardPointsUsed > 0 ? (_get(props, 'grandTotal') - (props.rewardPointsUsed / 100)).toFixed(2) : _get(props, 'grandTotal') }</span></span>
+                    </div>
+                </div>
+            </div> */}
         </div>
     );
 }

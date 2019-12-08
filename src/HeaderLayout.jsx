@@ -1,5 +1,7 @@
 import React from 'react';
-import Modal from 'react-bootstrap/lib/Modal';
+// import Modal from 'react-bootstrap/lib/Modal';
+// import Modal from 'react-bootstrap-modal';
+// import Button from 'react-bootstrap/lib/Button';
 import connect from 'react-redux/lib/connect/connect';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -7,6 +9,8 @@ import _isError from 'lodash/isError';
 import _groupBy from 'lodash/groupBy';
 import Redirect from 'react-router/Redirect';
 import Link from 'react-router-dom/Link';
+import logoIcon from './assets/images/LOGO.png';
+import navBarIcon from './assets/images/navbar-icon-three.png';
 import {
   fetchLoginData,
   receiveHideLoginModalData,
@@ -35,6 +39,7 @@ import { LoginLoader } from './components/Loader/Loader.jsx';
 import PaypalImage from './assets/images/Paypal_BKM.png';
 import SecureImage from './assets/images/security_BKM.png';
 import GodaddyImage from './assets/images/godaddy-seal.jpg';
+import MaModal from './components/Common/MaterialUIModal.jsx';
 
 class HeaderLayout extends React.Component {
   constructor(props) {
@@ -51,9 +56,10 @@ class HeaderLayout extends React.Component {
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.mblMenu = this.mblMenu.bind(this);
     this.state = {
+      showLogin: false,
       zipcode: undefined,
       zipcodeInit: undefined,
-      show: false,
+      redirectRegister: false,
       password: undefined,
       email: undefined,
       loginResult: !_isEmpty(props.loginData) ? _get(props.loginData, [0, 'message']) : undefined,
@@ -255,7 +261,7 @@ class HeaderLayout extends React.Component {
 
   handleExit() {
     this.setState({
-      show: false,
+      showLogin: false,
     });
     if (_isEmpty(this.props.apiToken)) {
       this.props.clearLoginData();
@@ -276,14 +282,15 @@ class HeaderLayout extends React.Component {
 
   showRegister = () => {
     this.setState({
-      show: false,
+      showLogin: false,
+      redirectRegister: true,
     });
     this.props.hideLoginModal({ show: false });
   };
 
   forgotPassword = () => {
     this.setState({
-      show: false,
+      showLogin: false,
     });
     this.props.hideLoginModal({ show: false });
   }
@@ -358,7 +365,7 @@ class HeaderLayout extends React.Component {
       });
       if (_get(nextProps.loginData, [0, 'message']) === 'success') {
         this.setState({
-          show: false,
+          showLogin: false,
           // totalProd: _get(nextProps.loginData, [0, 'cartDetails', 'result']),
           // totalProdInCart: _get(nextProps.loginData, [0, 'cartDetails', 'total_products_in_cart'], 0),
           // subtotal: _get(nextProps.loginData, [0, 'cartDetails', 'subtotal'], 0),
@@ -383,7 +390,7 @@ class HeaderLayout extends React.Component {
       } else {
         this.setState(
           {
-            show: false,
+            showLogin: false,
             showError: true,
             popupCall: false,
           },
@@ -643,13 +650,13 @@ class HeaderLayout extends React.Component {
     // }
   }
   handleClose() {
-    this.setState({ show: false });
+    this.setState({ showLogin: false });
   }
 
 
   handleShow = (id) => {
     // if (window.screen.width >= 768) {
-    this.setState({ show: true });
+    this.setState({ showLogin: true });
     // } else {
     //   this.state.condition && this.setState({ condition: !this.state.condition });
     //   this.props.history.push(id === 'login' ? '/login' : '/register');
@@ -703,8 +710,17 @@ class HeaderLayout extends React.Component {
     this.setState({ showLargeDropDowns: '' });
   }
 
+  showLoginModal = () => this.setState(prevState => ({
+    showLogin: !prevState.showLogin,
+  }));
+
   // eslint-disable-next-line class-methods-use-this
   render() {
+    if (this.state.redirectRegister) {
+      return (<Redirect to={{
+        pathname: '/register',
+      }} />);
+    }
     const menuClass = `dropdown-menu ${this.state.isOpen ? 'show' : ''}`;
     const menuClass1 = `dropdown-menu ${this.state.isOpen1 ? 'show' : ''}`;
     const menuClass2 = `dropdown-menu ${this.state.isOpen2 ? 'show' : ''}`;
@@ -740,17 +756,85 @@ class HeaderLayout extends React.Component {
         </div>
       );
     }
-
+// console.log(this.state);
     return (
       <div className="App">
 
         <div>
-          
-
+          {/* <button onClick={this.showLoginModal}>Login</button> */}
+          {this.props.location.pathname !== '/' ? <div className='row artist-header'>
+            <div className="col">
+              <Link to='/'>
+              <img src={logoIcon} alt='Logo' />
+              </Link>
+            </div>
+            <div className="col-6">
+            </div>
+            <div className="col-2">
+              <span className='font-weight-bold white-color-head'><span className='span-orange'>PARTNER </span>WITH US!</span>
+            </div>
+            <div className="col white-color-head-button">
+              {!this.props.apiToken ? <button type="button" onClick={this.showLoginModal}>
+                LOGIN
+            {/* <img src={navBarIcon} alt='' height='30' /> */}
+              </button> :
+              <React.Fragment>
+                <Link to='/view-cart'>My Bag</Link><br/>
+              <Link to='/logoutSuccess'>Logout</Link>
+              </React.Fragment>
+               }
+            </div>
+          </div>:
+          <div className='row artist-header'>
+          <div className="col">
+            <Link to='/'>
+            <img src={logoIcon} alt='Logo' />
+            </Link>
+          </div>
+          <div className="col-6">
+          </div>
+          <div className="col-2">
+            <span className='font-weight-bold'><span className='span-orange'>PARTNER </span>WITH US!</span>
+          </div>
+          <div className="col color-link-head">
+            {!this.props.apiToken ? <button type="button" onClick={this.showLoginModal}>
+              LOGIN
+          {/* <img src={navBarIcon} alt='' height='30' /> */}
+            </button> : <React.Fragment>
+                <Link to='/view-cart'>My Bag</Link><br/>
+              <Link to='/logoutSuccess'>Logout</Link>
+              </React.Fragment> }
+          </div>
+        </div>}
         </div>
-
+        
         {this.props.children}
-
+        <MaModal open={this.state.showLogin} handleCloseModal={this.showLoginModal}>
+          <div className='text-center'>
+          <div className='cust-margin-login'>          
+          <h2>LOG IN</h2>
+          </div>
+          <div className='cust-margin-login'>
+                    <input placeholder='name@example.com' name='email' id='email' onChange={this.handleInputChange} />
+                </div>
+                <div className='cust-margin-login' style={{ marginBottom: '20px' }}>
+                    <input placeholder='Password' type='password' id='pass' name='password' onChange={this.handleInputChange} />
+                    {/* <div className='remeber-section'>
+                        <input type='checkbox' label='Remember Me' defaultChecked />
+                        <span className='show-pass-span'>Show Password</span>
+                    </div> */}
+                </div>
+                <div className='cust-margin-login'>
+                <button type="button" className="btn custom-class-button" onClick={this.loginclickFun}>LOGIN</button>
+                </div>
+                <div>
+                    Forget Your Password? Get Help
+                </div>
+                <div className='cust-margin-login'>
+                <button type="button" className="btn btn-outline-primary" onClick={this.showRegister}>SIGN UP</button>
+                </div>
+          </div>
+        </MaModal>
         <div className="footer-section-custom mt-4">
           <hr />
           <div className="row">
