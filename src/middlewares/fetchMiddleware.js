@@ -10,7 +10,6 @@ const addOptionalOptions = (config, options) => {
   } else {
     newOptions.body = JSON.stringify(config.body);
   }
-
   return newOptions;
 };
 
