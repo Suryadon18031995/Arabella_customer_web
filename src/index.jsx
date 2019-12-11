@@ -211,32 +211,32 @@ ReactDom.render(
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/wholesale-flowers/fresh-deals.html"
+              path="/wholesale-flowers/fresh-deals"
               component={FreshDealsContainer}
             />
             
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/annual-flower-subscription-terms.html"
+              path="/annual-flower-subscription-terms"
               component={SubscriptionTerms}
             />
             {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/prebook-flower-subscription-terms.html"
+              path="/prebook-flower-subscription-terms"
               component={PrebookTerms}
             /> */}
             {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/premium-terms.html"
+              path="/premium-terms"
               component={PrimeTerms}
             /> */}
             {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/prebook-flower-subscription.html"
+              path="/prebook-flower-subscription"
               component={PrebookSubscriptionContainer}
             /> */}
             {/* My account routes Starts: */}
@@ -342,25 +342,25 @@ ReactDom.render(
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/wholesale-flowers.html"
+              path="/listing-products"
               component={ShopByFlowersContainer}
             />
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/new-arrivals.html"
+              path="/new-arrivals"
               component={NewArrivalsContainer}
             />
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/wholesale-flowers/floral-supplies.html"
+              path="/wholesale-flowers/floral-supplies"
               component={FloralSuppliesContainer}
             />
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/wholesale-flowers/local-delivery.html"
+              path="/wholesale-flowers/local-delivery"
               component={FloralSuppliesContainer}
             />
             <RouteWithLayout
@@ -378,13 +378,13 @@ ReactDom.render(
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/nextday-delivery.html"
+              path="/nextday-delivery"
               component={NextDayDeliveryContainer}
             />
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/best-seller.html"
+              path="/best-seller"
               component={BestsellerContainer}
             />{' '}
             {/* <RouteWithLayout
@@ -396,19 +396,19 @@ ReactDom.render(
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/wedding-flowers.html"
+              path="/wedding-flowers"
               component={WeddingFlowersContainer}
             />
             {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/premium-products.html"
+              path="/premium-products"
               component={PrimeMembership}
             /> */}
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/premium-membership.html"
+              path="/premium-membership"
               component={PrimeMembershipProgram}
             />
              <RouteWithLayout
@@ -426,7 +426,7 @@ ReactDom.render(
             {/* <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/premium-member-benefits.html"
+              path="/premium-member-benefits"
               component={PrimeMembershipPageBenefit}
             /> */}
             <RouteWithLayout
@@ -731,14 +731,14 @@ ReactDom.render(
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/404"
-              component={NotFoundComponent}
+              path="/product/:id"
+              component={ProductDetailContainer}
             />
             <RouteWithLayout
               layout={HeaderLayout}
               exact
-              path="/:id"
-              component={ProductDetailContainer}
+              path="/404"
+              component={NotFoundComponent}
             />
             <RouteWithLayout
               layout={HeaderLayout}

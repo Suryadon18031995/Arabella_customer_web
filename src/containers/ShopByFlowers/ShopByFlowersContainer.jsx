@@ -15,6 +15,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import ListingComponent from '../../components/BKMComponent/ListingComponent.jsx';
 import FilterComponent from '../../components/BKMComponent/FilterComponent.jsx';
 import ChangeStoreModal from '../../components/Common/ChangeStoreModal.jsx';
+import HrCommon from '../../components/Common/HrCommon.jsx';
+import listingBanner from '../../assets/images/listing-banner.png';
 import {
   fetchBKMListingData,
   fetchFilterCategoryData,
@@ -32,6 +34,8 @@ import { compareAndSortDates } from '../../helpers/commonUtil';
 import ErrorBoundary from '../ErrorBoundary.jsx';
 import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
 import lazyLoader from '../../assets/images/lazy-loader.gif';
+import profilePic from '../../assets/images/7.png';
+import funkarImage from '../../assets/images/8.png';
 import { fetchProductReviews } from '../../actions/products';
 import { fetchProductVendorReviews } from '../../actions/vendorReviews';
 import { sortDeliveryDates } from '../../utils/dateUtil';
@@ -62,7 +66,7 @@ class ShopByFlowersContainer extends React.Component {
       showChangeStoreModal: false,
       showMoreDetail: {},
       dateObjectArray: [],
-      viewType: 'list',
+      viewType: 'grid',
       filters: {},
       loginFlag: !_isEmpty(this.props.apiToken),
       sortValue: 'index',
@@ -106,11 +110,11 @@ class ShopByFlowersContainer extends React.Component {
       breadCrumbsList: [
         {
           link: '/',
-          name: 'home',
+          name: 'HOME',
         },
         {
           link: undefined,
-          name: 'Shop Flowers',
+          name: 'BUY ARTIFACTS',
         },
       ],
       // cartType: _get(this.props, 'cartType.cartType') ? _get(this.props, 'cartType.cartType') : undefined,
@@ -139,7 +143,7 @@ class ShopByFlowersContainer extends React.Component {
   }
 
   componentDidMount() {
-    document.title = 'Wholesale Flowers, Bulk Fresh Flowers Online | Bloomkonnect.com'; // window.location;
+    // document.title = 'Wholesale Flowers, Bulk Fresh Flowers Online | Bloomkonnect.com'; // window.location;
     this.props.getBkmListSearchData({
       currencyCode: this.props.currencyCode,
       apiToken: this.props.apiToken,
@@ -1034,11 +1038,13 @@ class ShopByFlowersContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="artist-listing-page">
+        <hr className='mb-3' />
+        <img src={listingBanner} alt='' width='100%' />
         <BreadCrumbs
           list={this.state.breadCrumbsList} />
         <div className="container">
-          <div className='container-block'>
+          <div className='container-block row'>
             <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
               <ErrorBoundary>
                 <FilterComponent
@@ -1079,8 +1085,28 @@ class ShopByFlowersContainer extends React.Component {
               </ErrorBoundary>
             </div>
             <div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+              <HrCommon title='The Story of Artifacts' />
+              <div className='row text-center'>
+                <div className='col-3'>
+                  <button type="button" className="btn custom-class-button">OUR SERVICE</button>
+                </div>
+                <div className='col-3'>
+                  <button type="button" className="btn btn-outline-dark">OUR ARTIFACTS</button>
+                </div>
+                <div className='col-3'>
+                  <button type="button" className="btn btn-outline-dark">THE FUNKAR WAY</button>
+                </div>
+                <div className='col-3'>
+                  <button type="button" className="btn btn-outline-dark">OUR STORY</button>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
+                  <span className='listing-sort-by'>Sort By</span>
+                </div>
+              </div>
               <ErrorBoundary>
-                <InfiniteScroll
+                {/* <InfiniteScroll
                   scrollThreshold={0.3}
                   dataLength={this.state.productDetails.length}
                   next={this.handleScrollInc}
@@ -1095,51 +1121,49 @@ class ShopByFlowersContainer extends React.Component {
                       />
                     </span>
                   }
-                // endMessage={
-                //   <p style={{ textAlign: 'center' }}>
-                //     <b>Yay! You have seen it all</b>
-                //   </p>
-                // }
-                >
-                  <div className='shop-flowers-title'>
-                    <h1>Shop Flowers</h1>
-                  </div>
-                  <ListingComponent
-                    {...this.state}
-                    metaDesc='BloomKonnect Wholesale Florist offering a wide selection of farm fresh flowers from farms around the world with extensive array of flowers, varieties and colors with more than 45K different flowers available and counting. Buy online now.'
-                    isLoading={this.props.isLoading}
-                    apiToken={this.props.apiToken}
-                    storeName={this.props.storeName}
-                    handleInuputChange={this.handleInuputChange}
-                    handleAddCartClick={this.handleAddCartClick}
-                    sortingOrderClick={this.sortingOrderClick}
-                    handleSortChange={this.handleSortChange}
-                    handleCustomFilter={this.handleCustomFilter}
-                    handleShowChangeStore={this.handleShowChangeStore}
-                    handleMoreDetailClick={this.handleMoreDetailClick}
-                    handleMoreAvailClick={this.handleMoreAvailClick}
-                    ProductSwitch={this.ProductSwitch}
-                    resetMoreDetails={this.resetMoreDetails}
-                    handleViewClick={this.handleViewClick}
-                    handleAddToFavorites={this.handleAddToFavorites}
-                    handleAddToWishlist={this.handleAddToWishlist}
-                    setTabKey={this.setTabKey}
-                    productReviewData={this.state.productReviewData}
-                    ratingsHover={this.ratingsHover}
-                    productVendorReviews={this.state.productVendorReviews}
-                    vendorRatingsHover={this.vendorRatingsHover}
-                  />
-                </InfiniteScroll>
+                > */}
+
+                <ListingComponent
+                  {...this.state}
+                  metaDesc='BloomKonnect Wholesale Florist offering a wide selection of farm fresh flowers from farms around the world with extensive array of flowers, varieties and colors with more than 45K different flowers available and counting. Buy online now.'
+                  isLoading={this.props.isLoading}
+                  apiToken={this.props.apiToken}
+                  storeName={this.props.storeName}
+                  handleInuputChange={this.handleInuputChange}
+                  handleAddCartClick={this.handleAddCartClick}
+                  sortingOrderClick={this.sortingOrderClick}
+                  handleSortChange={this.handleSortChange}
+                  handleCustomFilter={this.handleCustomFilter}
+                  handleShowChangeStore={this.handleShowChangeStore}
+                  handleMoreDetailClick={this.handleMoreDetailClick}
+                  handleMoreAvailClick={this.handleMoreAvailClick}
+                  ProductSwitch={this.ProductSwitch}
+                  resetMoreDetails={this.resetMoreDetails}
+                  handleViewClick={this.handleViewClick}
+                  handleAddToFavorites={this.handleAddToFavorites}
+                  handleAddToWishlist={this.handleAddToWishlist}
+                  setTabKey={this.setTabKey}
+                  productReviewData={this.state.productReviewData}
+                  ratingsHover={this.ratingsHover}
+                  productVendorReviews={this.state.productVendorReviews}
+                  vendorRatingsHover={this.vendorRatingsHover}
+                />
+                {/* </InfiniteScroll> */}
               </ErrorBoundary>
-              <div className="display-item-count">
+              <div className='row'>
+                <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
+                  <span className='listing-sort-by'>MORE</span>
+                </div>
+              </div>
+              {/* <div className="display-item-count">
                 Items{' '}
                 <span id="up">
                   {this.state.productDetails && this.state.productDetails.length}
                 </span>{' '}
                 of <span id="pcount">{this.state.totalProductCount ? this.state.totalProductCount : 0}</span> total
-          </div>
+          </div> */}
             </div>
-            <ErrorBoundary>
+            {/* <ErrorBoundary>
               <ChangeStoreModal
                 storeList={_get(this.props.loginData, [0, 'result', 'store_list'], [])}
                 selectedStoreId={this.state.selectedStoreId ? this.state.selectedStoreId : this.props.storeId}
@@ -1147,7 +1171,124 @@ class ShopByFlowersContainer extends React.Component {
                 handleCloseModal={this.handleCloseModal}
                 handleMethodChange={this.handleMethodChange}
               />
-            </ErrorBoundary>
+            </ErrorBoundary> */}
+          </div>
+          <div className='row'>
+              <HrCommon title='Our Artifacts' />
+              <div className='row'>
+                  <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center artifact-section'>
+                    <img src={profilePic} alt='' />
+                    <h4 className='grid-product-name'>
+                      Artifacts Name
+                        </h4>
+                    <div>
+                      Description
+                        </div>
+                    <div>
+                      <button type="button" className="btn custom-class-button">VIEW MORE</button>
+                    </div>
+                  </div>
+                  <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center artifact-section'>
+                    <img src={profilePic} alt='' />
+                    <h4 className='grid-product-name'>
+                      Artifacts Name
+                        </h4>
+                    <div>
+                      Description
+                        </div>
+                    <div>
+                      <button type="button" className="btn custom-class-button">VIEW MORE</button>
+                    </div>
+                  </div>
+                  <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center artifact-section'>
+                    <img src={profilePic} alt='' />
+                    <h4 className='grid-product-name'>
+                      Artifacts Name
+                        </h4>
+                    <div>
+                      Description
+                        </div>
+                    <div>
+                      <button type="button" className="btn custom-class-button">VIEW MORE</button>
+                    </div>
+                  </div>
+                  <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center artifact-section'>
+                    <img src={profilePic} alt='' />
+                    <h4 className='grid-product-name'>
+                      Artifacts Name
+                        </h4>
+                    <div>
+                      Description
+                        </div>
+                    <div>
+                      <button type="button" className="btn custom-class-button">VIEW MORE</button>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div className='row'>
+              <HrCommon title='The Funkar Way' />
+              <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0'>
+                <img src={funkarImage} alt='' width='100%'/>
+                </div>
+              <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6 the-funkar-way-right pl-0'>
+                <div className='the-funkar-way-right1'>
+                  <h3>
+                  Regular Sale of Artifacts on
+                  Rental Mode or Purchase
+                  </h3>
+                  <hr />
+                  <div className='faq-funkar-desc'>
+                  This business model is one of the classic ecommerce business
+                  models where :
+                    </div>
+                            <ol>
+                                <li>
+                                Artists will be uploading their product catalogue.<br/>
+                                Each product will have their own lead time of manufacturing or
+creating at backend.
+                                </li>
+                                <li>
+                                Based on Manufacturing Lead time and Delivery lead time
+customer will be shown possible delivery dates.<br/>
+Customer purchases the products or goes for rent if they want
+for rent .
+                                </li>
+                                <li>
+                                PO is raised to Artists .
+                                </li>
+                                <li>
+                                On completion of the artifact Artist informs our shipping partner
+to collect the Artifact .
+                                </li>
+                                <li>
+                                Shipping partner collects and delivers it to the customer, install the
+new artifacts and take care of reverse logistic of old artifacts.
+                                </li>
+                                <li>
+                                    Our Subscription payment gateway takes care of the payment and Invoices .
+                                </li>
+                            </ol>
+                </div>
+                </div>
+            </div>
+          <div className='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+            <HrCommon title='Our Story' />
+            <div className='our-story-section'>
+                <div className='our-story-div'>
+                India is a country full of diversity and rich culture & tradition which has been followed
+by people India for 1000 years and more. This cultural diversity has also produced
+some extremely talented artists in India who have brought accolades to our country
+by showcasing their talent across the world . However, these artists are just 1% of the
+talent pool what we have, most of these artists give up their talent in search of daily
+wages or to fulfill the requirement of their family.<br/>
+
+Our state of Karnataka which has thousands of such skillful artists across various taluks of Karnataka who once dreamed to showcase their talent are struggling to earn
+their daily livelihood using those art. Summing up these numbers from all the states
+takes us to another level of a huge talent pool who are unhappy as they are not leaving
+their dream.
+                </div>
+            </div>
           </div>
         </div>
       </div>

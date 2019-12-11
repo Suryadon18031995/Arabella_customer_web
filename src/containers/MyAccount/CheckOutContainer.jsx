@@ -45,7 +45,7 @@ class CheckOutContainer extends Component {
             breadCrumbsList: [
                 {
                     link: '/',
-                    name: 'home',
+                    name: 'HOME',
                 },
                 {
                     link: undefined,
