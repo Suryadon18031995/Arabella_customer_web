@@ -22,6 +22,7 @@ import accountInformationReducer from './accountInformation';
 import placeOrderReducer from './placeOrder';
 import viewsReducer from './recenttViewsReducer';
 import blogReducer from './blog';
+import vendorArtistsReducer from './vendorArtists';
 
 const commonReducer = (state = 'initialState', action) => {
   switch (action.type) {
@@ -68,6 +69,7 @@ const rootReducer = combineReducers({
   placeOrderReducer,
   viewsReducer,
   blogReducer,
+  vendorArtistsReducer
 });
 
 export default rootReducer;
