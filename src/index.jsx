@@ -25,6 +25,7 @@ import reducer from './reducers';
 
 import EmptyLayout from './EmptyLayout.jsx';
 import HeaderLayout from './HeaderLayout.jsx';
+import ArtistLayout from './ArtistLayout.jsx';
 import ContactUsContainer from './containers/ContactUs.jsx';
 // import VendorRegistration from './containers/VendorRegistration.jsx';
 import ReturnsAndRefundsPolicy from './containers/ReturnsAndRefundsPolicy.jsx';
@@ -105,7 +106,10 @@ import PrimeMembershipProgram from './containers/PrimeMembershipPage.jsx';
 import CCAvenueResponseHandler from './containers/MyAccount/CCAvenueResponse.jsx';
 import VendorProfile from './containers/VendorProfile/VendorProfile.jsx';
 import VendorRegistration from './containers/VendorProfile/VendorRegistration.jsx';
+import OrderManagement from './containers/VendorProfile/OrderManagement.jsx';
 import ProductUpload from './containers/VendorProfile/ProductUpload.jsx';
+import ProductUpdate from './containers/VendorProfile/ProductUpdate.jsx';
+import ArtistLogistics from './containers/VendorProfile/ArtistLogistics.jsx';
 /* My Account Containers END;  */
 
 library.add(faCircle, faCheckCircle);
@@ -702,10 +706,27 @@ ReactDom.render(
               component={VendorRegistration}
             />
             <RouteWithLayout
-              layout={EmptyLayout}
+              layout={ArtistLayout}
+              path="/artist/orderManagement"
+              component={OrderManagement}
+            />
+            <RouteWithLayout
+              layout={ArtistLayout}
               exact
-              path="/product-upload"
+              path="/artist/productUpload"
               component={ProductUpload}
+            />
+            <RouteWithLayout
+              layout={ArtistLayout}
+              exact
+              path="/artist/productUpdate"
+              component={ProductUpdate}
+            />
+            <RouteWithLayout
+              layout={ArtistLayout}
+              exact
+              path="/artist/logistics"
+              component={ArtistLogistics}
             />
             <RouteWithLayout
               layout={HeaderLayout}

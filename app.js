@@ -77,6 +77,6 @@ https.createServer(httpsOptions, app, function (req, res) {
   // res.end("Welcome to Node.js HTTPS Servern");
   res.writeHead(301, { Location: `https://${request.headers.host}${request.url}` });
   res.end();
-}).listen(443);
+}).listen(3010);
 
 // app.listen(3010, () => console.log('Example app listening on port 3010!')); // uncomment this line for running in local and comment out above create server
