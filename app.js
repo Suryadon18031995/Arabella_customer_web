@@ -21,7 +21,7 @@ const runner = require("child_process");
 // };
 
 app.use(cors());
-app.use(favicon(path.join(__dirname, '/src/assets/images/favicon.png')));
+app.use(favicon(path.join(__dirname, '/src/assets/images/fevicon.png')));
 // use gzip compression for transfer of resources
 app.use(compression());
 app.use('/', express.static('dist'));
