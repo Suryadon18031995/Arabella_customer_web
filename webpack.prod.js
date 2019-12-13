@@ -102,7 +102,8 @@ module.exports = merge(common, {
                 }),
             new webpack.DefinePlugin({
                     "process.env": {
-                        APPLICATION_BFF_URL: JSON.stringify("https://bloomkonnect.com:2001/admin-bff"),
+                        // APPLICATION_BFF_URL: JSON.stringify("https://bloomkonnect.com:2001/admin-bff"),
+                        APPLICATION_BFF_URL: JSON.stringify("https://jessicainfosystem.com:2001/admin-bff"),
                         MEDIA_SERVICE_ADDRESS: JSON.stringify("http://docker.kabloomstaging.com:2001/admin-bff"),
                         APPLICATION_CLOUD_URL: JSON.stringify("https://d2ob14u1yb5v44.cloudfront.net/media"),
                     },

@@ -130,8 +130,8 @@ module.exports = merge(common, {
             'process.env': {
                 NODE_ENV: JSON.stringify('local'),
                 // APPLICATION_BFF_URL: JSON.stringify('https://bloomkonnect.com:2001/admin-bff'),
-                // APPLICATION_BFF_URL: JSON.stringify('http://localhost:2001/admin-bff'),
-                APPLICATION_BFF_URL: JSON.stringify("https://uat.bloomkonnect.com:2001/admin-bff"),
+                APPLICATION_BFF_URL: JSON.stringify('http://localhost:2001/admin-bff'),
+                // APPLICATION_BFF_URL: JSON.stringify("https://uat.bloomkonnect.com:2001/admin-bff"),
                 MEDIA_SERVICE_ADDRESS: JSON.stringify('https://deverp.kabloomstaging.com/media-service'),
                 APPLICATION_CLOUD_URL: JSON.stringify("https://d2ob14u1yb5v44.cloudfront.net/media"),
             },
