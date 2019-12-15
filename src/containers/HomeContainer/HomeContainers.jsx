@@ -203,24 +203,7 @@ handleListingRedirect = () => this.setState({ redirectToListing: true });
 
     return (
       <div>
-        <div className='artist-banner'>
-          {/* <img src={artistBanner} alt='Artist Marketplace'/> */}
-          {/* <div className='row artist-header'>
-            <div className="col">
-              <img src={logoIcon} alt='Logo' />
-            </div>
-            <div className="col-6">
-            </div>
-            <div className="col-2">
-              <span className='font-weight-bold'><span className='span-orange'>PARTNER </span>WITH US!</span>
-            </div>
-            <div className="col">
-              <button type="button">
-                MENU
-            <img src={navBarIcon} alt='' height='30' />
-              </button>
-            </div>
-          </div> */}
+        <div className='artist-banner no-margin-custom'>
           <div className='banner-text'>
             <span>FunKar</span> marketplace for artists, particularly those artists who are highly talented
               but never got a big stage to showcase their talent or rather we would say never got
@@ -230,9 +213,9 @@ handleListingRedirect = () => this.setState({ redirectToListing: true });
             </div>
           </div>
         </div>
-        <div className='search-bar-artist searchbar-artist mt-3'>
+         <div className='search-bar-artist searchbar-artist mt-3'>
           <div className='center-search-div'>
-          <div className='row'>
+          <div className='row no-margin-custom'>
             <div className='col-6 search-artist-span pr-0 text-right search-artist-span-size font-weight-bold'>
               Find Ev
             </div>
@@ -310,14 +293,14 @@ handleListingRedirect = () => this.setState({ redirectToListing: true });
            </div>
         </div>
 
-        <div className='row mt-5'>
+       <div className='row mt-5'>
           <div className='col-6 join-hands p-0'>
           <div className='center-search-div text-center'>
               <div className='partner-with-us font-weight-bold'>Partner With <span>Us!</span></div>
               <button type="button" className="btn custom-class-button" onClick={this.handleSignUp}>SIGN UP</button>
             </div>
           </div>
-          <div className='col-6 pl-0'>
+          <div className='col-6 pl-0 pr-0'>
             <img src={joinHandsIcon} alt='' width='100%'/>
           </div>
         </div>

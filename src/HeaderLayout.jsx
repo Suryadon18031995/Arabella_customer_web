@@ -758,25 +758,24 @@ class HeaderLayout extends React.Component {
     }
 // console.log(this.state);
     return (
-      <div className="App">
+      <div className="App container-fluid">
 
         <div>
-          {/* <button onClick={this.showLoginModal}>Login</button> */}
-          {this.props.location.pathname !== '/' ? <div className='row artist-header'>
+          {this.props.location.pathname !== '/' ? 
+          <div className='row artist-header'>
             <div className="col">
               <Link to='/'>
               <img src={logoIcon} alt='Logo' />
               </Link>
             </div>
-            <div className="col-6">
+            <div className="col">
             </div>
-            <div className="col-2">
+            <div className="col">
               <span className='font-weight-bold white-color-head'><span className='span-orange'>PARTNER </span>WITH US!</span>
             </div>
             <div className="col white-color-head-button">
               {!this.props.apiToken ? <button type="button" onClick={this.showLoginModal}>
                 LOGIN
-            {/* <img src={navBarIcon} alt='' height='30' /> */}
               </button> :
               <React.Fragment>
                 <Link to='/view-cart'>My Bag</Link><br/>
@@ -791,21 +790,21 @@ class HeaderLayout extends React.Component {
             <img src={logoIcon} alt='Logo' />
             </Link>
           </div>
-          <div className="col-6">
+          <div className="col">
           </div>
-          <div className="col-2">
+          <div className="col">
             <span className='font-weight-bold'><span className='span-orange'>PARTNER </span>WITH US!</span>
           </div>
           <div className="col color-link-head">
             {!this.props.apiToken ? <button type="button" onClick={this.showLoginModal}>
               LOGIN
-          {/* <img src={navBarIcon} alt='' height='30' /> */}
             </button> : <React.Fragment>
                 <Link to='/view-cart'>My Bag</Link><br/>
               <Link to='/logoutSuccess'>Logout</Link>
               </React.Fragment> }
           </div>
-        </div>}
+        </div>
+        }
         </div>
         
         {this.props.children}
