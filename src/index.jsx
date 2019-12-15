@@ -700,7 +700,7 @@ ReactDom.render(
               component={VendorProfile}
             />
             <RouteWithLayout
-              layout={HeaderLayout}
+              layout={EmptyLayout}
               exact
               path="/vendor-registration"
               component={VendorRegistration}
