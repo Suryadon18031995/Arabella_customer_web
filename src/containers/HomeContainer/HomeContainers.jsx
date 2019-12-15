@@ -317,7 +317,7 @@ handleListingRedirect = () => this.setState({ redirectToListing: true });
               <button type="button" className="btn custom-class-button" onClick={this.handleSignUp}>SIGN UP</button>
             </div>
           </div>
-          <div className='col-6 p-0'>
+          <div className='col-6 pl-0'>
             <img src={joinHandsIcon} alt='' width='100%'/>
           </div>
         </div>
