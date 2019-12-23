@@ -19,7 +19,81 @@ class ArtistLogistics extends React.Component {
             responsive: { 480: { items: 2 }, 760: { items: 3 }, 900: { items: 4 } },
             activeLocation: '',
             editMode: false,
-            editLogistics: {},
+            createMode: false,
+            editLogistics: {
+                loc_logistics_id: "",
+                vendor_id: "441",
+                location_id: "",
+                freight_forwarder_id: "",
+                vendor_country_id: "IN",
+                origin_country_id: "IN",
+                cost_channel_id: "",
+                leadtime: "",
+                buffer_days: "",
+                booking_days_adj: "",
+                subscription_set: "",
+                allow_add_chg: "",
+                hide_from_guest: "",
+                customer_truck_req: "",
+                lead_time_to_box_handler: "",
+                usefilabels: "",
+                shipping_account_number: "",
+                shipping_user: "",
+                shipping_password: "",
+                shipping_access_license: "",
+                sun: "",
+                mon: "",
+                tue: "",
+                wed: "",
+                thu: "",
+                fri: "",
+                sat: "",
+                sunday_timing: "",
+                monday_timing: "",
+                tuesday_timing: "",
+                wednesday_timing: "",
+                thursday_timing: "",
+                friday_timing: "",
+                saturday_timing: "",
+                isActive: ""
+            },
+            editLogisticsFormat: {
+                loc_logistics_id: "",
+                vendor_id: "441",
+                location_id: "",
+                freight_forwarder_id: "",
+                vendor_country_id: "IN",
+                origin_country_id: "IN",
+                cost_channel_id: "",
+                leadtime: "",
+                buffer_days: "",
+                booking_days_adj: "",
+                subscription_set: "",
+                allow_add_chg: "",
+                hide_from_guest: "",
+                customer_truck_req: "",
+                lead_time_to_box_handler: "",
+                usefilabels: "",
+                shipping_account_number: "",
+                shipping_user: "",
+                shipping_password: "",
+                shipping_access_license: "",
+                sun: "",
+                mon: "",
+                tue: "",
+                wed: "",
+                thu: "",
+                fri: "",
+                sat: "",
+                sunday_timing: "",
+                monday_timing: "",
+                tuesday_timing: "",
+                wednesday_timing: "",
+                thursday_timing: "",
+                friday_timing: "",
+                saturday_timing: "",
+                isActive: ""
+            },
             mapping: {
                 loc_logistics_id: "logisticsId",
                 vendor_id: "artistId",
@@ -47,6 +121,7 @@ class ArtistLogistics extends React.Component {
                 thu: "thursday",
                 fri: "friday",
                 sat: "saturday",
+                sunday_timing: "sundayTiming",
                 monday_timing: "mondayTiming",
                 tuesday_timing: "tuesdayTiming",
                 wednesday_timing: "wednesdayTiming",
@@ -85,41 +160,63 @@ class ArtistLogistics extends React.Component {
 
         this.setState({
             editMode: true,
+            createMode: false,
             editLogistics: data
         });
     }
 
     manageLogisticsSave = () => {
+        
         const saveObject = {};
         const editLogistics = this.state.editLogistics;
         Object.keys(editLogistics).forEach(currentKey => {
             const mappingKey = (this.state.mapping[currentKey] !== undefined ? this.state.mapping[currentKey] : currentKey);
             saveObject[mappingKey] = editLogistics[currentKey];
         });
-        this.props.updateLogisticSettings(saveObject);
+
+        if(this.state.createMode) {
+            this.props.addLogisticSettings(saveObject);
+        }
+        else {
+            this.props.updateLogisticSettings(saveObject);
+        }
         this.setState({
-            activeLocation: '',
             editMode: false,
-            editLogistics: {}
-        })
+            createMode: false,
+            editLogistics: this.state.editLogisticsFormat
+        });
     }
 
-    manageValueChangeHandler = (event, type) => {
-        
+    manageAddLogisticsHandler = () => {
+
         this.setState({
-            editLogistics: {...this.state.editLogistics, [type]: event.target.value}
+            createMode: true,
+            editMode: true,
+            editLogistics: { ...this.state.editLogisticsFormat, location_id: this.state.activeLocation }
+        });
+    }
+
+    manageValueChangeHandler = (event, type, isCheckbox = false) => {
+
+        console.log(event.target.value, type);
+
+        this.setState({
+            editLogistics: {...this.state.editLogistics, [type]: (isCheckbox ? (event.target.checked ? 'Y' : 'N') : event.target.value)}
         });
     }
 
     render() {
 
         let locationDetails = null;
-        if(this.state.activeLocation !== '') {
-            locationDetails = (
+        if(this.state.activeLocation !== '' && !this.props.isLoading) {
+            locationDetails = (                    
                 <div className="amp-responsive">
                     <LocationDetails 
                         details={ this.props.locationDetails['logistic_details'][this.state.activeLocation] } 
+                        ff={ this.props.locationDetails['ff'] }
+                        cc={ this.props.locationDetails['cc'] }
                         editMode={ this.state.editMode }
+                        createMode={ this.state.createMode }
                         logistics= { this.state.editLogistics }
                         edit={ this.manageLogisticsEdit }
                         save={ this.manageLogisticsSave }
@@ -155,6 +252,16 @@ class ArtistLogistics extends React.Component {
                     />
                 </section>
                 <section className='container-fluid container-spacing'>
+                    { locationDetails === null ? null :
+                        <div className="col-lg-12" style={{ textAlign: 'right' }}>
+                            <button 
+                                className="btn btn-outline-success btn-sm" 
+                                onClick={this.manageAddLogisticsHandler}
+                            >
+                                ADD Logistics
+                            </button>
+                        </div>  
+                    }
                     { locationDetails }
                 </section>
             </section>
@@ -165,6 +272,7 @@ class ArtistLogistics extends React.Component {
 const mapDispatchToProps = dispatch => ({
     fetchLogisticSettings: data => dispatch(vendorActions.fetchLogisticSettings(data)),
     updateLogisticSettings: data => dispatch(vendorActions.updateLogisticSettings(data)),
+    addLogisticSettings: data => dispatch(vendorActions.addLogisticSettings(data)),
 });
 
 const mapStateToProps = (state) => {

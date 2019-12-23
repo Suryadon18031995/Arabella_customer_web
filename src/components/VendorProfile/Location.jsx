@@ -10,7 +10,7 @@ const location = props => {
     if(props.data.code === 1) {
 
         const locations = [];
-        locations.push(<LocationItem key='add-location' id="new" name="ADD NEW LOCATION" address="" street="" csz="" click={props.click} />);
+        // locations.push(<LocationItem key='add-location' id="new" name="ADD NEW LOCATION" address="" street="" csz="" click={props.click} />);
         const locationIds = Object.keys(props.data.loc_details);
         if(locationIds.length > 0) {
             locationIds.forEach(currentLocationId => {

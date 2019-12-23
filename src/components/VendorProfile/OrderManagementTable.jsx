@@ -18,7 +18,7 @@ const orderManagementTable = props => {
                     if(header.type === 'button')
                         value = <button 
                                     className={header.class}
-                                    onClick={ () => header.click([current]) }
+                                    onClick={ () => header.click(header.text, [current]) }
                                 >
                                     {header.text}
                                 </button>;
@@ -53,7 +53,6 @@ const orderManagementTable = props => {
         <div className="container-fluid container-spacing">
 
             {buttons}
-
             <table className="table table-bordered table-striped">
                 <thead>
                     <tr>

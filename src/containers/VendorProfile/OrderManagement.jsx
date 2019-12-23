@@ -8,6 +8,8 @@ import OrderManagementTabs from '../../components/VendorProfile/OrderManagementT
 import OrderManagementTable from '../../components/VendorProfile/OrderManagementTable.jsx';
 import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
 import * as vendorActions from '../../actions/vendorArtist';
+import PODetails from '../../components/VendorProfile/PODetails.jsx';
+import RaiseInvoiceModal from '../../components/VendorProfile/RaiseInvoiceModal.jsx';
 
 class OrderManagement extends React.Component {
 
@@ -296,7 +298,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Confirm',
                         class: 'btn btn-sm btn-success',
-                        click: this.confirmPOHandler
+                        click: this.poClickHandler
                     }, 
                     'PO': 'po_num', 
                     'Location': 'ven_city', 
@@ -315,7 +317,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Reject',
                         class: 'btn btn-sm btn-danger',
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler
                     },
                     'Status': 'item_status', 
                     'PO': 'po_num', 
@@ -324,7 +326,7 @@ class OrderManagement extends React.Component {
                     'Move to Ship': {
                         text: 'Move to Ship',
                         class: 'btn btn-sm btn-info',
-                        click: this.movePOToShipHandler
+                        click: this.poClickHandler
                     },
                 },
                 pastFuture: {
@@ -340,7 +342,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Reject',
                         class: 'btn btn-sm btn-danger',
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler
                     }, 
                     'Status': 'item_status', 
                     'PO': 'po_num', 
@@ -350,7 +352,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Move to Ship',
                         class: 'btn btn-sm btn-info',
-                        click: this.movePOToShipHandler
+                        click: this.poClickHandler
                     },
                 },
                 rejected: { 
@@ -376,7 +378,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Reject',
                         class: 'btn btn-sm btn-danger',
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler
                     },
                     'Status': 'item_status', 
                     'PO': 'po_num', 
@@ -386,7 +388,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Move to Ship',
                         class: 'btn btn-sm btn-info',
-                        click: this.movePOToShipHandler
+                        click: this.poClickHandler
                     },
                 },
                 shipped: { 
@@ -402,7 +404,7 @@ class OrderManagement extends React.Component {
                         type: 'button',
                         text: 'Reject',
                         class: 'btn btn-sm btn-danger',
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler
                     },
                     'Status': 'item_status', 
                     'Assign PO': '',
@@ -444,7 +446,7 @@ class OrderManagement extends React.Component {
                         key: 'cmp',
                         class: 'btn btn-sm btn-outline-info',
                         style: { marginRight: '10px' },
-                        click: this.confirmPOHandler
+                        click: this.poClickHandler.bind(null, 'Confirm'),
                     }
                 },
                 shippingToday: {
@@ -452,13 +454,13 @@ class OrderManagement extends React.Component {
                         key: 'mmpts',
                         class: 'btn btn-sm btn-outline-info',
                         style: { marginRight: '10px' },
-                        click: this.movePOToShipHandler
+                        click: this.poClickHandler.bind(null, 'Move to Ship'),
                     },
                     'Reject Multiple POs': {
                         key: 'rmp',
                         class: 'btn btn-sm btn-outline-danger',
                         style: { marginRight: '10px' },
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler.bind(null, 'Reject'),
                     }
                 },
                 pastFuture: {
@@ -466,13 +468,13 @@ class OrderManagement extends React.Component {
                         key: 'mmpts',
                         class: 'btn btn-sm btn-outline-info',
                         style: { marginRight: '10px' },
-                        click: this.movePOToShipHandler
+                        click: this.poClickHandler.bind(null, 'Move to Ship'),
                     },
                     'Reject Multiple POs': {
                         key: 'rmp',
                         class: 'btn btn-sm btn-outline-danger',
                         style: { marginRight: '10px' },
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler.bind(null, 'Reject'),
                     }
                 },
                 rejected: {
@@ -483,13 +485,13 @@ class OrderManagement extends React.Component {
                         key: 'mmpts',
                         class: 'btn btn-sm btn-outline-info',
                         style: { marginRight: '10px' },
-                        click: this.movePOToShipHandler
+                        click: this.poClickHandler.bind(null, 'Move to Ship'),
                     },
                     'Reject Multiple POs': {
                         key: 'rmp',
                         class: 'btn btn-sm btn-outline-danger',
                         style: { marginRight: '10px' },
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler.bind(null, 'Reject'),
                     }
                 },
                 shipped: {
@@ -497,13 +499,13 @@ class OrderManagement extends React.Component {
                         key: 'imp',
                         class: 'btn btn-sm btn-outline-info',
                         style: { marginRight: '10px' },
-                        click: this.movePOToShipHandler
+                        click: this.invoiceMultiplePOsHandler,
                     },
                     'Reject Multiple POs': {
                         key: 'rmp',
                         class: 'btn btn-sm btn-outline-danger',
                         style: { marginRight: '10px' },
-                        click: this.rejectPOHandler
+                        click: this.poClickHandler.bind(null, 'Reject'),
                     }
                 },
                 invoiced: {
@@ -524,19 +526,65 @@ class OrderManagement extends React.Component {
                 invoiced: 'invoiced',
                 all: 'all'
             },
-            checked: []
+            checked: [],
+            showModal: false,
+            showInvoiceModal: false,
+            modalTitle: '',
+            activePOs: '',
+            selectedItemIds: {},
+            confirmQty: {},
+            raiseInvoiceInputs: {
+                artistId: 441,
+                globalRef: '',
+                globalInvDate: '',
+                chargeAmount: '',
+                chargeType: ''
+            },
+            defaultRaiseInvoiceInputs: {
+                artistId: 441,
+                globalRef: '',
+                globalInvDate: '',
+                chargeAmount: '',
+                chargeType: ''
+            }
         }
     }
 
     componentDidMount() {
+
+        const tab = this.props.location.pathname.split('/')[3];
         this.props.getPOManagementDetails({
             artistId: 441,
-            status: this.state.status[this.state.tab]
+            tab: tab,
+            status: this.state.status[tab]
         });
     }
 
-    manageCheckboxHandler = (event, tab, po) => {
+    componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate');
+        // to clear the selected po on change of tab
+        if((prevProps.location.pathname !== this.props.location.pathname) || (prevProps.poStatusUpdating && !this.props.poStatusUpdating) || (prevProps.raisingInvoice && !this.props.raisingInvoice)) {
 
+            const tab = this.props.location.pathname.split('/')[3];
+            this.setState({
+                checked: [],
+                tab: tab,
+                showModal: false,
+                modalTitle: '',
+                activePOs: '',
+                selectedItemIds: {},
+                confirmQty: {}
+            });
+
+            this.props.getPOManagementDetails({
+                artistId: 441,
+                status: this.state.status[tab]
+            });
+        }
+    }
+
+    manageCheckboxHandler = (event, tab, po) => {
+        console.log('manageCheckboxHandler');
         this.setState(prevState => {
 
             const checked = (prevState.tab === tab ? [...this.state.checked] : []);
@@ -554,89 +602,323 @@ class OrderManagement extends React.Component {
         });
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        
-        // to clear the selected po on change of tab
-        if(prevProps.location.pathname !== this.props.location.pathname) {
-            
-            const tab = this.props.location.pathname.split('/')[3];
-            this.setState({
-                checked: [],
-                tab: tab
-            });
+    poClickHandler = (type, pos = this.state.checked) => {
 
-            this.props.getPOManagementDetails({
+        console.log(type, pos)
+        console.log('confirmPOHandler');
+        const itemIds = pos.map(po => this.props.data.result[po]['item_id']).join(',');
+        
+        if(itemIds.length > 0) {
+            this.props.poDetails({ itemIds: itemIds });
+            this.setState({
+                showModal: true,
+                modalTitle: type,
+                activePOs: pos,
+                selectedItemIds: {},
+                confirmQty: {}
+            })
+        }
+        else {
+            alert(`Please Select POs to ${type}`);
+        }
+    }
+
+    poActionHandler = () => {
+        console.log('confirmSelectedPOs');
+
+        let type = '';
+        switch(this.state.modalTitle) {
+            case 'Confirm': type = 'confirm'; break;
+            case 'Reject': type = 'reject'; break;
+            case 'Move to Ship': type = 'ship'; break;
+        }
+
+        const itemIds = Object.keys(this.state.selectedItemIds);
+
+        if(itemIds.length > 0) {
+            console.log('API DATA', {
                 artistId: 441,
-                status: this.state.status[tab]
+                type: type,
+                itemIds: itemIds.join(','),
+                itemData: itemIds.map(itemId => this.state.selectedItemIds[itemId])
+            });
+            // this.props.poAction({
+            //     artistId: 441,
+            //     type: type,
+            //     itemIds: itemIds.join(','),
+            //     itemData: itemIds.map(itemId => this.state.selectedItemIds[itemId])
+            // });
+            this.setState({
+                showModal: false,
+                showInvoiceModal: false,
+                modalTitle: '',
+                activePOs: '',
+                selectedItemIds: {},
+                confirmQty: {}
+            });
+        }
+        else {
+            alert(`Please Select Items to ${this.state.modalTitle}`);
+        }
+    }
+
+    invoiceMultiplePOsHandler = () => {
+
+        const itemIds = this.state.checked.map(po => this.props.data.result[po]['item_id']).join(',');
+        
+        if(itemIds.length > 0) {
+            this.props.getRaiseVendorInvoiceDetails({ itemIds: itemIds });
+            this.setState({
+                showModal: false,
+                showInvoiceModal: true,
+                modalTitle: '',
+                activePOs: '',
+                selectedItemIds: {},
+                confirmQty: {}
+            });
+        }
+        else {
+            alert(`Please Select POs to Raise Invoice`);
+        }
+    }
+
+    raiseInvoiceInputsChangeHandler = (event, type) => {
+
+        console.log('raiseInvoiceInputsChangeHandler', event.target.value, type);
+        const raiseInvoiceInputs = {...this.state.raiseInvoiceInputs};
+        raiseInvoiceInputs[type] = event.target.value;
+        this.setState({
+            raiseInvoiceInputs
+        })
+    }
+
+    raiseInvoieHandler = (itemIds) => {
+        
+        const inputValues = this.state.raiseInvoiceInputs;
+        const itemInvData = itemIds.map(itemId => ({ item_id: itemId, ref_num: inputValues.globalRef, inv_date: inputValues.globalInvDate }))
+
+        console.log('raiseInvoieHandler', {
+            ...inputValues,
+            itemIds: itemIds.join(','),
+            itemInvData
+        });
+        this.props.raiseVendorInvoice({
+            ...inputValues,
+            itemIds: itemIds.join(','),
+            itemInvData
+        });
+        this.setState({
+            showModal: false,
+            showInvoiceModal: false,
+            modalTitle: '',
+            activePOs: '',
+            selectedItemIds: {},
+            confirmQty: {},
+            raiseInvoiceInputs: {...this.state.defaultRaiseInvoiceInputs }
+        });
+    }
+
+    closeModal = () => {
+        
+        this.setState({
+            showModal: false,
+            showInvoiceModal: false,
+            modalTitle: '',
+            activePOs: '',
+            selectedItemIds: {},
+            confirmQty: {},
+            raiseInvoiceInputs: {...this.state.defaultRaiseInvoiceInputs }
+        });
+    }
+
+    manageSelectItems = (event, itemId, actualQty, confirmQty) => {
+
+        if(event.target.checked) {
+            const selectedItemIds = {...this.state.selectedItemIds};
+            selectedItemIds[itemId] = { item_id: itemId, actual_qty: actualQty, accepting_qty: confirmQty }
+            this.setState({
+                selectedItemIds,
+            });
+        }
+        else {
+            const selectedItemIds = {...this.state.selectedItemIds};
+            delete selectedItemIds[itemId]
+            this.setState({
+                selectedItemIds,
             });
         }
     }
 
-    confirmPOHandler = (pos) => {
-        console.log('confirm', pos);
-    }
+    changeQtyHandler = (event, itemId) => {
 
-    rejectPOHandler = (pos) => {
-        console.log('reject', pos);
-    }
+        const value = event.target.value;
+        const confirmQty = {...this.state.confirmQty};
+        confirmQty[itemId] = value;
 
-    movePOToShipHandler = (pos) => {
-        console.log('move', pos);
+        const selectedItemIds = {...this.state.selectedItemIds};
+        if(selectedItemIds[itemId]) selectedItemIds[itemId] = { ...selectedItemIds[itemId], accepting_qty: value };
+
+        this.setState({
+            confirmQty,
+            selectedItemIds
+        })
     }
 
     render() {
 
         const poData = (this.props.data.code === 1 ? this.props.data.result : {});
+        
+        let poDetailsModal = null;
+        if(this.state.showModal) {
+            poDetailsModal = (
+                <PODetails 
+                    data={ this.props.poData }
+                    showModal={ this.state.showModal }           
+                    activePOs={ this.state.activePOs }
+                    selectedItemIds={ this.state.selectedItemIds }
+                    confirmQty={ this.state.confirmQty }
+                    closeModal={ this.closeModal }
+                    manageSelectItems={ this.manageSelectItems }
+                    changeQtyHandler={ this.changeQtyHandler }
+                    title={ this.state.modalTitle }
+                    click={ this.poActionHandler }
+                />
+            );
+        }
+
+        let showInvoiceModal = null;
+        if(this.state.showInvoiceModal && !this.props.fetchingRID) {
+            showInvoiceModal = (
+                <RaiseInvoiceModal 
+                    showModal={ this.state.showInvoiceModal }
+                    closeModal={ this.closeModal }
+                    data={ this.props.ridData }
+                    inputs={ this.state.raiseInvoiceInputs }
+                    changeInputs={ this.raiseInvoiceInputsChangeHandler }
+                    closeModal={ this.closeModal }
+                    raiseInvoice={ this.raiseInvoieHandler }
+                />
+            );
+        }
 
         return (
             <section>
                 <OrderManagementTabs />
+                { poDetailsModal }
+                { showInvoiceModal }
                 <Route 
                     path={`${this.props.match.path}/newPOs`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.newPOs} buttons={this.state.buttons.newPOs} checked={this.state.checked} tab="newPOs" /> } 
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.newPOs} 
+                            buttons={this.state.buttons.newPOs} 
+                            checked={this.state.checked} 
+                            tab="newPOs"
+                            loading={ this.props.isLoading || this.props.fetchingRID }
+                        />)
+                    } 
 
                 />
                 <Route 
                     path={`${this.props.match.path}/shippingToday`} 
                     exact 
-                    component={ () => <OrderManagementTable data={this.state.shippingTodayData} tableHeaders={this.state.tableHeaders.shippingToday} buttons={this.state.buttons.shippingToday} checked={this.state.checked} tab="shippingToday" /> } 
-
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={this.state.shippingTodayData} 
+                            tableHeaders={this.state.tableHeaders.shippingToday} 
+                            buttons={this.state.buttons.shippingToday} 
+                            checked={this.state.checked} 
+                            tab="shippingToday" 
+                            loading={ this.props.isLoading || this.props.fetchingRID }
+                        />) 
+                    } 
                 />
                 <Route 
                     path={`${this.props.match.path}/pastFuture`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.pastFuture} buttons={this.state.buttons.pastFuture} checked={this.state.checked} tab="pastFuture" /> } 
-
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.pastFuture} 
+                            buttons={this.state.buttons.pastFuture} 
+                            checked={this.state.checked} 
+                            tab="pastFuture"
+                            loading={ this.props.isLoading || this.props.fetchingRID }
+                        />
+                        )
+                    }
                 />
                 <Route 
                     path={`${this.props.match.path}/rejected`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.rejected} buttons={this.state.buttons.rejected} checked={this.state.checked} tab="rejected" /> } 
-
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.rejected} 
+                            buttons={this.state.buttons.rejected} 
+                            checked={this.state.checked} 
+                            tab="rejected"
+                            loading={ this.props.isLoading || this.props.fetchingRID } 
+                        />) 
+                    } 
                 />
                 <Route 
                     path={`${this.props.match.path}/complete`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.complete} buttons={this.state.buttons.complete} checked={this.state.checked} tab="complete" /> } 
-
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.complete} 
+                            buttons={this.state.buttons.complete} 
+                            checked={this.state.checked} 
+                            tab="complete"
+                            loading={ this.props.isLoading || this.props.fetchingRID } 
+                        />) 
+                    } 
                 />
                 <Route 
                     path={`${this.props.match.path}/shipped`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.shipped} buttons={this.state.buttons.shipped} checked={this.state.checked} tab="shipped" /> } 
-
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.shipped} 
+                            buttons={this.state.buttons.shipped} 
+                            checked={this.state.checked} 
+                            tab="shipped"
+                            loading={ this.props.isLoading || this.props.fetchingRID }
+                        />) 
+                    }
                 />
                 <Route 
                     path={`${this.props.match.path}/invoiced`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.invoiced} buttons={this.state.buttons.invoiced} checked={this.state.checked} tab="invoiced" /> } 
-
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.invoiced} 
+                            buttons={this.state.buttons.invoiced} 
+                            checked={this.state.checked} 
+                            tab="invoiced"
+                            loading={ this.props.isLoading || this.props.fetchingRID } 
+                        />) 
+                    }
                 />
                 <Route 
                     path={`${this.props.match.path}/all`} 
                     exact 
-                    component={ () => <OrderManagementTable data={poData} tableHeaders={this.state.tableHeaders.all} buttons={this.state.buttons.all} checked={this.state.checked} tab="all" /> } 
+                    component={ () => (
+                        <OrderManagementTable 
+                            data={poData} 
+                            tableHeaders={this.state.tableHeaders.all} 
+                            buttons={this.state.buttons.all} 
+                            checked={this.state.checked} 
+                            tab="all"
+                            loading={ this.props.isLoading || this.props.fetchingRID } 
+                        />) 
+                    } 
 
                 />
             </section>
@@ -646,6 +928,10 @@ class OrderManagement extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getPOManagementDetails: data => dispatch(vendorActions.fetchPOManagementDetails(data)),
+    poDetails: data => dispatch(vendorActions.poDetails(data)),
+    poAction: data => dispatch(vendorActions.poAction(data)),
+    getRaiseVendorInvoiceDetails: data => dispatch(vendorActions.getRaiseVendorInvoiceDetails(data)),    
+    raiseVendorInvoice: data => dispatch(vendorActions.raiseVendorInvoice(data)),
 });
   
 const mapStateToProps = (state) => {
@@ -657,6 +943,11 @@ const mapStateToProps = (state) => {
         data,
         isFetching: isLoading,
         error: vendorArtistError,
+        poData,
+        poStatusUpdating,
+        fetchingRID,
+        ridData,
+        raisingInvoice
     } = vendorArtistsReducer || [];
 
   
@@ -665,7 +956,12 @@ const mapStateToProps = (state) => {
     return {
         data,
         isLoading,
-        error
+        error,
+        poData,
+        poStatusUpdating,
+        fetchingRID,
+        ridData,
+        raisingInvoice
     };
   };
   

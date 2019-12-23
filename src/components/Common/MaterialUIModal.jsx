@@ -42,6 +42,8 @@ export default function SimpleModal(props) {
 //     setOpen(false);
 //   };
 
+  const extraStyle = (props.extraStyle ? props.extraStyle : {});
+
   return (
     <div>
       {/* <button type="button" onClick={handleOpen}>
@@ -53,7 +55,7 @@ export default function SimpleModal(props) {
         open={props.open}
         onClose={props.handleCloseModal}
       >
-        <div style={modalStyle} className={classes.paper}>
+        <div style={{ ...modalStyle, ...extraStyle }} className={classes.paper}>
          {props.children}
           <SimpleModal />
         </div>

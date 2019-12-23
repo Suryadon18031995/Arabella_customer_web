@@ -575,6 +575,10 @@
   margin-top: 15px;
 }
 
+.container-spacing-lg {
+  margin-top: 30px;
+}
+
 .artist-checkbox,
 .artist-checkbox:hover {
   width: 20px;

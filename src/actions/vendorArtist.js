@@ -81,3 +81,99 @@ export const updateLogisticSettings = (data, subreddit) => (dispatch) => {
     redirect: 'follow',
   }));
 };
+
+// FOR PRODUCT UPDATE
+export const updateProduct = (data, subreddit) => (dispatch) => {
+  const constants = _get(VENDOR_CONSTANTS, 'ARTIST_PRODUCTS_UPDATE_CONSTANTS');
+  return dispatch(dynamicActionWrapper({
+    path: _get(constants, 'URL'),
+    method: 'POST',
+    body: data,
+    initCb: _get(generateFns({ constants }), 'request'),
+    successCb: _get(generateFns({ constants }), 'recieved'),
+    failureCb: _get(generateFns({ constants }), 'recievedErr'),
+    subreddit,
+    wrapperActionType: 'ARTIST_PRODUCTS_UPDATE_CONSTANTS_WRAPPER',
+    redirect: 'follow',
+  }));
+};
+
+// FOR LOGISTIC SETTINGS
+export const addLogisticSettings = (data, subreddit) => (dispatch) => {
+  const constants = _get(VENDOR_CONSTANTS, 'ARTIST_ADD_LOGISTIC_SETTINGS_CONSTANTS');
+  return dispatch(dynamicActionWrapper({
+    path: _get(constants, 'URL'),
+    method: 'POST',
+    body: data,
+    initCb: _get(generateFns({ constants }), 'request'),
+    successCb: _get(generateFns({ constants }), 'recieved'),
+    failureCb: _get(generateFns({ constants }), 'recievedErr'),
+    subreddit,
+    wrapperActionType: 'ARTIST_ADD_LOGISTIC_SETTINGS_CONSTANTS_WRAPPER',
+    redirect: 'follow',
+  }));
+};
+
+// FOR PO DETAILS
+export const poDetails = (data, subreddit) => (dispatch) => {
+  const constants = _get(VENDOR_CONSTANTS, 'ARTIST_SHOW_PO_DETAILS_CONSTANTS');
+  return dispatch(dynamicActionWrapper({
+    path: _get(constants, 'URL'),
+    method: 'POST',
+    body: data,
+    initCb: _get(generateFns({ constants }), 'request'),
+    successCb: _get(generateFns({ constants }), 'recieved'),
+    failureCb: _get(generateFns({ constants }), 'recievedErr'),
+    subreddit,
+    wrapperActionType: 'ARTIST_SHOW_PO_DETAILS_CONSTANTS_WRAPPER',
+    redirect: 'follow',
+  }));
+};
+
+// FOR PO Action
+export const poAction = (data, subreddit) => (dispatch) => {
+  const constants = _get(VENDOR_CONSTANTS, 'ARTIST_PO_ACTION_CONSTANTS');
+  return dispatch(dynamicActionWrapper({
+    path: _get(constants, 'URL'),
+    method: 'POST',
+    body: data,
+    initCb: _get(generateFns({ constants }), 'request'),
+    successCb: _get(generateFns({ constants }), 'recieved'),
+    failureCb: _get(generateFns({ constants }), 'recievedErr'),
+    subreddit,
+    wrapperActionType: 'ARTIST_PO_ACTION_CONSTANTS_WRAPPER',
+    redirect: 'follow',
+  }));
+};
+
+// FOR GETTING RAISE VENDOR INVOICE DETAILS
+export const getRaiseVendorInvoiceDetails = (data, subreddit) => (dispatch) => {
+  const constants = _get(VENDOR_CONSTANTS, 'ARTIST_GET_RAISE_VENDOR_INVOICE_DETAILS_CONSTANTS');
+  return dispatch(dynamicActionWrapper({
+    path: _get(constants, 'URL'),
+    method: 'POST',
+    body: data,
+    initCb: _get(generateFns({ constants }), 'request'),
+    successCb: _get(generateFns({ constants }), 'recieved'),
+    failureCb: _get(generateFns({ constants }), 'recievedErr'),
+    subreddit,
+    wrapperActionType: 'ARTIST_GET_RAISE_VENDOR_INVOICE_DETAILS_CONSTANTS_WRAPPER',
+    redirect: 'follow',
+  }));
+};
+
+// FOR RAISING INVOICE
+export const raiseVendorInvoice = (data, subreddit) => (dispatch) => {
+  const constants = _get(VENDOR_CONSTANTS, 'ARTIST_RAISE_INVOICE_CONSTANTS');
+  return dispatch(dynamicActionWrapper({
+    path: _get(constants, 'URL'),
+    method: 'POST',
+    body: data,
+    initCb: _get(generateFns({ constants }), 'request'),
+    successCb: _get(generateFns({ constants }), 'recieved'),
+    failureCb: _get(generateFns({ constants }), 'recievedErr'),
+    subreddit,
+    wrapperActionType: 'ARTIST_RAISE_INVOICE_CONSTANTS_WRAPPER',
+    redirect: 'follow',
+  }));
+};

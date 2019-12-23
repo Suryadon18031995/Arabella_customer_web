@@ -110,6 +110,7 @@ import OrderManagement from './containers/VendorProfile/OrderManagement.jsx';
 import ProductUpload from './containers/VendorProfile/ProductUpload.jsx';
 import ProductUpdate from './containers/VendorProfile/ProductUpdate.jsx';
 import ArtistLogistics from './containers/VendorProfile/ArtistLogistics.jsx';
+import ArtistLogin from './containers/VendorProfile/ArtistLogin.jsx';
 /* My Account Containers END;  */
 
 library.add(faCircle, faCheckCircle);
@@ -704,6 +705,11 @@ ReactDom.render(
               exact
               path="/vendor-registration"
               component={VendorRegistration}
+            />
+            <Route
+              // layout={ArtistLayout}
+              path="/artist/login"
+              component={ArtistLogin}
             />
             <RouteWithLayout
               layout={ArtistLayout}
