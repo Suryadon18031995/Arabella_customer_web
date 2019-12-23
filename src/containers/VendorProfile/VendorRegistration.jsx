@@ -258,7 +258,7 @@ class VendorRegistration extends React.Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         // console.log('next:', nextProps);
-        if (nextProps.artistReg && (_get(nextProps.artistReg, 'code') != 1)) {
+        if (this.state.email && nextProps.artistReg && (_get(nextProps.artistReg, 'code') != 1)) {
             console.log('next artistReg:', nextProps.artistReg);
             this.setState({ errors: { ...this.state.errors, email: 'Already registered. Try with different one.' } });
         }

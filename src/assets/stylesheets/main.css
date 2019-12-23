@@ -159,8 +159,8 @@
 
   .artist-banner{
     background-image: url('../images/artist_banner.png');
-    background-size: 100% 100%;
-    height: 803px;
+    background-size: cover;/* 100% 100%;  */
+    height: 80vh;
     background-repeat: no-repeat;
     margin-top: -136px;
   }
@@ -187,7 +187,8 @@
   .searchbar-artist{
     background-image: url('../images/Banner-2.png');
     background-size: 50% 100%;
-    height: 678px;
+    max-height: 60vh;
+    height: 60vh;
     background-repeat: no-repeat;
   }
 
@@ -311,7 +312,7 @@
 
 .stay-touch{
   background-size: 100% 100%;
-    height: 727px;
+    /* height: 727px; @todo */
     background-repeat: no-repeat;
     background-image: url('../images/Banner-15.png');
 }
@@ -627,4 +628,39 @@
 
 .artist-align-center {
   text-align: center;
+}
+
+.no-margin-custom{
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.search-bar-artist{
+  margin-left: -15px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .searchbar-artist{
+    max-height: 40vh;
+    height: 40vh;
+  }
+  .artist-banner{
+    height: 40vh;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) { 
+  .searchbar-artist{
+    max-height: 50vh;
+    height: 50vh;
+  }
+  .artist-banner{
+    height: 60vh;
+    }
+}
+
+@media (min-width: 1200px) { 
+  .artist-banner{
+    height: 80vh;
+    }
 }

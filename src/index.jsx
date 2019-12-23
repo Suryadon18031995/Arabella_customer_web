@@ -97,7 +97,7 @@ import PayPalContainer from './containers/MyAccount/PayPalContainer.jsx';
 import SalesRepHead from './containers/MyAccount/SalesRepHead.jsx';
 // import MothersDayPrebookContainer from './containers/MothersDayPrebook/MothersDayPrebookContainer.jsx';
 import NotFoundComponent from './components/NotFound.jsx';
-import AdminPage from './containers/AdminPage.jsx';
+// import AdminPage from './containers/AdminPage.jsx';
 // import PrimeMemberDashboard from './containers/MyAccount/PrimeMemberDashboard.jsx';
 import SubscriptionTerms from './components/SeasonalSubscription/SubscriptionTerms.jsx';
 // import PrimeTerms from './components/Prime/PrimeTerms.jsx';
@@ -179,7 +179,7 @@ ReactDom.render(
               path="/"
               component={HomeContainer}
             />
-            <RouteWithLayout
+            {/* <RouteWithLayout
               layout={EmptyLayout}
               exact
               path="/admin"
@@ -208,7 +208,7 @@ ReactDom.render(
               exact
               path="/cpanel"
               component={AdminPage}
-            />
+            /> */}
             <RouteWithLayout
               layout={HeaderLayout}
               exact
@@ -701,7 +701,7 @@ ReactDom.render(
               component={VendorProfile}
             />
             <RouteWithLayout
-              layout={HeaderLayout}
+              layout={EmptyLayout}
               exact
               path="/vendor-registration"
               component={VendorRegistration}
