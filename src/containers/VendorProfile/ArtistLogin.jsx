@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import _isEmpty from 'lodash/isEmpty';
+import _isError from 'lodash/isError';
+import { Redirect } from 'react-router-dom';
 
-import logo from '../../assets/images/LOGO.png'
+import logo from '../../assets/images/LOGO.png';
+import * as vendorActions from '../../actions/vendorArtist';
 
 class ArtistLogin extends React.Component {
 
@@ -11,7 +16,33 @@ class ArtistLogin extends React.Component {
             email: '',
             password: '',
             emailError: '',
-            passwordError: ''
+            passwordError: '',
+            loginError: ''
+        }
+    }
+
+    componentDidMount() {
+        const artistDetails = this.props.artistDetails;
+        if(artistDetails.code === 1) {
+            this.props.history.replace('/artist/orderManagement/newPOs');
+        }
+    }
+
+    componentDidUpdate(prevProps){
+        
+        console.log(prevProps, this.props)
+        if(prevProps.loggingIn && !this.props.loggingIn) {
+
+            const artistDetails = this.props.artistDetails;
+            if(artistDetails.code === 1) {
+                this.props.history.replace('/artist/orderManagement/newPOs');
+            }
+            else {
+                const message = (artistDetails.message ? artistDetails.message : 'Login Failed');
+                this.setState({
+                    loginError: message
+                });
+            }
         }
     }
 
@@ -36,11 +67,8 @@ class ArtistLogin extends React.Component {
             passwordMessage = 'Invalid Password';
         }
 
-        console.log(emailMessage, passwordMessage)
-
         if(!emailMessage && !passwordMessage) {
             // login
-            console.log('login');
             this.setState({
                 emailError: emailMessage,
                 passwordError: passwordMessage
@@ -50,6 +78,15 @@ class ArtistLogin extends React.Component {
             this.setState({
                 emailError: emailMessage,
                 passwordError: passwordMessage
+            });
+        }
+
+        if(email === 'jkumar@kabloomcorp.com' && password === 'artist123') {
+            this.props.login({ email: email, password: password });
+        }
+        else {
+            this.setState({
+                loginError: 'Email and Password not matching'
             });
         }
     }
@@ -69,6 +106,12 @@ class ArtistLogin extends React.Component {
                                 <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12' style={{ textAlign: 'center' }}>
                                     <span className="text-success" style={{ fontWeight: 'bolder' }}>ARTIST LOGIN</span>
                                 </div>
+                                {
+                                    this.state.loginError ? 
+                                    <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12' style={{ textAlign: 'center' }}>
+                                        <span className="text-danger" style={{ fontSize: '12px' }}>{ this.state.loginError }</span>
+                                    </div> : null 
+                                }
                             </div>
                             <div className='col-lg-12 container-spacing-lg'>
                                 <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
@@ -105,4 +148,32 @@ class ArtistLogin extends React.Component {
     }
 }
 
-export default ArtistLogin;
+const mapStateToProps = (state) => {
+    const {
+        vendorArtistsReducer,
+    } = state;
+
+    const {
+        data,
+        isFetching: isLoading,
+        error: vendorArtistError,
+        loggingIn,
+        artistDetails
+    } = vendorArtistsReducer || [];
+
+  
+    const error = !_isEmpty(vendorArtistError) || _isError(vendorArtistError);
+  
+    return {
+        data,
+        isLoading,
+        error,
+        loggingIn,
+        artistDetails
+    };
+  };
+
+  const mapDispatchToProps = dispatch => ({
+    login: data => dispatch(vendorActions.login(data)),
+  });
+export default connect(mapStateToProps, mapDispatchToProps)(ArtistLogin);

@@ -16,13 +16,14 @@ class ArtistLogistics extends React.Component {
         super(props);
 
         this.state = {
+            artistId: '',
             responsive: { 480: { items: 2 }, 760: { items: 3 }, 900: { items: 4 } },
             activeLocation: '',
             editMode: false,
             createMode: false,
             editLogistics: {
                 loc_logistics_id: "",
-                vendor_id: "441",
+                vendor_id: "",
                 location_id: "",
                 freight_forwarder_id: "",
                 vendor_country_id: "IN",
@@ -59,7 +60,7 @@ class ArtistLogistics extends React.Component {
             },
             editLogisticsFormat: {
                 loc_logistics_id: "",
-                vendor_id: "441",
+                vendor_id: "",
                 location_id: "",
                 freight_forwarder_id: "",
                 vendor_country_id: "IN",
@@ -134,13 +135,25 @@ class ArtistLogistics extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchLogisticSettings({ artistId: 441 });
+
+        const artistDetails = this.props.artistDetails;
+        if(artistDetails.code === 1) {
+            this.props.fetchLogisticSettings({ artistId: artistDetails.result.vendor_id });
+            this.setState({
+                artistId: artistDetails.result.vendor_id,
+                editLogistics: {...this.state.editLogistics, vendor_id: artistDetails.result.vendor_id},
+                editLogisticsFormat: {...this.state.editLogisticsFormat, vendor_id: artistDetails.result.vendor_id},
+            });
+        }
+        else {
+            this.props.history.replace('/artist/login');
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        
+
         if(prevProps.updatingLogistics && !this.props.updatingLogistics) {
-            this.props.fetchLogisticSettings({ artistId: 441 });
+            this.props.fetchLogisticSettings({ artistId: this.state.artistId });
         }
     }
 
@@ -188,7 +201,7 @@ class ArtistLogistics extends React.Component {
     }
 
     manageAddLogisticsHandler = () => {
-
+        
         this.setState({
             createMode: true,
             editMode: true,
@@ -284,7 +297,8 @@ const mapStateToProps = (state) => {
         locationDetails,
         isFetching: isLoading,
         error: vendorArtistError,
-        updatingLogistics
+        updatingLogistics,
+        artistDetails
     } = vendorArtistsReducer || [];
 
   
@@ -294,6 +308,7 @@ const mapStateToProps = (state) => {
         locationDetails,
         isLoading,
         error,
+        artistDetails,
         updatingLogistics
     };
 };

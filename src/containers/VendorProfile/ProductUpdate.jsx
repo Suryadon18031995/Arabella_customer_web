@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _isEmpty from 'lodash/isEmpty';
 import _isError from 'lodash/isError';
+import _get from 'lodash/get';
 import { NavLink } from 'react-router-dom';
 
 import * as vendorActions from '../../actions/vendorArtist';
@@ -20,12 +21,12 @@ class ProductUpdate extends React.Component {
             attributes: {
                 entity_id: "",
                 product_type: "",
-                revenueModel: "",
-                deliveryType: "",
+                revenue_model: "",
+                delivery_type: "",
                 name: "",
                 description: "",
                 price: "",
-                lead_time: "",
+                manufacturing_lead_time: "",
                 start_date: "",
                 expiry_date: "",
                 category: "",
@@ -34,19 +35,19 @@ class ProductUpdate extends React.Component {
                 box_length: "",
                 box_width: "",
                 box_height: "",
-                delivery_constraint: "",
+                zipcode_constraint: "",
                 partenering: "",
-                vendor: "441",
+                vendor: "",
             },
             mapping: {
                 entity_id: "productId",
                 product_type: "productType",
                 revenue_model: "revenueModel",
-                delivery_ype: "deliveryType",
+                delivery_type: "deliveryType",
                 name: "title",
                 description: "productDescription",
                 price: "price",
-                lead_time: "",
+                manufacturing_lead_time: "",
                 start_date: "startDate",
                 expiry_date: "expiryDate",
                 category: "category",
@@ -55,22 +56,34 @@ class ProductUpdate extends React.Component {
                 box_length: "length",
                 box_width: "width",
                 box_height: "height",
-                delivery_constraint: "zipcodeConstraint",
+                zipcode_constraint: "zipcodeConstraint",
                 partenering: "",
                 vendor: "artistId",
             },
-            productEditing: ''
+            productEditing: '',
+            artistId: ''
         }
     }
 
     componentDidMount() {
-        this.props.fetchArtistProducts({ artistId: 440 });
+        const artistDetails = this.props.artistDetails;
+        if(artistDetails.code === 1) {
+            this.props.fetchProductRequirements();
+            this.props.fetchArtistProducts({ artistId: artistDetails.result.vendor_id });
+            this.setState({
+                artistId: artistDetails.result.vendor_id,
+                attributes: {...this.state.attributes, vendor: artistDetails.result.vendor_id}
+            });
+        }
+        else {
+            this.props.history.replace('/artist/login');
+        }
     }
 
     componentDidUpdate(prevProps) {
-
+        
         if(prevProps.updatingProduct && !this.props.updatingProduct) {
-            this.props.fetchArtistProducts({ artistId: 440 });
+            this.props.fetchArtistProducts({ artistId: this.state.artistId });
         }
     }
 
@@ -117,6 +130,9 @@ class ProductUpdate extends React.Component {
     }
 
     render() {
+
+        console.log('attributes', this.state.attributes);
+        const productRequirements = _get(this.props.productRequirements, 'attributes', {});
         
         let tableMarkup = null;
         if(this.props.isLoading) {
@@ -156,9 +172,9 @@ class ProductUpdate extends React.Component {
                         <th>Title</th>
                         <th>Description</th>
                         <th>Price</th>
-                        <th>Lead Time</th>
-                        <th>Start Date</th>
-                        <th>Expiry Date</th>
+                        {/* <th>Manufacturing Lead Time</th> */}
+                        {/* <th>Start Date</th> */}
+                        {/* <th>Expiry Date</th> */}
                         <th>Category</th>
                         <th>Sub Category</th>
                         <th>Weight</th>
@@ -166,7 +182,7 @@ class ProductUpdate extends React.Component {
                         <th>Width</th>
                         <th>Height</th>
                         <th>Delivery Constraint</th>
-                        <th>Partnering</th>
+                        {/* <th>Partnering</th> */}
                         <th>Edit</th>
                     </tr>
                 </thead>
@@ -187,23 +203,23 @@ class ProductUpdate extends React.Component {
                     if(this.state.searchText.trim() === '' || Object.values(row).join('\n').toLowerCase().includes(this.state.searchText.toLowerCase())) {
                         return (
                             <tr key={row.entity_id}>
-                                <td>{ row.product_type }</td>
-                                <td>{ row.revenueModel }</td>
-                                <td>{ row.deliveryType }</td>
+                                <td>{ _get(productRequirements, ['product_type', row.product_type], '') }</td>
+                                <td>{ _get(productRequirements, ['revenue_model', row.revenue_model], '') }</td>
+                                <td>{ _get(productRequirements, ['delivery_type', row.delivery_type], '') }</td>
                                 <td>{ row.name }</td>
                                 <td>{ row.description }</td>
                                 <td>{ row.price }</td>
-                                <td>{ row.lead_time }</td>
-                                <td>{ row.start_date }</td>
-                                <td>{ row.expiry_date }</td>
-                                <td>{ row.category }</td>
+                                {/* <td>{ row.manufacturing_lead_time }</td> */}
+                                {/* <td>{ row.start_date }</td> */}
+                                {/* <td>{ row.expiry_date }</td> */}
+                                <td>{ _get(productRequirements, ['categories', row.category], '') }</td>
                                 <td>{ row.sub_category }</td>
                                 <td>{ row.box_weight }</td>
                                 <td>{ row.box_length }</td>
                                 <td>{ row.box_width }</td>
                                 <td>{ row.box_height }</td>
-                                <td>{ row.delivery_constraint }</td>
-                                <td>{ row.partenering }</td>
+                                <td>{ _get(productRequirements, ['zipcode_constraint', row.zipcode_constraint], '') }</td>
+                                {/* <td>{ row.partenering }</td> */}
                                 <td>
                                     <button 
                                         className="btn btn-outline-danger btn-sm" 
@@ -304,36 +320,41 @@ class ProductUpdate extends React.Component {
                                 <input className="form-control" name='price' onChange={this.handleInputChange} value={this.state.attributes.price} />
                             </div>
                         </div>
-                        <div className='container-spacing'>
+                        {/* <div className='container-spacing'>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
                                 <label>Manufacturing Lead Time</label>
                             </div>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
-                                <input className="form-control" name='lead_time' onChange={this.handleInputChange} value={this.state.attributes.lead_time} />
+                                <input className="form-control" name='manufacturing_lead_time' onChange={this.handleInputChange} value={this.state.attributes.manufacturing_lead_time} />
                             </div>
-                        </div>
-                        <div className='container-spacing'>
+                        </div> */}
+                        {/* <div className='container-spacing'>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
                                 <label>Start Date</label>
                             </div>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
                                 <input className="form-control" name='start_date' onChange={this.handleInputChange} value={this.state.attributes.start_date} />
                             </div>
-                        </div>
-                        <div className='container-spacing'>
+                        </div> */}
+                        {/* <div className='container-spacing'>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
                                 <label>Expiry Date</label>
                             </div>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
                                 <input className="form-control" name='expiry_date' onChange={this.handleInputChange} value={this.state.attributes.expiry_date} />
                             </div>
-                        </div>
+                        </div> */}
                         <div className='container-spacing'>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
                                 <label>Art Category</label>
                             </div>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
-                                <input className="form-control" name='category' onChange={this.handleInputChange} value={this.state.attributes.category} />
+                                <select className="form-control" name="category" onChange={this.handleInputChange} value={this.state.attributes.category}>
+                                    <option value="" defaultValue="selected">* Please select Category</option>
+                                    { Object.keys(_get(productRequirements, ['categories'], {})).map(currentCategoryId => (
+                                        <option value={ currentCategoryId }>{ _get(productRequirements, ['categories', currentCategoryId], {}) }</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div className='container-spacing'>
@@ -381,10 +402,10 @@ class ProductUpdate extends React.Component {
                                 <label>Is Delivery Constraint to your Zip Code</label>
                             </div>
                             <div className='col-lg-12 col-md-12 col-xs-12 col-sm-12'>
-                                <select className="form-control" name="delivery_constraint" onChange={this.handleSelectChange} value={this.state.attributes.deliveryConstraint}>
+                                <select className="form-control" name="zipcode_constraint" onChange={this.handleSelectChange} value={this.state.attributes.zipcode_constraint}>
                                     <option value="" defaultValue="selected">* Please select</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </div>
                         </div>
@@ -423,6 +444,7 @@ class ProductUpdate extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
+    fetchProductRequirements: () => dispatch(vendorActions.fetchProductRequirements()),
     fetchArtistProducts: data => dispatch(vendorActions.fetchArtistProducts(data)),
     updateProduct: data => dispatch(vendorActions.updateProduct(data)),
 });
@@ -437,6 +459,8 @@ const mapStateToProps = (state) => {
         isFetching: isLoading,
         updatingProduct,
         error: vendorArtistError,
+        artistDetails,
+        productRequirements
     } = vendorArtistsReducer || [];
 
     const error = !_isEmpty(vendorArtistError) || _isError(vendorArtistError);
@@ -445,7 +469,9 @@ const mapStateToProps = (state) => {
         productsList,
         isLoading,
         error,
-        updatingProduct
+        updatingProduct,
+        artistDetails,
+        productRequirements
     };
 };
 

@@ -3,6 +3,7 @@ import * as VENDOR_CONSTANTS from '../constants/vendorArtists';
 const vendorArtistsReducer = (state = {
     data: {},
     productUploadData: {},
+    uploadingProduct: false,
     productsList: {},
     locationDetails: {},
     type: '',
@@ -14,7 +15,10 @@ const vendorArtistsReducer = (state = {
     poStatusUpdating: false,
     fetchingRID: false,
     ridData: {},
-    raisingInvoice: false
+    raisingInvoice: false,
+    loggingIn: false,
+    artistDetails: {},
+    productRequirements: {}
 }, action) => {
     switch (action.type) {
         default:
@@ -52,6 +56,7 @@ const vendorArtistsReducer = (state = {
                     isFetching: true,
                     type: action.type,
                     lastUpdated: action.receivedAt,
+                    uploadingProduct: true,
                     productUploadData: {}
                 });
             }
@@ -61,6 +66,7 @@ const vendorArtistsReducer = (state = {
                 type: action.type,
                 didInvalidate: false,
                 lastUpdated: action.receivedAt,
+                uploadingProduct: false,
                 productUploadData: action.data
             });
 
@@ -69,6 +75,7 @@ const vendorArtistsReducer = (state = {
                 isFetching: false,
                 type: action.type,
                 error: action.error,
+                uploadingProduct: false
             });
 
         /* FOR VENDOR PRODUCTS LIST */
@@ -312,6 +319,89 @@ const vendorArtistsReducer = (state = {
                 type: action.type,
                 error: action.error,
                 raisingInvoice: false
+            });
+
+        /* FOR ARTIST LOGIN */
+        case VENDOR_CONSTANTS.ARTIST_LOGIN_CONSTANTS.REQUEST:
+            {
+                return Object.assign({}, state, {
+                    isFetching: true,
+                    type: action.type,
+                    lastUpdated: action.receivedAt,
+                    loggingIn: true,
+                    artistDetails: { code: 1, result: { vendor_id: 440, vendor_name: "Jnanesh Kumar", api_token: "2454b00fce0b633efc24714f7f0131fa:Wb" }}
+                });
+            }
+        case VENDOR_CONSTANTS.ARTIST_LOGIN_CONSTANTS.RECEIVED:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                didInvalidate: false,
+                lastUpdated: action.receivedAt,
+                loggingIn: false,
+                // artistDetails: action.data
+                artistDetails: { code: 1, result: { vendor_id: 440, vendor_name: "Jnanesh Kumar",api_token: "2454b00fce0b633efc24714f7f0131fa:Wb" }}
+            });
+
+        case VENDOR_CONSTANTS.ARTIST_LOGIN_CONSTANTS.ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                error: action.error,
+                loggingIn: false,
+                artistDetails: { code: 1, result: { vendor_id: 440, vendor_name: "Jnanesh Kumar",api_token: "2454b00fce0b633efc24714f7f0131fa:Wb" }}
+            });
+
+        /* FOR ARTIST LOGOUT */
+        case VENDOR_CONSTANTS.ARTIST_LOGOUT_CONSTANTS.REQUEST:
+            {
+                return Object.assign({}, state, {
+                    isFetching: true,
+                    type: action.type,
+                    lastUpdated: action.receivedAt,
+                    artistDetails: {}
+                });
+            }
+        case VENDOR_CONSTANTS.ARTIST_LOGOUT_CONSTANTS.RECEIVED:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                didInvalidate: false,
+                lastUpdated: action.receivedAt,
+                artistDetails: {}
+            });
+
+        case VENDOR_CONSTANTS.ARTIST_LOGOUT_CONSTANTS.ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                error: action.error,
+                artistDetails: {}
+            });
+
+        /* FOR PRODUCT REQUIREMENTS */
+        case VENDOR_CONSTANTS.ARTIST_PRODUCT_REQUIREMENTS_CONSTANTS.REQUEST:
+            {
+                return Object.assign({}, state, {
+                    isFetching: true,
+                    type: action.type,
+                    lastUpdated: action.receivedAt,
+                });
+            }
+        case VENDOR_CONSTANTS.ARTIST_PRODUCT_REQUIREMENTS_CONSTANTS.RECEIVED:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                didInvalidate: false,
+                lastUpdated: action.receivedAt,
+                productRequirements: action.data
+            });
+
+        case VENDOR_CONSTANTS.ARTIST_PRODUCT_REQUIREMENTS_CONSTANTS.ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                error: action.error,
             });
     }
 }

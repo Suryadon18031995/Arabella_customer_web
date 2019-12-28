@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import _isEmpty from 'lodash/isEmpty';
 import _isError from 'lodash/isError';
+import _get from 'lodash/get';
 
 import * as vendorActions from '../../actions/vendorArtist';
 import '../../assets/stylesheets/main.css';
@@ -15,9 +16,9 @@ class ProductUpload extends Component {
             revenueModel: '',
             deliveryType: '',
             title: '',
-            description: '',
+            productDescription: '',
             price: '',
-            leadTime: '',
+            manufacturingLeadTime: '',
             startDate: '',
             expiryDate: '',
             category: '',
@@ -26,57 +27,76 @@ class ProductUpload extends Component {
             length: '',
             width: '',
             height: '',
-            deliveryConstraint: '',
-            infoCust: '',
-            detailsInfo: '',
-            mediaFiles: '',
-            detailsOfMedia: '',
+            zipcodeConstraint: '',
+            needCustomerInfo: '',
+            detailsOfInformationRequired: '',
+            requireMediaFile: '',
+            mediaFileDetails: '',
             groupEvent: '',
-            noOfPeople: '',
-            prerequisits: '',
-            duration: '',
+            qtyPerGroup: '',
+            eventPreRequiste: '',
+            eventDuration: '',
             partnering: '',
             selVendor: '',
             selVendProd: '',
             selectAvail: '',
+            artistId: ''
+        },
+        arttributesTemplate: {
+            productType: '',
+            revenueModel: '',
+            deliveryType: '',
+            title: '',
+            productDescription: '',
+            price: '',
+            manufacturingLeadTime: '',
+            startDate: '',
+            expiryDate: '',
+            category: '',
+            subCategory: '',
+            weight: '',
+            length: '',
+            width: '',
+            height: '',
+            zipcodeConstraint: '',
+            needCustomerInfo: '',
+            detailsOfInformationRequired: '',
+            requireMediaFile: '',
+            mediaFileDetails: '',
+            groupEvent: '',
+            qtyPerGroup: '',
+            eventPreRequiste: '',
+            eventDuration: '',
+            partnering: '',
+            selVendor: '',
+            selVendProd: '',
+            selectAvail: '',
+            artist_id: ''
+        },
+        artistId: ''
+    }
+
+    componentDidMount() {
+        const artistDetails = this.props.artistDetails;
+        if(artistDetails.code === 1) {
+            this.props.fetchProductRequirements();
+            this.setState({
+                artistId: artistDetails.result.vendor_id,
+                attributes: {...this.state.attributes, artistId: artistDetails.result.vendor_id},
+                arttributesTemplate: {...this.state.arttributesTemplate, artistId: artistDetails.result.vendor_id},
+            });
+        }
+        else {
+            this.props.history.replace('/artist/login');
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
         
-        if(this.props.isLoading === false && prevProps.isLoading === true) {
+        if(this.props.uploadingProduct === false && prevProps.uploadingProduct === true) {
             alert(this.props.productUploadData.message);
             this.setState({
-                attributes: {
-                    productType: '',
-                    revenueModel: '',
-                    deliveryType: '',
-                    title: '',
-                    description: '',
-                    price: '',
-                    leadTime: '',
-                    startDate: '',
-                    expiryDate: '',
-                    category: '',
-                    subCategory: '',
-                    weight: '',
-                    length: '',
-                    width: '',
-                    height: '',
-                    deliveryConstraint: '',
-                    infoCust: '',
-                    detailsInfo: '',
-                    mediaFiles: '',
-                    detailsOfMedia: '',
-                    groupEvent: '',
-                    noOfPeople: '',
-                    prerequisits: '',
-                    duration: '',
-                    partnering: '',
-                    selVendor: '',
-                    selVendProd: '',
-                    selectAvail: '',
-                }
+                attributes: this.state.arttributesTemplate
             });
         }
     }
@@ -113,6 +133,8 @@ class ProductUpload extends Component {
     }
 
     render() {
+
+        const productRequirements = _get(this.props.productRequirements, ['attributes'], {});
 
         return (
             <section className='container-fluid'>
@@ -188,7 +210,7 @@ class ProductUpload extends Component {
                             <label>Product Description</label>
                         </div>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                            <input className="form-control" name='description' onChange={this.handleInputChange} value={this.state.attributes.description} />
+                            <input className="form-control" name='productDescription' onChange={this.handleInputChange} value={this.state.attributes.productDescription} />
                         </div>
                     </div>
                     <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
@@ -212,7 +234,7 @@ class ProductUpload extends Component {
                             <label>Manufacturing Lead Time</label>
                         </div>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                            <input className="form-control" name='leadTime' onChange={this.handleInputChange} value={this.state.attributes.leadTime} />
+                            <input className="form-control" name='manufacturingLeadTime' onChange={this.handleInputChange} value={this.state.attributes.manufacturingLeadTime} />
                         </div>
                     </div>
                     <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
@@ -236,7 +258,12 @@ class ProductUpload extends Component {
                             <label>Art Category</label>
                         </div>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                            <input className="form-control" name='category' onChange={this.handleInputChange} value={this.state.attributes.category} />
+                            <select className="form-control" name="category" onChange={this.handleSelectChange} value={this.state.attributes.category}>
+                                <option value="" defaultValue="selected">* Please select Category</option>
+                                { Object.keys(_get(productRequirements, ['categories'], {})).map(currentCategoryId => (
+                                    <option value={ currentCategoryId }>{ _get(productRequirements, ['categories', currentCategoryId], {}) }</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                     <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
@@ -247,14 +274,14 @@ class ProductUpload extends Component {
                             <input className="form-control" name='subCategory' onChange={this.handleInputChange} value={this.state.attributes.subCategory} />
                         </div>
                     </div>
-                    <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
+                    {/* <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
                             <label>Art Description</label>
                         </div>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                            {/* <input className="form-control" name='artDesc' onChange={this.handleInputChange} value={this.state.attributes.artDesc} /> */}
+                            <input className="form-control" name='artDesc' onChange={this.handleInputChange} value={this.state.attributes.artDesc} />
                         </div>
-                    </div>
+                    </div> */}
                     <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
                             <label>Weight of the product</label>
@@ -292,7 +319,7 @@ class ProductUpload extends Component {
                             <label>Is Delivery Constraint to your Zip Code</label>
                         </div>
                         <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                            <select className="form-control" name="deliveryConstraint" onChange={this.handleSelectChange} value={this.state.attributes.deliveryConstraint}>
+                            <select className="form-control" name="zipcodeConstraint" onChange={this.handleSelectChange} value={this.state.attributes.zipcodeConstraint}>
                                 <option value="" defaultValue="selected">* Please select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
@@ -306,7 +333,7 @@ class ProductUpload extends Component {
                                     <label>Need Info From Customer</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <select className="form-control" name="infoCust" onChange={this.handleSelectChange} value={this.state.attributes.infoCust}>
+                                    <select className="form-control" name="needCustomerInfo" onChange={this.handleSelectChange} value={this.state.attributes.needCustomerInfo}>
                                         <option value="" defaultValue="selected">* Please select</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -318,7 +345,7 @@ class ProductUpload extends Component {
                                     <label>Details of Information Required</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <input className="form-control" name='detailsInfo' onChange={this.handleInputChange} value={this.state.attributes.detailsInfo} />
+                                    <input className="form-control" name='detailsOfInformationRequired' onChange={this.handleInputChange} value={this.state.attributes.detailsOfInformationRequired} />
                                 </div>
                             </div>
                             <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
@@ -326,7 +353,7 @@ class ProductUpload extends Component {
                                     <label>Need Media Files From Customer</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <select className="form-control" name="mediaFiles" onChange={this.handleSelectChange} value={this.state.attributes.mediaFiles}>
+                                    <select className="form-control" name="requireMediaFile" onChange={this.handleSelectChange} value={this.state.attributes.requireMediaFile}>
                                         <option value="" defaultValue="selected">* Please select</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -338,7 +365,7 @@ class ProductUpload extends Component {
                                     <label>Details of media files Required</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <input className="form-control" name='detailsOfMedia' onChange={this.handleInputChange} value={this.state.attributes.detailsOfMedia} />
+                                    <input className="form-control" name='mediaFileDetails' onChange={this.handleInputChange} value={this.state.attributes.mediaFileDetails} />
                                 </div>
                             </div>
                         </React.Fragment>
@@ -362,7 +389,7 @@ class ProductUpload extends Component {
                                     <label>Number of People in Group</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <input className="form-control" name='noOfPeople' onChange={this.handleInputChange} value={this.state.attributes.noOfPeople} />
+                                    <input className="form-control" name='qtyPerGroup' onChange={this.handleInputChange} value={this.state.attributes.qtyPerGroup} />
                                 </div>
                             </div>
                             <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
@@ -370,7 +397,7 @@ class ProductUpload extends Component {
                                     <label>Duration of the Event</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <input className="form-control" name='duration' onChange={this.handleInputChange} value={this.state.attributes.duration} />
+                                    <input className="form-control" name='eventDuration' onChange={this.handleInputChange} value={this.state.attributes.eventDuration} />
                                 </div>
                             </div>
                             <div className='col-lg-6 col-md-12 col-xs-12 col-sm-12 container-spacing'>
@@ -378,7 +405,7 @@ class ProductUpload extends Component {
                                     <label>Any Pre-requiste required for the Event</label>
                                 </div>
                                 <div className='col-lg-6 col-md-6 col-xs-6 col-sm-6'>
-                                    <input className="form-control" name='prerequisits' onChange={this.handleInputChange} value={this.state.attributes.prerequisits} />
+                                    <input className="form-control" name='eventPreRequiste' onChange={this.handleInputChange} value={this.state.attributes.eventPreRequiste} />
                                 </div>
                             </div>
                         </React.Fragment>
@@ -432,6 +459,7 @@ class ProductUpload extends Component {
 
 const mapDispatchToProps = dispatch => ({
     createProduct: data => dispatch(vendorActions.createProducts(data)),
+    fetchProductRequirements: () => dispatch(vendorActions.fetchProductRequirements()),
 });
 
 const mapStateToProps = (state) => {
@@ -443,6 +471,9 @@ const mapStateToProps = (state) => {
         productUploadData,
         isFetching: isLoading,
         error: vendorArtistError,
+        artistDetails,
+        productRequirements,
+        uploadingProduct
     } = vendorArtistsReducer || [];
 
   
@@ -451,7 +482,10 @@ const mapStateToProps = (state) => {
     return {
         productUploadData,
         isLoading,
-        error
+        error,
+        artistDetails,
+        productRequirements,
+        uploadingProduct
     };
 };
 

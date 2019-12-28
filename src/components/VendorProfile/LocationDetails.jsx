@@ -37,6 +37,18 @@ const locationDetails = props => {
     );
 
     const body = [];
+
+    if(props.createMode) body.push(
+        <EditLogistics 
+            key='create-mode'
+            row={ props.logistics }
+            manageValueChangeHandler={ props.manageValueChangeHandler }
+            save={ props.save }
+            ff={ props.ff }
+            cc={ props.cc }
+        />
+    );
+
     if(props.details === undefined || props.details.length === 0) {
         body.push((
             <tr key="nld">
@@ -45,17 +57,6 @@ const locationDetails = props => {
         ));
     }
     else {
-        
-        if(props.createMode) body.push(
-            <EditLogistics 
-                key='create-mode'
-                row={ props.logistics }
-                manageValueChangeHandler={ props.manageValueChangeHandler }
-                save={ props.save }
-                ff={ props.ff }
-                cc={ props.cc }
-            />
-        );
 
         props.details.forEach(row => {
 

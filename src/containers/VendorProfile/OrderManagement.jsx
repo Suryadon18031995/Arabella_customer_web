@@ -534,30 +534,42 @@ class OrderManagement extends React.Component {
             selectedItemIds: {},
             confirmQty: {},
             raiseInvoiceInputs: {
-                artistId: 441,
+                artistId: '',
                 globalRef: '',
                 globalInvDate: '',
                 chargeAmount: '',
                 chargeType: ''
             },
             defaultRaiseInvoiceInputs: {
-                artistId: 441,
+                artistId: '',
                 globalRef: '',
                 globalInvDate: '',
                 chargeAmount: '',
                 chargeType: ''
-            }
+            },
+            artistId: ''
         }
     }
 
     componentDidMount() {
 
-        const tab = this.props.location.pathname.split('/')[3];
-        this.props.getPOManagementDetails({
-            artistId: 441,
-            tab: tab,
-            status: this.state.status[tab]
-        });
+        const artistDetails = this.props.artistDetails;
+        if(artistDetails.code === 1) {
+            const tab = this.props.location.pathname.split('/')[3];
+            this.props.getPOManagementDetails({
+                artistId: artistDetails.result.vendor_id,
+                tab: tab,
+                status: this.state.status[tab]
+            });
+            this.setState({
+                artistId: artistDetails.result.vendor_id,
+                raiseInvoiceInputs: {...this.state.raiseInvoiceInputs, artistId: artistDetails.result.vendor_id},
+                defaultRaiseInvoiceInputs: {...this.state.defaultRaiseInvoiceInputs, artistId: artistDetails.result.vendor_id},
+            });
+        }
+        else {
+            this.props.history.replace('/artist/login');
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -577,7 +589,7 @@ class OrderManagement extends React.Component {
             });
 
             this.props.getPOManagementDetails({
-                artistId: 441,
+                artistId: this.state.artistId,
                 status: this.state.status[tab]
             });
         }
@@ -637,13 +649,13 @@ class OrderManagement extends React.Component {
 
         if(itemIds.length > 0) {
             console.log('API DATA', {
-                artistId: 441,
+                artistId: this.state.artistId,
                 type: type,
                 itemIds: itemIds.join(','),
                 itemData: itemIds.map(itemId => this.state.selectedItemIds[itemId])
             });
             // this.props.poAction({
-            //     artistId: 441,
+            //     artistId: this.state.artistId,
             //     type: type,
             //     itemIds: itemIds.join(','),
             //     itemData: itemIds.map(itemId => this.state.selectedItemIds[itemId])
@@ -947,7 +959,8 @@ const mapStateToProps = (state) => {
         poStatusUpdating,
         fetchingRID,
         ridData,
-        raisingInvoice
+        raisingInvoice,
+        artistDetails
     } = vendorArtistsReducer || [];
 
   
@@ -961,7 +974,8 @@ const mapStateToProps = (state) => {
         poStatusUpdating,
         fetchingRID,
         ridData,
-        raisingInvoice
+        raisingInvoice,
+        artistDetails
     };
   };
   
