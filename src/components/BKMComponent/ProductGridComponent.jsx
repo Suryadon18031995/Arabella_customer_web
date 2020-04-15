@@ -38,75 +38,36 @@ export default function ProductGridComponent(props) {
     };
 
     return (
-        <Fragment>
-            <div className='col-lg-4 col-sm-4 col-md-4 col-xs-4'>
-                <div className='product-grid-view text-center'>
-            <img className='carouselImgDiv grid-images img-responsive'
+        <div className='col-lg-4 col-sm-4 col-md-4 col-xs-4'>
+            <div className='text-center' style={{border: '3px solid #2fafcc',padding: '5px',height: '380px',width:'255px',marginBottom: '10px'}}>
+               <img style={{height:'170px',width:'170',padding:'3px',marginTop:'10px'}}
                     alt={props.thisData.name} src={props.thisData.image}/>
-                <h4 className='grid-product-name'>
+                        <div style={{padding:'5px'}}>
+                        <h5>
                         {props.thisData.name}
-                        </h4>
-                        <div>
-                            Description
+                        </h5>
                         </div>
-                        <div>
-              <button type="button" className="btn custom-class-button">VIEW & ORDER</button>
-           </div>
-            </div>
-            </div>
-                {/* <div className="carouselParentDiv"> */}
-                {/* <a href={`/${props.thisData.url_key}.html`}>
-                <div className="carouselImgDiv">
-                    <img className='carouselImgDiv grid-images img-responsive'
-                    alt={props.thisData.name} src={props.thisData.image}/>
-                </div>
-                </a> */}
-                {/* <div className="product-grid carouselTextDiv">
-                    <div className='f-fix'> */}
-                        {/* <h2 className='grid-product-name'>
-                        <a href={`/${props.thisData.url_key}.html`}>
-                        {props.thisData.name}
-                        </a>
-                        </h2> */}
-                        {/* <div className='label-grid'> */}
-                        {/* <div className='product-grid-per'>
-                            <span className='product-grid-price'>{_get(props.deliveryData, 'total_price_format')} </span>
-                            per {' '}
-                            <span>{_get(props.deliveryData, 'avail_id') && _get(props.thisData, _get(props.deliveryData, 'avail_id')).pack_unit}</span>
-                        </div> */}
-                            {/* <br /> */}
-                            {/* {props.apiToken &&
-                                <Datetime renderDay={renderDay}
-                                    renderInput={renderInput}
-                                    closeOnSelect={true}
-                                />
-                        } */}
-                        {/* </div> */}
-                        {/* <div >
-                        {props.apiToken && <span className="qty-grid-cart">
-                                <input type="text" name='orderQuantity' value={_get(props.unitQty, [props.thisData.pid])}
-                                    maxLength="12" title="Input here No. of Qty" className="input-text qty"
-                                    onChange={event => props.handleInuputChange(event, props.thisData, props.deliveryData)} />
-                                <button type="button" onClick={() => props.handleAddCartClick(props.thisData, props.deliveryData)}
-                                 title="Add to Cart"
-                                  className={`button btn-cart${!_get(props.inputValid, props.thisData.pid) && props.apiToken ? '' : ' disableBtn'}`}
-                                  disabled={!(!_get(props.inputValid, props.thisData.pid) && props.apiToken)}>
-                                    Add to Cart
-                                </button>
-                            </span>}
-                            {!props.apiToken && <span className='add-cart-button-grid' style={!props.apiToken && { width: '100%' }}>
-                                <button type="button" onClick={() => props.handleAddCartClick(props.thisData, props.deliveryData)} title="Add to Cart" className="button btn-cart">
-                                    Add to Cart
-                                </button>
-                            </span>}
-                            {props.apiToken && <span className={`error-msg-qty ${props.blinkText[props.thisData.pid]}`} >
-                                Qty in multiple of {_get(props.deliveryData, 'qty_per_box')}
-                            </span>}
+                        <div className="row">
+                             <div className="col-sm-5">
+                                 <div style={{color:'#fff',fontSize: '12px', borderRadius: '2px', display: 'inline-flex', alignItems: 'center', padding: '1px 5px', cursor: 'pointer',
+                                  position: 'relative', marginRight: '5px',backgroundColor: 'black'}}>
+                                     <span style={{fontWeight:'700'}}>{props.thisData.product_rating} <i class="fa fa-star-o"></i></span>
+                                  &nbsp;
+                                  </div>
+                                  </div>
+                                 <div className="col-sm-7" style={{marginLeft:'-34px'}}>
+                                    <span>{props.thisData.product_rating_count} Ratings</span>
+                                </div>                     
+                        
                         </div>
-                    </div>
-                </div>
-                </div>
-            </div> */}
-        </Fragment>
+                        <br/>
+                        <div><span>MRP : RS.{props.thisData.price_range}</span></div>
+                     { props.thisData.prescription === 'No' ?
+                        <div class="ribbon"><span>NO PRESC</span></div> 
+
+                          : <div class="ribbon1"><span>PRESC</span></div>
+                     } 
+            </div>
+        </div>
     );
 }

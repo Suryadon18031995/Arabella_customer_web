@@ -18,6 +18,7 @@ import {
   setCartTypeData,
   clearCartReducer,
   clearCartData,
+  setRemoveCartTypeData,
 } from './../actions/cart';
 import { setCartId, updateCartData as updateLoginCartData } from './../actions/login';
 import BreadCrumbs from '../components/Common/BreadCrumbs.jsx';
@@ -48,7 +49,8 @@ class MyCartContainer extends React.Component {
       cartErrors: {},
       showCartErrors: false,
       blinkText: false,
-      productDetails: {},
+      product_details: {},
+      productDetails:{},
       productId: undefined,
       move: false,
       productName: undefined,
@@ -77,6 +79,96 @@ class MyCartContainer extends React.Component {
     this.setState({
       discountCouponValue: event.target.value,
     });
+  }
+
+
+
+  updateCart = (cartRid,data,qty) => {
+    console.log(cartRid);
+    console.log(data);
+    console.log(qty);
+    console.log(this.state.productDetails);
+    //this.setState({ productDetails: this.state.product_details });
+    if(data === 'add')
+    {
+      const { productDetails } = this.state;
+        // delete cartErrors[cartRid];
+          productDetails[cartRid] = {
+            ...productDetails[cartRid],
+            quantity: qty + 1,
+          };
+
+          //this.setState({ product_details: this.state.productDetails });
+
+          /* qty exchange issue */
+
+          const resultRes = [..._get(this.state, ['cartResult', 0, 'result'])];
+
+          const cartRidObj = _findIndex(resultRes, ['cart_rid', cartRid]);
+
+          resultRes[cartRidObj].qty = qty + 1;
+
+          const cartResult = [...this.state.cartResult];
+
+          cartResult[0].result = resultRes;
+          console.log(resultRes);
+
+          /* qty exchange issue */
+
+          this.setState({
+            blinkText: false,
+            showCartErrors: false,
+            productDetails,
+            cartResult,
+          });
+
+    } 
+
+    if(data === 'sub')
+    {
+
+      const { productDetails } = this.state;
+      // delete cartErrors[cartRid];
+        productDetails[cartRid] = {
+          ...productDetails[cartRid],
+          quantity: qty - 1,
+        };
+
+        //this.setState({ product_details: this.state.productDetails });
+
+        /* qty exchange issue */
+
+        const resultRes = [..._get(this.state, ['cartResult', 0, 'result'])];
+
+        const cartRidObj = _findIndex(resultRes, ['cart_rid', cartRid]);
+
+        resultRes[cartRidObj].qty = qty - 1;
+
+        const cartResult = [...this.state.cartResult];
+
+        cartResult[0].result = resultRes;
+
+        /* qty exchange issue */
+
+        this.setState({
+          blinkText: false,
+          showCartErrors: false,
+          productDetails,
+          cartResult,
+        });
+
+       
+    }
+
+    this.props.getUpdateProduct({
+      api_token: this.props.apiToken,
+      quote_id: '23528',
+      product_details: this.state.productDetails,
+    });
+
+    
+  
+   
   }
 
   handleInputQty = (qtyPerBox, cartRid, event) => {
@@ -156,21 +248,12 @@ class MyCartContainer extends React.Component {
     this.props.history.go(-1);
   }
 
-  updateCart = () => {
-    if (!_isEmpty(this.state.cartErrors)) {
-      this.setState({ showCartErrors: true });
-    } else {
-      this.props.getUpdateProduct({
-        apiToken: this.props.apiToken,
-        productDetails: this.state.productDetails,
-      }, 'PATCH');
-    }
-  }
+  
 
-  removeProduct = (cartRid) => {
+  removeProduct = (cartId) => {
     this.props.getaddRemoveUpdateProduct({
-      apiToken: this.props.apiToken, itemId: cartRid,
-    }, 'DELETE');
+      api_token: this.props.apiToken, item_id: cartId,
+    });
   }
 
   handleMoveToWishlist = (productId) => {
@@ -206,17 +289,27 @@ class MyCartContainer extends React.Component {
   }
 
   handleCheckOut = () => {
-    this.props.removeExpiredProducts({ apiToken: this.props.apiToken, cartId: this.props.cartId });
-    this.source = 'checkout';
+    //this.props.removeExpiredProducts({ apiToken: this.props.apiToken, cartId: this.props.cartId });
+    //this.source = 'checkout';
+    this.setState({
+      showCheckOut: true,
+    });
   }
 
   componentDidMount() {
     document.title = 'Shopping Cart';
-    this.props.clearCartData();
-    this.props.getCartData({ apiToken: this.props.apiToken });
+    //this.props.clearCartData();
+    //this.props.setCartType({ cartType: '' });
+   /// this.props.RemoveFromCartData = [];
+    
+
+    //this.props.setRemoveCartTypeData({ RemoveFromCartData: []});
+    this.props.getCartData({ api_token: this.props.apiToken, spending_point: 1 });
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
+    //this.props.setRemoveCartType({ RemoveFromCartData: [] });
+    console.log(nextProps);
     if (!_isEmpty(_get(nextProps, 'discountCouponData'))) {
       if (_get(nextProps, ['discountCouponData', 0, 'msg']) === 'success') {
         this.setState({
@@ -267,15 +360,19 @@ class MyCartContainer extends React.Component {
       }
     }
     if (!_isEmpty(_get(nextProps, 'firstCartData'))) {
+      if(this.props.cartCount  !== _get(nextProps, 'firstCartData[0].total_products_in_cart'))
+      {
       this.props.updateCart({
         show: false,
-        cartCount: _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0),
-        cartTotal: _get(nextProps.firstCartData, ['cart', 0, 'subtotal'], 0),
-        cartProducts: _get(nextProps.firstCartData, ['cart', 0, 'result'], []),
+        cartCount: _get(nextProps, 'firstCartData[0].total_products_in_cart'),
+        cartTotal: _get(nextProps, 'firstCartData[0].subtotal'),
+        cartProducts: _get(nextProps,'firstCartData[0].result'),
       });
-      if (_get(nextProps, ['firstCartData', 'cart', 0, 'code']) === 1) {
-        const productDetailsTemp = _get(nextProps, ['firstCartData', 'cart', 0, 'result']);
-        const cartNewId = _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'cart_id']);
+    }
+      if (_get(nextProps, 'firstCartData[0].code') === 1) {
+        const productDetailsTemp = _get(nextProps, 'firstCartData[0].result');
+        console.log(productDetailsTemp);
+        const cartNewId = _get(nextProps, 'firstCartData[0].result[0].cart_id');
         if (cartNewId !== this.props.cartId) {
           this.props.setCartId(cartNewId);
         }
@@ -289,20 +386,22 @@ class MyCartContainer extends React.Component {
             },
           };
         });
+        console.log(nextProps.firstCartData);
         this.setState({
-          cartResult: _get(nextProps, 'firstCartData.cart'),
-          code: _get(nextProps, ['firstCartData', 'cart', 0, 'code']),
-          subTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'subtotal']),
-          grandTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']),
-          result: _get(nextProps, ['firstCartData', 'cart', 0, 'result']),
-          discountVal: _get(nextProps, ['firstCartData', 'cart', 0, 'discount']),
-          cancelCouponVal: _get(nextProps, ['firstCartData', 'cart', 0, 'coupon_code']),
+          cartResult: _get(nextProps, 'firstCartData'),
+          code: _get(nextProps, 'firstCartData[0].code'),
+          subTotal: _get(nextProps, 'firstCartData[0].subtotal'),
+          grandTotal: _get(nextProps, 'firstCartData[0].grandtotal'),
+          result: _get(nextProps, 'firstCartData[0].result'),
+          discountVal: _get(nextProps, 'firstCartData[0].discount'),
+          cancelCouponVal: _get(nextProps, 'firstCartData[0].coupon_code'),
           couponRes: false,
           discountCouponValue: '',
           move: false,
           productDetails,
         });
-        const couponCode = _get(nextProps.firstCartData, ['cart', 0, 'coupon_code']);
+        console.log(this.state);
+        const couponCode = _get(nextProps.firstCartData[0], 'coupon_code');
         if (couponCode !== 'NA') {
           this.setState({
             couponRes: true,
@@ -313,6 +412,7 @@ class MyCartContainer extends React.Component {
           });
         }
       } else {
+        
         // this.props.setCartType({ cartType: '' });
         this.setState({
           cartResult: _get(nextProps, 'firstCartData'),
@@ -326,8 +426,7 @@ class MyCartContainer extends React.Component {
           showCouponRes: false,
           move: false,
         });
-        this.props.getCartData({ apiToken: this.props.apiToken });
-        this.props.removeExpiredProducts({ apiToken: this.props.apiToken, cartId: this.props.cartId });
+        this.props.getCartData({ api_token: this.props.apiToken, spending_point: 1 });
       }
     }
     if (!_isEmpty(_get(nextProps, 'updateCartData'))) {
@@ -336,75 +435,11 @@ class MyCartContainer extends React.Component {
           showCouponRes: false,
           move: false,
         });
-        this.props.getCartData({ apiToken: this.props.apiToken });
+        this.props.getCartData({ api_token: this.props.apiToken, spending_point: 1 });
       }
     }
-    if (!_isEmpty(_get(nextProps, 'moveToWishListData'))) {
-      if (_get(nextProps, 'moveToWishListData.code') === 1) {
-        this.setState({
-          showCouponRes: false,
-          move: true,
-          productName: _get(nextProps.moveToWishListData, 'product_details.product_name'),
-        });
-        if (_get(nextProps.moveToWishListData, ['cartDetails', 0, 'code']) === 1) {
-          this.setState({
-            cartResult: _get(nextProps, 'moveToWishListData.cartDetails'),
-            code: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'code']),
-            subTotal: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'subtotal']),
-            grandTotal: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'grandtotal']),
-            result: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'result']),
-            discountVal: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'discount']),
-            cancelCouponVal: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'coupon_code']),
-            couponRes: false,
-            discountCouponValue: '',
-            move: true,
-          });
-          const couponCode = _get(nextProps.moveToWishListData, ['cartDetails', 0, 'coupon_code']);
-          if (couponCode !== 'NA') {
-            this.setState({
-              couponRes: true,
-              coupCode: couponCode,
-              discountCouponValue: couponCode,
-              showCouponRes: false,
-              move: true,
-            });
-          }
-        } else {
-          // this.props.setCartType({ cartType: '' });
-          this.setState({
-            cartResult: _get(nextProps, 'moveToWishListData.cartDetails'),
-            code: _get(nextProps, ['moveToWishListData', 'cartDetails', 0, 'code']),
-          });
-        }
-      }
-    }
-    if (!_isEmpty(_get(nextProps, 'removeExpiredProductsData'))) {
-      if (_get(nextProps, 'removeExpiredProductsData.code') === 1) {
-        if (_get(nextProps, 'removeExpiredProductsData.total_products_in_cart') === 0) {
-          this.setState({
-            showCheckOut: false,
-          });
-          this.props.getCartData({ apiToken: this.props.apiToken });
-        } else if (_get(nextProps, 'removeExpiredProductsData.total_products_in_cart') > 0) {
-          if (_isEmpty(_get(nextProps, 'removeExpiredProductsData.validation')) && _isEmpty(this.state.pdValidation) && this.source === 'checkout') {
-            this.setState({
-              showCheckOut: true,
-            });
-          } else {
-            this.setState({ pdValidation: _get(nextProps, 'removeExpiredProductsData.validation') });
-          }
-        }
-      } else if (_get(nextProps, 'removeExpiredProductsData.code') === 0) {
-        if (_isEmpty(_get(nextProps, 'removeExpiredProductsData.validation')) && _isEmpty(this.state.pdValidation) && this.source === 'checkout') {
-          this.setState({
-            showCheckOut: true,
-          });
-        } else {
-          this.source = '';
-          this.setState({ pdValidation: _get(nextProps, 'removeExpiredProductsData.validation'), showCheckOut: false });
-        }
-      }
-    }
+  
+    
     // if (!_isEmpty(nextProps.clearedCartData)) {
     //   if (_get(nextProps.clearedCartData, 'code') === 1){
     //     console.log('hey!');
@@ -415,6 +450,7 @@ class MyCartContainer extends React.Component {
 
   // }
   render() {
+    console.log(this.state);
     if (this.state.showCheckOut) {
       return <Redirect push to='/checkout/onepage' />;
     }
@@ -427,8 +463,7 @@ class MyCartContainer extends React.Component {
     }
     return (
       <div>
-        <BreadCrumbs
-          list={this.state.breadCrumbsList} />
+       
         <div className="container">
           <div className='container-block'>
             <ErrorBoundary>
@@ -438,7 +473,7 @@ class MyCartContainer extends React.Component {
                 cancelDiscountCoupon={this.cancelDiscountCoupon}
                 cartResult={this.state.cartResult}
                 primeUser={this.props.primeUser}
-                cartType={this.props.cartType}
+               // cartType={this.props.cartType}
                 handleInputChange={this.handleInputChange}
                 continueShopping={this.continueShopping}
                 handleMoveToWishlist={this.handleMoveToWishlist}
@@ -453,6 +488,7 @@ class MyCartContainer extends React.Component {
             </ErrorBoundary>
           </div>
         </div>
+        <hr className="blue-hr"></hr>
       </div>
     );
   }
@@ -464,10 +500,11 @@ const mapDispatchToProps = dispatch => ({
   getDiscountCouponData: data => dispatch(fetchDiscountCouponData(data)),
   getCancelDiscountCouponData: data => dispatch(fetchCancelDiscountCouponData(data)),
   moveToWishlist: data => dispatch(fetchMoveToWishlistData(data)),
-  getaddRemoveUpdateProduct: (data, type) => dispatch(fetchRemoveFromCartData(data, type)),
-  getUpdateProduct: (data, type) => dispatch(fetchUpdateCartData(data, type)),
-  removeExpiredProducts: data => dispatch(fetchRemoveExpiredProductData(data)),
+  getaddRemoveUpdateProduct: data => dispatch(fetchRemoveFromCartData(data)),
+  getUpdateProduct: data => dispatch(fetchUpdateCartData(data)),
+  // removeExpiredProducts: data => dispatch(fetchRemoveExpiredProductData(data)),
   setCartType: data => dispatch(setCartTypeData(data)),
+  setRemoveCartType: data => dispatch(setRemoveCartTypeData(data)),
   setCartId: data => dispatch(setCartId(data)),
   clearShoppingCartData: data => dispatch(clearCartData(data)),
   updateCart: data => dispatch(updateLoginCartData(data)),
@@ -492,7 +529,7 @@ const mapStateToProps = (state) => {
     RemoveFromCartData,
     updateCartData,
     moveToWishListData,
-    removeExpiredProductsData,
+    // removeExpiredProductsData,
     isFetching: isLoading,
     error: cartError,
     clearedCartData,
@@ -513,7 +550,7 @@ const mapStateToProps = (state) => {
     RemoveFromCartData,
     moveToWishListData,
     updateCartData,
-    removeExpiredProductsData,
+    // removeExpiredProductsData,
     isLoading,
     error,
     clearedCartData,

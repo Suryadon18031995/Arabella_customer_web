@@ -1,5 +1,5 @@
-export const PRODUCTS_DATA_URL = `${process.env.APPLICATION_BFF_URL}/products/list`;
-export const CATEGORY_DATA_URL = `${process.env.APPLICATION_BFF_URL}/products/filters`;
+export const PRODUCTS_DATA_URL = 'https://uat.mediversal.tech/index.php/api/product/List';
+export const CATEGORY_DATA_URL = ' https://uat.mediversal.tech/index.php/api/product/filter';
 
 export const REQUEST_BKM_LIST_SEARCH = 'REQUEST_BKM_LIST_SEARCH';
 export const RECEIVED_BKM_LIST_SEARCH = 'RECEIVED_BKM_LIST_SEARCH';

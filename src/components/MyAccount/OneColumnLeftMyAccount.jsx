@@ -13,35 +13,23 @@ export default function OneColumnLeftMyAccount(props) {
     return (
         <div>
             <Panel>
-                <Panel.Heading><h4><b>MY Account</b></h4></Panel.Heading>
+                <Panel.Heading><h4><b>MY ACCOUNT</b></h4></Panel.Heading>
                 <Panel.Body>
                     <ListGroup>
                         <ListGroupItem href={'/customer/account'}>
-                            Account Dashboard
+                           MY ACCOUNT
+                        </ListGroupItem>
+                        <ListGroupItem href={'/customer/account/orders'}>MY ORDERS</ListGroupItem>
+                        <ListGroupItem href={'/customer/account/address'}>ADDRESS BOOK</ListGroupItem>
+                        <ListGroupItem href={'/customer/account/edit'}>
+                          MY REWARDS
                         </ListGroupItem>
                         <ListGroupItem href={'/customer/account/edit'}>
-                            Account Information
+                          MY RATINGS AND REVIEWS
                         </ListGroupItem>
-                        <ListGroupItem href={'/customer/account/address'}>Address Book</ListGroupItem>
                         {/* <ListGroupItem href={'/customer/account/billing_agreement'}>Billing Agreement</ListGroupItem> */}
-                        <ListGroupItem href={'/customer/account/orders'}>My Orders</ListGroupItem>
-                        <ListGroupItem href={'/customer/account/recuring_profile'}>Recuring Profile</ListGroupItem>
-                        <ListGroupItem href={'/customer/account/reviews'}>My Product Reviews</ListGroupItem>
-                        {/* <ListGroupItem href={'/customer/account/tags'}>My Tags</ListGroupItem> */}
-                        <ListGroupItem href={'/customer/account/wishlist'}>My Wishlist</ListGroupItem>
-                        <ListGroupItem href={'/customer/account/pending'}>My Vendor Pending Reviews</ListGroupItem>
-                        <ListGroupItem href={'/customer/account/vendor_reviews'}>My Vendor Reviews</ListGroupItem>
-                        {props.salesRepUser === 'yes' ?
-                            <ListGroupItem href={'/salesRep'}>Salesrep</ListGroupItem>
-                            : ''
-                        }
-                        {props.primeUser === '1' ?
-                            <React.Fragment>
-                            <ListGroupItem href={'/customer/account/premium'}>Premium Member</ListGroupItem>
-                            <ListGroupItem href={'/customer/account/rewards'}>My Rewards ${props.rewardsPointAmount}</ListGroupItem>
-                            </React.Fragment>
-                            : ''
-                        }
+                       
+                      
                     </ListGroup>
                 </Panel.Body>
             </Panel>

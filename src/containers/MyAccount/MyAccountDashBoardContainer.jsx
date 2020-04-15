@@ -32,9 +32,10 @@ class MyAccountDashBoardContainer extends React.Component {
 
     componentDidMount() {
         document.title = 'My Account';
-        this.props.getuserProfileData({
-            apiToken: _get(_get(this.props.loginData, '[0].result'), 'api_token'),
-        });
+        
+      //  this.props.getuserProfileData({
+        //    apiToken: _get(_get(this.props.loginData, '[0].result'), 'api_token'),
+        //});
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({
@@ -42,6 +43,7 @@ class MyAccountDashBoardContainer extends React.Component {
         });
     }
     render() {
+        console.log(this.props);
         if (!this.props.apiToken) {
             return <Redirect push to={{
                 pathname: '/login',
@@ -49,30 +51,18 @@ class MyAccountDashBoardContainer extends React.Component {
         }
         return (
             <div>
-                <BreadCrumbs
-                    list={this.state.breadCrumbsList} />
+               <br/><br/>
                 <div className="container" >
                     <div className='container-block'>
-                        {!_get(this.state.profileData, 'result.[0]') &&
-                            < span className="infinite-loader-class wholepageLoader" >
-                                <img
-                                    className="loaderContainer"
-                                    src={lazyLoader}
-                                    alt="lazy-loader"
-                                />
-                            </span>
-                        }
+                      
                         <div className="col-md-3 col-sm-4 col-xs-12">
                             <OneColumLeft
-                                salesRepUser={this.props.salesRepUser}
-                                primeUser={this.props.primeUser}
-                                rewardsPointAmount={_get(this.props.userProfileData, ['rewardspoin_details', 'point_amount'], 0)}
                             />
                         </div>
                         <div className="col-md-9 col-sm-8 col-xs-12">
                             <ErrorBoundary>
                                 <Dashboard
-                                    logingData={_get(this.props.loginData, '[0].result')}
+                                    loginData={_get(this.props.loginData, '[0].result')}
                                     userData={_get(this.state.profileData, 'result.[0]')}
                                     profielData={this.state.profileData}
                                     billingData={_get(this.state.profileData, 'default_billing_address')}
@@ -80,13 +70,12 @@ class MyAccountDashBoardContainer extends React.Component {
                                     ratingData={_get(this.state.profileData, 'rating')}
                                     tagData={_get(this.state.profileData, 'tag')}
                                     successMessage={_get(this.props, 'location.state.message')}
-                                    primeUser={this.props.primeUser}
-                                    rewardsPointDetails={_get(this.props.userProfileData, 'rewardspoin_details')}
                                 />
                             </ErrorBoundary>
                         </div>
                     </div >
                 </div>
+                <hr className="blue-hr"></hr>
             </div>
         );
     }

@@ -2,6 +2,7 @@
 /* eslint-disable quote-props */
 import React from 'react';
 import Redirect from 'react-router/Redirect';
+//import SweetAlert from 'react-bootstrap-sweetalert';
 import connect from 'react-redux/lib/connect/connect';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -13,6 +14,7 @@ import _find from 'lodash/find';
 import _sortBy from 'lodash/sortBy';
 import _endsWith from 'lodash/endsWith';
 import moment from 'moment';
+import axios from 'axios';
 import StarRatings from 'react-star-ratings';
 import HrCommon from '../../components/Common/HrCommon.jsx';
 import ProductDetailComponent from '../../components/ProductComponent/ProductDetailComponent.jsx';
@@ -28,9 +30,10 @@ import {
   postTags, postReviews,
   fetchProductReviews,
   fetchUpsellingProducts,
+  fetchReviewData,
 } from '../../actions/products';
 import { mapAddToCartApiData } from '../../utils/commonMapper';
-import { postAddToCartData, clearCartData, flushCartViewData } from '../../actions/cart';
+import { postProductAddToCartData, clearCartData, flushCartViewData } from '../../actions/cart';
 // import { receiveShowLoginModalData } from '../../actions/login';
 import ChangeStoreModal from '../../components/Common/ChangeStoreModal.jsx';
 import { fetchAddToFavsData } from '../../actions/myfavourites';
@@ -45,6 +48,7 @@ import ErrorBoundary from '../ErrorBoundary.jsx';
 import ReviewComponent from '../../components/ProductComponent/reviewComponent.jsx';
 import CustomerReviewComponent from '../../components/ProductComponent/CustomerReviewComponent.jsx';
 import { fetchProductVendorReviews } from '../../actions/vendorReviews';
+import imc from  '../../assets/svg/401.png';
 
 class ProductDetailContainer extends React.Component {
   constructor(props) {
@@ -57,6 +61,7 @@ class ProductDetailContainer extends React.Component {
       handleProductDetailClick: false,
       listData: {},
       productDetails: [],
+      moreData: [], 
       productId: this.props.match.params && this.props.match.params.id && this.props.match.params.id.split('-').pop().split('.').shift(), // this.props.location.hash && this.props.location.hash.substring(1),
       showMoreDetails: false,
       submitReviewAlert: false,
@@ -75,6 +80,7 @@ class ProductDetailContainer extends React.Component {
       showChangeStoreModal: false,
       storeName: this.props.storeName,
       showImageModal: false,
+      showReviewModal: false,
       productImageUrl: undefined,
       breadCrumbsList: [
         {
@@ -90,6 +96,7 @@ class ProductDetailContainer extends React.Component {
       freshdeal: false,
       responsive: { 480: { items: 2 }, 760: { items: 3 }, 900: { items: 4 } },
       productReviewData: [],
+      testData: [],
       blinkText: '',
       redirectToVendorRevPage: false,
       vendorId: '',
@@ -98,6 +105,8 @@ class ProductDetailContainer extends React.Component {
       quantity: undefined,
       redirectNotFound: false,
       showCustReview: false,
+      showData:3,
+      valueData: 0,
     };
   }
 
@@ -106,23 +115,13 @@ class ProductDetailContainer extends React.Component {
     let errors = {};
     let formIsValid = true;
 
-    if (!fields.name) {
+    if (!fields.review_title) {
       formIsValid = false;
-      errors.name = "This is a required field.";
+      errors.review_title = "This is a required field.";
     }
-    if (typeof fields.name !== "undefined") {
-      if (!fields.name.match(/^[a-zA-Z ]+$/)) {
-        formIsValid = false;
-        errors.name = "Nickname is not valid";
-      }
-    }
-    if (!fields.reviewTitle) {
+    if (!fields.review_details) {
       formIsValid = false;
-      errors.reviewTitle = "This is a required field.";
-    }
-    if (!fields.reviewDetails) {
-      formIsValid = false;
-      errors.reviewDetails = "This is a required field.";
+      errors.review_details = "This is a required field.";
     }
     if (this.state.rating == 0) {
       formIsValid = false;
@@ -139,29 +138,61 @@ class ProductDetailContainer extends React.Component {
     this.setState({ fields });
   }
 
+  IncrementItem = () => {
+    console.log('surya');
+    this.setState({ valueData: this.state.valueData + 1 });
+    console.log(this.state.valueData);
+  }
+  DecreaseItem = () => {
+    console.log();
+    this.setState({ valueData: this.state.valueData - 1 });
+    console.log(this.state.valueData);
+  }
+
   submitReviews = () => {
+    console.log(this.handleValidation());
     if (_isEmpty(this.props.apiToken)) {
-      this.props.showLoginModal({ show: true });
+     // this.props.showLoginModal({ show: true });
     } else if (this.handleValidation()) {
+      console.log('test')
       const reqBody = ({
-        apiToken: _get(this.props, 'apiToken'),
-        productId: _get(this.state, 'productId'),
-        storeId: this.props.localeId,
-        qualityRating: _get(this.state, 'rating'),
+        api_token: _get(this.props, 'apiToken'),
+        product_id: _get(this.state, 'productId'),
+        first_name: _get(this.props,'loginData[0].result.cust_name'),
+        store_id: _get(this.props,'localeId'),
+        quality_rating: _get(this.state, 'rating'),
         ...this.state.fields,
       });
+      console.log(reqBody);
       this.props.submitReviewsData(reqBody);
     }
+    
     this.setState({
-      submitReviewAlert: true,
+      showReviewModal: !(this.state.showReviewModal),
     });
+
   }
+
+ 
 
   changeRating = (newRating) => {
     this.setState({
       rating: newRating,
     });
   }
+
+ // showReviewModal = () => this.setState(prevState => 
+ // ({
+   // showReview: !prevState.showReview,
+ // }));
+
+ showReviewModal = () => {
+   console.log('test');
+  this.setState({
+    showData: !this.state.showData,
+  });
+}
+
 
   showLoginPopup = () => {
     this.props.showLoginModal({ show: true });
@@ -207,6 +238,13 @@ class ProductDetailContainer extends React.Component {
     });
   }
 
+
+  toggleReviewModalFn = () => {
+    this.setState({
+      showReviewModal: !(this.state.showReviewModal),
+    });
+  }
+
   handleAddToWishlist = () => {
     this.props.addToWhishlist({
       apiToken: this.props.apiToken,
@@ -222,8 +260,8 @@ class ProductDetailContainer extends React.Component {
     });
   }
 
-  focusReview = () => {
-    this.setState({ showCustReview: true });
+  focusReview = (d) => {
+    this.setState({ showData : d });
   }
 
   vendorRatingsHover = (vendorId) => {
@@ -231,38 +269,55 @@ class ProductDetailContainer extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.productId && Number.isInteger(Number(this.state.productId))) {
-      this.props.getProductDetails({
-        "currencyCode": _get(this.props, 'currencyCode'),
-        "apiToken": _get(this.props, 'apiToken'),
-        "storeId": _get(this.props, 'storeId'),
-        "pageNo": 1,
-        "productId": this.state.productId,
-      });
-      this.props.getMyProductReviews({
-        "productId": this.state.productId,
-      });
-    } else {
-      this.setState({ redirectNotFound: true });
-    }
+    console.log(this.state.productId);
+    
+   
+      this.props.getRelatedProducts(this.state.productId);
+  
+      this.props.getProductDetails(this.state.productId);
+
+      this.props.getUpsellProducts(this.state.productId);
+      
+     // this.props.getReview({
+      //  apiToken: '7069a92e71dfe2b0b4733b290c02c66f',
+       // productId: this.state.productId,
+      //})
+      
+
+      this.props.getReview({          
+        api_token: '7069a92e71dfe2b0b4733b290c02c66f',
+        product_id: this.state.productId,
+     });
+
+   
   }
 
+
   UNSAFE_componentWillReceiveProps(nextProps) {
+     console.log(nextProps);
+     console.log(this.props.type);
+     if (this.props.type === 'RECEIVED_POST_PRODUCT_REVIEW_SUCCESS')
+     {
+       console.log('success-test');
+      
+     }
     if (!_isEmpty(nextProps.productDetailsData)) {
-      const productDetails = _get(nextProps.productDetailsData, `productDetail.result.${this.state.productId}`);
+      const productDetails = _get(nextProps.productDetailsData[0], `result.${this.state.productId}`);
+      const moreData = _get(nextProps.productDetailsData[0], `result.0.info`);
+      console.log(productDetails);
       if (!productDetails || _isEmpty(productDetails)) {
         return this.setState({
           redirectNotFound: true,
         });
       }
-      const rewardLine = _get(nextProps.productDetailsData, 'productDetail.rewardpoint');
-      const overView = _get(nextProps.productDetailsData, 'productDetail.over_view');
+      const rewardLine = _get(nextProps.productDetailsData[0], 'rewardpoint');
+      const overView = _get(nextProps.productDetailsData[0], 'over_view');
       let datesArray = _get(productDetails, 'delivery', []);
       if (datesArray.length > 0) {
         datesArray = _sortBy(datesArray, o => o.delivery_date);
       }
       if (_get(productDetails, 'info')) {
-        document.title = _get(productDetails, 'info.page_title') ? _get(productDetails, 'info.page_title') : _get(productDetails, 'info.name');
+        document.title = _get(productDetails, 'info.meta_title') ? _get(productDetails, 'info.meta_title') : _get(productDetails, 'info.name');
         const metaDesc = _get(productDetails, 'info.meta_description');
         const metaTitle = _get(productDetails, 'info.meta_title');
         const productInfo = {
@@ -273,7 +328,7 @@ class ProductDetailContainer extends React.Component {
           price: _get(productDetails, 'info.price_range'),
           time: moment().format('x'),
         };
-        this.props.updateRecentViews({ productInfo });
+        //this.props.updateRecentViews({ productInfo });
         // }
         // productDetails.delivery = datesArray;
         const dataTempAvail = _get(productDetails, 'delivery[0]');
@@ -301,16 +356,6 @@ class ProductDetailContainer extends React.Component {
             productDetails.info[avaiId].approxPrice = approxPrice;
           });
         }
-        const breadCrumbsList = [
-          {
-            link: '/',
-            name: 'HOME',
-          },
-          {
-            link: undefined,
-            name: 'BUY ARTIFACTS',
-          },
-        ];
         if (this.state.currentUrl && this.state.currentUrl !== window.location.href) {
           window.location.reload();
         }
@@ -321,19 +366,24 @@ class ProductDetailContainer extends React.Component {
           dataToShow,
           datesArr,
           dispalyMoreAvails,
-          breadCrumbsList,
+        //  breadCrumbsList,
           currentUrl: window.location.href,
           metaDesc,
           metaTitle,
           rewardLine,
+          moreData,
         });
       }
     }
     if (!_isEmpty(nextProps.relatedProductsData)) {
-      const relatedProducts = _get(nextProps, 'relatedProductsData');
+      const relatedProducts = _get(nextProps, 'relatedProductsData[0].data');
+      console.log(relatedProducts);
+      if(relatedProducts != null)
+      {
       this.setState({
         children: this.createChildren({ relatedProducts }),
       });
+       }
     }
     if (!_isEmpty(nextProps.postTagsData)) {
       this.setState({
@@ -354,20 +404,15 @@ class ProductDetailContainer extends React.Component {
     }
 
 
-    if (!_isEmpty(nextProps.addCartResponseDetails) && (this.props.type === 'REQUEST_ADD_TO_CART') && (this.props.cartCount !== _get(nextProps.addCartResponseDetails, ['total_products_in_cart']))) {
+    if (!_isEmpty(nextProps.addCartResponseDetails) && (this.props.cartCount !== _get(nextProps.addCartResponseDetails, ['total_products_in_cart']))) {
+      console.log(_get(nextProps, 'addCartResponseDetails[0].total_products_in_cart'));
       this.props.updateCart({
         show: true,
-        cartCount: _get(nextProps.addCartResponseDetails, ['total_products_in_cart']),
-        cartTotal: _get(nextProps.addCartResponseDetails, ['subtotal']),
-        cartProducts: _get(nextProps.addCartResponseDetails, ['result']),
+        cartCount: _get(nextProps, 'addCartResponseDetails[0].total_products_in_cart'),
+        cartProducts: _get(nextProps, 'addCartResponseDetails[0].items')
       });
-      this.props.setCartId(_get(nextProps.addCartResponseDetails, 'result') && _get(nextProps.addCartResponseDetails, ['result', [0], 'cart_id']));
-    }
-    if (!_isEmpty(nextProps.addToFavs) && this.props.favouriteType === 'REQUEST_ADD_TO_FAVORITES') {
-      this.props.updateCart({ showFavsCart: true });
-    }
-    if (!_isEmpty(nextProps.addToWishlist) && this.props.wishlistType === 'REQUEST_SUBMIT_ADD_TO_WISHLIST') {
-      this.props.updateCart({ showWishlistCart: true });
+      console.log(this.props.cartCount);
+      //this.props.setCartId(_get(nextProps.addCartResponseDetails, 'result') && _get(nextProps.addCartResponseDetails, ['result', [0], 'cart_id']));
     }
 
 
@@ -386,18 +431,24 @@ class ProductDetailContainer extends React.Component {
 
     //     }
 
-    if (!_isEmpty(nextProps.productReviewData)) {
+    if (!_isEmpty(nextProps.reviewData)) {
+      console.log(nextProps.reviewData);
       this.setState({
-        productReviewData: nextProps.productReviewData,
+        productReviewData: nextProps.reviewData[0],
       });
     }
     if (!_isEmpty(nextProps.upsellProductsData)) {
-      const upsellProducts = _get(nextProps, 'upsellProductsData.0.result');
+      console.log(nextProps.upsellProductsData[0].code);
+      if (nextProps.upsellProductsData[0].code === 1)
+      {
+      const upsellProducts = _get(nextProps, 'upsellProductsData[0].result');
+      console.log(upsellProducts);
       if (!_isEmpty(upsellProducts)) {
         this.setState({
           upsellChildrens: this.createUpsellChildrens({ upsellProducts }),
         });
       }
+    }
     }
 
     if (!_isEmpty(_get(nextProps, 'productVendorReviews'))) {
@@ -441,7 +492,7 @@ class ProductDetailContainer extends React.Component {
       const pdtUrl = this.props.match.params && this.props.match.params.id;
       if (pdtUrl && _endsWith(pdtUrl, '.html')) {
         this.props.getRelatedProducts({
-          "productId": this.state.productId,
+          "product_id": this.state.productId,
         });
         this.props.getUpsellProducts({
           "productId": this.state.productId,
@@ -479,38 +530,44 @@ class ProductDetailContainer extends React.Component {
   // createChildren = n => _range(n).map(i => <div key={i} style={{
   //   height: 200, background: '#309087', width: 200, borderRadius: '50%', textAlign: 'center', verticalAlign: 'middle',
   // }}>{i}</div>);
-
   createChildren = ({ relatedProducts }) => Object.keys(relatedProducts).map(i =>
-    <div key={i} className="carouselParentDiv" onClick={() => this.reloadProductsData(i)}>
-      <div className="carouselImgDiv">
-        <img src={_get(relatedProducts[i], 'imageurl')} width="100%" height="100%" className="carouselImg" />
-      </div>
-      <div className="carouselTextDiv">
-        {/* <p>{_get(relatedProducts[i], 'name')}</p>
-        <button type="button" className="btn btn-info">Add to Cart</button> */}
-        <div className="product-name product-name-resp">
-          <span>{_get(relatedProducts[i], 'name')}</span>
+      <center>
+      <div key={i} style={{height:'400px',width:'200px'}}>
+      <div class="responsive"  style={{backgroundImage:`url(${imc})`,height: '330px',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}}>
+      <img src={_get(relatedProducts[i], 'image_url')} style={{marginLeft:'2px',marginTop:'23px',height:'150px',width:'150px'}}/>
+      <div class="text-center" style={{marginTop: '36px'}}> 
+      <br/>  
+            <a href={_get(relatedProducts[i], 'image_url')}>{_get(relatedProducts[i], 'product_name')}</a>
+          <br/><br/>
+                <br/>          
+         
         </div>
-        <div className="add-to-cart">
-          <span className="btn btn-cart">ADD TO CART</span>
+        <div style={{marginBottom: '10px'}}>
+        <span>MRP : RS {_get(relatedProducts[i], 'regular_rice')}</span>
         </div>
       </div>
-    </div>);
+  </div> 
+  </center>
+    );
 
   createUpsellChildrens = ({ upsellProducts }) => Object.keys(upsellProducts).map(i =>
-    <div key={i} className="carouselParentDiv" onClick={() => this.reloadProductsData(i)}>
-      <div className="carouselImgDiv">
-        <img src={_get(upsellProducts[i], 'image_url')} width="100%" height="100%" className="carouselImg" />
-      </div>
-      <div className="carouselTextDiv">
-        <div className="product-name product-name-resp">
-          <span>{_get(upsellProducts[i], 'name')}</span>
+    <center>
+      <div key={i} style={{height:'400px',width:'200px'}}>
+      <div class="responsive"  style={{backgroundImage:`url(${imc})`,height: '330px',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}}>
+      <img src={_get(upsellProducts[i], 'image_url')} style={{marginLeft:'2px',marginTop:'23px',height:'150px',width:'150px'}}/>
+      <div class="text-center" style={{marginTop: '36px'}}> 
+      <br/>  
+            <a href={_get(upsellProducts[i], 'image_url')}>{_get(upsellProducts[i], 'name')}</a>
+          <br/><br/>
+                <br/>          
+         
         </div>
-        <div className="add-to-cart">
-          <span className="btn btn-cart">ADD TO CART</span>
+        <div style={{marginBottom: '10px'}}>
+        <span>MRP : {_get(upsellProducts[i], 'price')}</span>
         </div>
       </div>
-    </div>);
+  </div> 
+  </center>);
 
   // changeActiveItem = activeItemIndex => this.setState({ activeItemIndex });
   // Ends carousel stuff
@@ -581,22 +638,30 @@ class ProductDetailContainer extends React.Component {
   }
   // end of input validation
 
-  addToCart = () => {
-
-    const reqBody = mapAddToCartApiData({
-      ...this.state.dataToShow,
-      pid: this.state.productId,
-      totalAmount: this.state.totalAmount,
-      unitQty: this.state.unitQty,
-      apiToken: _get(this.props, 'apiToken'),
-      customerStoreId: this.state.selectedStoreId ? this.state.selectedStoreId : this.props.storeId,
+  addProductToCart = () => {
+    console.log(this.state.productDetails);
+    const reqBody = ({
+      api_token: _get(this.props, 'apiToken'),
+      delivery_method: 'Jessicainfosystem Express',
+      delivery_date: '11-Mar-2020',
+      qty_per_box:'10',
+      pickup_date:'10-03-2020',
+      prod_avail_id: '79425',
+      product_id: this.state.productId,
+      cost_per_unit:this.state.productDetails.info.price,
+      api:'api',
+      customer_store_id: this.props.storeId,
       loc_ID: 390,
       user: this.props.user,
+      qty:this.state.valueData,
+      from_time:'2:00',
+      to_time:'5:00',
     });
+    console.log(reqBody);
     this.props.addCartData(reqBody);
 
     this.setState({
-      quantity: 0
+      valueData: 0
     });
   }
 
@@ -632,6 +697,10 @@ class ProductDetailContainer extends React.Component {
   }
 
   render() {
+    console.log(this.props.relatedProductsData);
+    console.log(this.props.productDetailsData);
+    console.log(this.props.upsellProductsData);
+    console.log(this.state.productDetails);
     if (this.state.showCustReview) {
       window.scrollTo({
         top: this.custrev.current.offsetTop - 0, // could be negative value
@@ -678,81 +747,12 @@ class ProductDetailContainer extends React.Component {
 
     return (
       <div>
-        <BreadCrumbs
-          list={this.state.breadCrumbsList} />
-        <div className='container'>
-          <div className='row'>
-            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-              <img src={detailIcon} alt='' width='100%' />
-            </div>
-            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-              <h3>PRODUCT TITLE</h3>
-              <hr />
-              <div>
-                Lorem i psum dolor si t a met, consectetuer a di p i sci nge li t , sed
-di a m nonummy ni bh eui smod Lorem i psum do lo r si t am et , co nsec-
-tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d co nsec-
-tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d co nsec-
-tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
-                </div>
-              <hr />
-              <div>
-                Based on 43 Reviews 4.6 out of 5 
-                <StarRatings
-                                rating={4.6}
-                                starDimension="16px"
-                                starSpacing="2px"
-                                starEmptyColor="#434343"
-                                starRatedColor="#f06530"
-                            />
-              </div>
-              <div className='mt-3 font-weight-bold price-tag'>
-              ₹ 1, 000. 00
-              </div>
-              <div className='mt-3'>
-              Qty <input type='number' />
-              </div>
-              <div className='mt-3'>
-             Sizes<br/>
-             <input type='text' /> 
-             Inches/Cm
-              </div>
-              <div className='mt-3'>
-              Colors
-              </div>
-              <div className='mt-3 detail-page-add'>
-              <button type="button" className="btn custom-class-button">ADD TO CART</button>
-              <span>
-                Free Shipping
-              </span><br/>
-              <span>
-                Secure Payment
-              </span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <HrCommon title='You Might Like' />
-            <div className='row text-center detail-you-might-like'>
-              <div className='col-3'>
-                <img src={banner11} alt='' />
-              </div>
-              <div className='col-3'>
-                <img src={banner12} alt='' />
-              </div>
-              <div className='col-3'>
-                <img src={banner13} alt='' />
-              </div>
-              <div className='col-3'>
-                <img src={banner14} alt='' />
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* <ErrorBoundary>
+        
+        {<ErrorBoundary>
           <ProductDetailComponent
             // ref={this.inputRef}
             primeUser={this.props.primeUser}
+
             rewardLine={this.state.rewardLine}
             metaDesc={this.state.metaDesc}
             metaTitle={this.state.metaTitle}
@@ -769,6 +769,8 @@ tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
             toggleMoreAvail={this.toggleMoreAvail}
             ProductSwatch={this.ProductSwatch}
             children={this.state.children}
+            showData={this.state.showData}
+            loginData={this.props.loginData}
             // changeActiveItem={this.changeActiveItem}
             // activeItemIndex={this.state.activeItemIndex}
             handleInuputChange={this.handleInuputChange}
@@ -780,7 +782,7 @@ tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
             addTags={this.addTags}
             showAlertDiv={this.state.showAlertDiv}
             quantity={this.state.quantity}
-
+            showData={this.state.showData}
             submitReviewAlert={this.state.submitReviewAlert}
             submitTagAlert={this.state.submitTagAlert}
 
@@ -795,8 +797,11 @@ tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
             storeName={this.state.storeName}
             handleShowChangeStore={this.handleShowChangeStore}
             toggleImgModalFn={this.toggleImgModalFn}
+            toggleReviewModalFn={this.toggleReviewModalFn}
             productImageUrl={this.state.productImageUrl}
             showImageModal={this.state.showImageModal}
+            showReview={this.state.showReview}
+            showReviewModal={this.state.showReviewModal}
             handleAddToFavorites={this.handleAddToFavorites}
             handleAddToWishlist={this.handleAddToWishlist}
             responsive={this.state.responsive}
@@ -808,29 +813,13 @@ tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
             focusReview={this.focusReview}
             productVendorReviews={this.state.productVendorReviews}
             vendorRatingsHover={this.vendorRatingsHover}
-          />
-          <CustomerReviewComponent
-            ref={this.custrev}
-            productReviewData={this.state.productReviewData}
-          />
-          <ReviewComponent
-            ref={this.inputRef}
-            changeRating={this.changeRating}
-            rating={this.state.rating}
-            submitReviews={this.submitReviews}
-            alertData={this.state.alertData}
-            handleChange={this.handleChange}
-            errors={this.state.errors}
-            productDetails={this.state.productDetails}
-          />
-          <ChangeStoreModal
-            storeList={_get(this.props.loginData, [0, 'result', 'store_list'], [])}
-            selectedStoreId={this.state.selectedStoreId ? this.state.selectedStoreId : this.props.storeId}
-            showChangeStoreModal={this.state.showChangeStoreModal}
-            handleCloseModal={this.handleCloseModal}
-            handleMethodChange={this.handleMethodChange}
-          />
-        </ErrorBoundary> */}
+            valueData={this.state.valueData}
+            IncreaseItem={this.IncrementItem}
+            DecreaseItem={this.DecreaseItem}
+            addProductToCart={this.addProductToCart}
+            moreData={this.state.moreData}
+          />         
+        </ErrorBoundary>}
       </div>
     );
   }
@@ -838,7 +827,7 @@ tetue r a di pi sci ngeli t, sed di a m nonummy ni bh eu i sm o d
 
 const mapDispatchToProps = dispatch => ({
   getProductDetails: data => dispatch(fetchProductDetails(data)),
-  addCartData: data => dispatch(postAddToCartData(data)),
+  addCartData: data => dispatch(postProductAddToCartData(data)),
   getRelatedProducts: data => dispatch(fetchRelatedProducts(data)),
   addTagsData: data => dispatch(postTags(data)),
   submitReviewsData: data => dispatch(postReviews(data)),
@@ -855,6 +844,7 @@ const mapDispatchToProps = dispatch => ({
   flushCartViewData: () => dispatch(flushCartViewData()),
   setCartId: data => dispatch(setCartId(data)),
   getProductReviews: data => dispatch(fetchProductVendorReviews(data)),
+  getReview: data => dispatch(fetchReviewData(data)),
 });
 
 const mapStateToProps = (state) => {
@@ -873,8 +863,10 @@ const mapStateToProps = (state) => {
     productDetailsData,
     postTagsData,
     productReviewsData,
-    isFetching: isLoading,
-    upsellProductsData,
+   isFetching: isLoading,
+   upsellProductsData,
+   reviewData,
+   postPRSuccess,
     error: PDTerror,
   } = productDetailReducer || [];
 
@@ -954,6 +946,8 @@ const mapStateToProps = (state) => {
     productVendorReviews,
     primeUser,
     cartCount,
+    reviewData,
+    postPRSuccess,
   };
 };
 

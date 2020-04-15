@@ -14,16 +14,27 @@ const renderDay = (inputProps, currentDate) => {
 };
 
 function FilterLabelList(props) {
+    console.log(props);
     // eslint-disable-next-line prefer-destructuring
     const val = props.val;
     return (
         <React.Fragment>
             {val && val.label &&
-                <li key={props.id} className='filter-li-items'>
+                <li key={props.id} className='filter-li-items' style={{paddingLeft:'10px'}}>
+                    <div className="row" >
+                        <div className="col-sm-2">
                     <input type="checkbox" name={props.name} value={val.key}
                         checked={props.checkValues && props.checkValues.includes(val.key)}
                         onChange={props.handleFilterCheckBoxChange} />
-                    <span className='checkbox-names-filter'>{val && val.label} ({val.count})</span>
+                        </div> 
+                        <div className="col-sm-7">
+                    <span className='checkbox-names-filter'>{val && val.label}</span>
+                    </div>
+                    <div className="col-sm-3">
+
+                    <span style={{textAlign:'right'}}>{val.count}</span>
+                    </div>
+                    </div>
                 </li>
             }
         </React.Fragment>
@@ -32,11 +43,15 @@ function FilterLabelList(props) {
 
 function FilterLabelListWithSearch(props) {
     return (
-        <ol className='category-sidebar list-unstyled'>
-            {/* <div>
-                <span className='glyphicon glyphicon-search search-icon-filter' />
-                <input className='cat-search' name={props.filterName} type='text' placeholder='Search' onChange={props.handleCategorySearch} />
-            </div> */}
+        <ol className='category-sidebar list-unstyled panel-collapse collapse' id="collapse1">
+            <br/>
+            <div>
+                <center>
+                <input style={{backgroundColor:'#f8f8f8',borderBottomStyle:'none',padding:'4px'}} className='cat-search' name={props.filterName} type='text' placeholder='Search' onChange={props.handleCategorySearch} />
+                <span style={{backgroundColor:'#2fafcc',padding:'6px'}} className='glyphicon glyphicon-search search-icon-filter' />
+                </center>
+            </div>
+            <br/>
             {props.filteredData && props.filteredData.map(eachValue => (
                 <FilterLabelList key={eachValue.key} id={eachValue.key} val={eachValue} name={props.filterName} checkValues={props.checkValues}
                     handleFilterCheckBoxChange={event => props.handleFilterCheckBoxChange(event, props.filterName)} />
@@ -46,20 +61,51 @@ function FilterLabelListWithSearch(props) {
     );
 }
 
+function FilterLabelListWithSearch1(props) {
+    return (
+        <ol className='category-sidebar list-unstyled'>
+            <br/>
+            <div>
+                <center>
+                <input style={{backgroundColor:'#f8f8f8',borderBottomStyle:'none',padding:'4px'}} className='cat-search' name={props.filterName} type='text' placeholder='Search' onChange={props.handleCategorySearch} />
+                <span style={{backgroundColor:'#2fafcc',padding:'6px'}} className='glyphicon glyphicon-search search-icon-filter' />
+                </center>
+            </div>
+            <br/>
+            {props.filteredData && props.filteredData.map(eachValue => (
+                <FilterLabelList key={eachValue.key} id={eachValue.key} val={eachValue} name={props.filterName} checkValues={props.checkValues}
+                    handleFilterCheckBoxChange={event => props.handleFilterCheckBoxChange(event, props.filterName)} />
+            ))
+            }
+        </ol>
+    );
+}
+
+
+
 export default function FilterComponent(props) {
     return (
         <div className='filter-sidebar'>
 
-            <h3>TYPE</h3>
-            <FilterLabelListWithSearch
+
+
+          
+<div style={{border:'1px Solid rgb(47, 175, 204)'}}>
+           <div style={{fontSize: '14px',fontWeight: '700',color:'white',backgroundColor: 'rgb(47, 175, 204)',textTransform: 'uppercase',width:'100%',padding:'10px'}}>
+                            Categories
+                              </div>
+            <FilterLabelListWithSearch1
                 filterName='category'
                 filteredData={props.categoryData}
                 checkValues={props.category}
                 handleCategorySearch={props.handleCategorySearch}
                 handleFilterCheckBoxChange={props.handleFilterCheckBoxChange}
             />
-
-            <h3>SCULPTURE</h3>
+ </div>
+           <div style={{border:'1px Solid rgb(47, 175, 204)'}}>
+           <div data-toggle="collapse" href="#collapse1" style={{fontSize: '14px',fontWeight: '700',color:'white',backgroundColor: 'rgb(47, 175, 204)',textTransform: 'uppercase',width:'100%',padding:'10px'}}>
+                            Color
+                              </div>
             <FilterLabelListWithSearch
                 filterName='color'
                 filteredData={props.colorsData}
@@ -67,8 +113,12 @@ export default function FilterComponent(props) {
                 handleCategorySearch={props.handleCategorySearch}
                 handleFilterCheckBoxChange={props.handleFilterCheckBoxChange}
             />
+            </div>
 
-            <h3>MATERIALS USED</h3>
+            <div style={{border:'1px Solid rgb(47, 175, 204)'}}>
+           <div data-toggle="collapse" href="#collapse1" style={{fontSize: '14px',fontWeight: '700',color:'white',backgroundColor: 'rgb(47, 175, 204)',textTransform: 'uppercase',width:'100%',padding:'10px'}}>
+                            Farm
+                              </div>
             <FilterLabelListWithSearch
                 filterName='farm'
                 filteredData={props.farmsData}
@@ -76,8 +126,12 @@ export default function FilterComponent(props) {
                 handleCategorySearch={props.handleCategorySearch}
                 handleFilterCheckBoxChange={props.handleFilterCheckBoxChange}
             />
-
-            <h3>TYPE OF PAINT</h3>
+            </div>
+        <div style={{border:'1px Solid rgb(47, 175, 204)'}}>
+           <div data-toggle="collapse" href="#collapse1" style={{fontSize: '14px',fontWeight: '700',color:'white',backgroundColor: 'rgb(47, 175, 204)',textTransform: 'uppercase',width:'100%',padding:'10px'}}>
+           Location
+                              </div>
+           
             <FilterLabelListWithSearch
                 filterName='location'
                 filteredData={props.stateCityData}
@@ -85,13 +139,7 @@ export default function FilterComponent(props) {
                 handleCategorySearch={props.handleCategorySearch}
                 handleFilterCheckBoxChange={props.handleFilterCheckBoxChange}
             />
-
-
-            <h3>SIZES</h3>
-            <input type='text' />
-
-            <h3>SHADES</h3>
-
+            </div>
         </div>
     );
 }

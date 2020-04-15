@@ -1,39 +1,35 @@
 import _get from 'lodash/get';
+import axios from 'axios';
+import qs from 'qs';
 import * as BKM_CONSTANTS from '../constants/bkmList';
 import dynamicActionWrapper, { generateFns } from '../utils/actionHelper';
 
-export const requestBkmListSearchData = subreddit => ({
+
+export const requestBkmListSearchData = () => ({
   type: BKM_CONSTANTS.REQUEST_BKM_LIST_SEARCH,
-  subreddit,
 });
 
-export const receiveBkmListSearchData = (subreddit, json) => ({
+export const receiveBkmListSearchData = data => ({
   type: BKM_CONSTANTS.RECEIVED_BKM_LIST_SEARCH,
-  subreddit,
-  data: json,
-  receivedAt: Date.now(),
-});
-
-const receiveBkmListSearchDataError = (subreddit, err, errCode) => ({
+   data,
+   receivedAt: Date.now(),
+})  
+export const receiveBkmListSearchDataError = (err) => ({
   type: BKM_CONSTANTS.RECEIVED_BKM_LIST_SEARCH_ERROR,
-  subreddit,
-  error: err,
-  errorCode: errCode,
-});
+  errorCode: err,
+})
 
-export const fetchBKMListingData = (data, subreddit) => (dispatch) => {
-  return dispatch(dynamicActionWrapper({
-    path: BKM_CONSTANTS.PRODUCTS_DATA_URL,
-    method: 'POST',
-    body: data,
-    initCb: requestBkmListSearchData,
-    successCb: receiveBkmListSearchData,
-    failureCb: receiveBkmListSearchDataError,
-    subreddit,
-    wrapperActionType: 'FETCH_BKM_LIST_SEARCH_RESULT_WRAPPER',
-    redirect: 'follow',
-  }));
-};
+
+
+export const fetchBKMListingData = (data) => {
+  requestBkmListSearchData();
+    console.log(data);
+  return dispatch => {
+    axios.post( BKM_CONSTANTS.PRODUCTS_DATA_URL,qs.stringify(data))
+      .then(res => dispatch(receiveBkmListSearchData(res.data)))
+      .catch(err => dispatch(receiveBkmListSearchDataError(err)))
+  }
+}
 
 export const requestBkmCartData = subreddit => ({
   type: BKM_CONSTANTS.REQUEST_CART_LIST_SEARCH,
@@ -69,38 +65,32 @@ export const fetchCartData = (data, subreddit) => (dispatch) => {
   );
 };
 
-export const requestFilterCategoryData = subreddit => ({
+
+export const requestFilterCategoryData = () => ({
   type: BKM_CONSTANTS.REQUEST_FILTER_CATEGORY_DATA,
-  subreddit,
 });
 
-export const receiveFilterCategoryData = (subreddit, json) => ({
+export const receiveFilterCategoryData = data => ({
   type: BKM_CONSTANTS.RECEIVED_FILTER_CATEGORY_DATA,
-  subreddit,
-  data: json,
-  receivedAt: Date.now(),
-});
-
-const receiveFilterCategoryDataError = (subreddit, err, errCode) => ({
+   data,
+   receivedAt: Date.now(),
+})  
+export const receiveFilterCategoryDataError = (err) => ({
   type: BKM_CONSTANTS.RECEIVED_FILTER_CATEGORY_DATA_ERROR,
-  subreddit,
-  error: err,
-  errorCode: errCode,
-});
+  errorCode: err,
+})
 
-export const fetchFilterCategoryData = (data, subreddit) => (dispatch) => {
-  return dispatch(dynamicActionWrapper({
-    path: BKM_CONSTANTS.CATEGORY_DATA_URL,
-    method: 'POST',
-    body: data,
-    initCb: requestFilterCategoryData,
-    successCb: receiveFilterCategoryData,
-    failureCb: receiveFilterCategoryDataError,
-    subreddit,
-    wrapperActionType: 'FETCH_FILTER_CATEGORY_WRAPPER',
-    redirect: 'follow',
-  }));
-};
+
+
+export const fetchFilterCategoryData = (data) => {
+  requestFilterCategoryData();
+    console.log(data);
+  return dispatch => {
+    axios.post( BKM_CONSTANTS.CATEGORY_DATA_URL,qs.stringify(data))
+      .then(res => dispatch(receiveFilterCategoryData(res.data)))
+      .catch(err => dispatch(receiveFilterCategoryDataError(err)))
+  }
+}
 
 /* FOR HEADER SUGGETION SEARCH DATA */
 export const fetchCategoriesAutoCompleteResult = (data, subreddit) => (dispatch) => {

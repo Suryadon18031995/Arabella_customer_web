@@ -383,6 +383,55 @@ const loginReducer = (state = {
                 type: action.type,
                 error: action.error,
             });
+            case LOGIN_CONSTANTS.REQUEST_LOGIN_RESPONSE_DATA:
+            return Object.assign({}, state, {
+                isFetching: true,
+                type: action.type,
+                loginData: [],
+                apiToken: '',
+                cartId: '',
+                currencyCode: '',
+                storeId: '',
+                user: '',
+                firstName: '',
+                localeId: '',
+                storeName: '',
+                lastUpdatedToken: '',
+                lastUpdated: action.receivedAt,
+                newsletterData: '',
+                logoutData: '',
+            });
+        case LOGIN_CONSTANTS.RECEIVED_LOGIN_RESPONSE_DATA:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                didInvalidate: false,
+                loginData: action.data,
+                apiToken: _get(action.data[0], 'result.api_token', ''),
+                salesRepUser: _get(action.data[0], 'result.sales_rep_customer', ''),
+                primeUser: _get(action.data[0], 'result.prime', ''),
+                demoExpired: _get(action.data[0], 'result.prime_demo', ''),
+                salesRepToken: _get(action.data[0], 'result.sales_rep_customer', '') === 'yes' ? _get(action.data[0], 'result.api_token', '') : '',
+                cartId: _get(action.data[0], 'result.cart_id', ''),
+                currencyCode: _get(action.data[0], 'result.currency_code', ''),
+                storeId: _get(action.data[0], 'result.default_store_id', ''),
+                user: _get(action.data[0], 'result.cust_name', ''),
+                firstName: _get(action.data[0], 'result.fname', ''),
+                localeId: _get(action.data[0], 'result.store_id', ''),
+                storeName: _get(action.data[0], 'result.default_store_name', ''),
+                lastUpdatedToken: action.receivedAt,
+                showLoginModal: !_isEmpty(action.data[0], 'result.api_token'),
+                zipcode: undefined,
+                cartCount: _get(action.data[0], 'total_product_in_cart'),
+                cartProducts: _get(action.data[0], 'items'),
+                cartTotal: _get(action.data, [0, 'cartDetails', 'grandtotal'], 0),
+            });
+        case LOGIN_CONSTANTS.RECEIVED_LOGIN_RESPONSE_ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                type: action.type,
+                error: action.error,
+            });
 
         default:
             return state;

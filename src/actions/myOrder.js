@@ -1,39 +1,34 @@
 import _get from 'lodash/get';
+import axios from 'axios';
+import qs from 'qs';
 import * as MY_ORDER_CONSTANTS from '../constants/myOrder';
 import dynamicActionWrapper, { generateFns } from '../utils/actionHelper';
 
-export const requestMyOrderData = subreddit => ({
+export const requestMyOrderData = () => ({
     type: MY_ORDER_CONSTANTS.REQUEST_MY_ORDER_SEARCH,
-    subreddit,
 });
 
-export const receiveMyOrderData = (subreddit, json) => ({
+export const recievedOrderDetails = data => ({
     type: MY_ORDER_CONSTANTS.RECEIVED_MY_ORDER_SEARCH,
-    subreddit,
-    data: json,
-    receivedAt: Date.now(),
-});
-
-const receiveMyOrderDataError = (subreddit, err, errCode) => ({
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const recievedOrderDetailsError = (err) => ({
     type: MY_ORDER_CONSTANTS.RECEIVED_MY_ORDER_SEARCH_ERROR,
-    subreddit,
-    error: err,
-    errorCode: errCode,
-});
+    errorCode: err,
+  })
 
-export const fetchMyOrderData = (data, subreddit) => (dispatch) => {
-    return dispatch(dynamicActionWrapper({
-        path: MY_ORDER_CONSTANTS.MY_ORDER_URL,
-        method: 'POST',
-        body: data,
-        initCb: requestMyOrderData,
-        successCb: receiveMyOrderData,
-        failureCb: receiveMyOrderDataError,
-        subreddit,
-        wrapperActionType: 'FETCH_MY_ORDER_SEARCH_RESULT_WRAPPER',
-        redirect: 'follow',
-    }));
-};
+ 
+  
+  export const fetchMyOrderData = (data) => {
+      requestMyOrderData();
+      console.log(data);
+    return dispatch => {
+      axios.post('https://uat.mediversal.tech/index.php/api/index/MyDashboard',qs.stringify(data))
+        .then(res => dispatch(recievedOrderDetails(res.data)))
+        .catch(err => dispatch(recievedOrderDetailsError(err)))
+    }
+  }
 
 // my invoice action
 export const requestMyInvoiceData = subreddit => ({

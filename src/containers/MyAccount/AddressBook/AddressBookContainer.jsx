@@ -46,7 +46,7 @@ class AddressBookContainer extends React.Component {
 
     UNSAFE_componentWillMount() {
         this.props.getAllAddressData({
-            apiToken: this.props.apiToken,
+            api_token: this.props.apiToken,
         });
     }
 
@@ -71,6 +71,7 @@ class AddressBookContainer extends React.Component {
     });
 
     UNSAFE_componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
         if (!_isEmpty(_get(nextProps.allAddressData, 'result'))) {
             const allAddresses = _get(nextProps.allAddressData, ['result', 0]);
             const billingAddressId = _get(nextProps.allAddressData, 'billingAddressId');
@@ -165,6 +166,8 @@ class AddressBookContainer extends React.Component {
     };
 
     render() {
+        console.log(this.state);
+        console.log(this.props);
         if (this.state.isEdit) {
             return <Redirect push to={{
                 pathname: '/customer/account/address/edit',
@@ -186,13 +189,12 @@ class AddressBookContainer extends React.Component {
         }
         if (!this.props.apiToken) {
             return <Redirect push to={{
-                pathname: '/login',
+                pathname: '/',
             }} />;
         }
         return (
             <div>
-                <BreadCrumbs
-                    list={this.state.breadCrumbsList} />
+               <br/>
                 <div className="container">
                     <div className='container-block'>
                         <div className="col-md-3 col-sm-4 col-xs-12">

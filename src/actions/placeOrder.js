@@ -1,39 +1,29 @@
 import _get from 'lodash/get';
+import axios from 'axios';
+import qs from 'qs';
 import * as PLACE_ORDER_CONSTANTS from '../constants/placeOrder';
 import dynamicActionWrapper, { generateFns } from '../utils/actionHelper';
 
-export const requestPlaceOrderData = subreddit => ({
-    type: PLACE_ORDER_CONSTANTS.REQUEST_PLACE_ORDER_SEARCH,
-    subreddit,
-});
-
-export const receivePlaceOrderData = (subreddit, json) => ({
+export const receivePlaceOrderData = data => ({
     type: PLACE_ORDER_CONSTANTS.RECEIVED_PLACE_ORDER_SEARCH,
-    subreddit,
-    data: json,
-    receivedAt: Date.now(),
-});
-
-const receivePlaceOrderDataError = (subreddit, err, errCode) => ({
-    type: PLACE_ORDER_CONSTANTS.RECEIVED_PLACE_ORDER_SEARCH_ERROR,
-    subreddit,
-    error: err,
-    errorCode: errCode,
-});
-
-export const fetchPlaceOrderData = (data, subreddit) => (dispatch) => {
-    return dispatch(dynamicActionWrapper({
-        path: PLACE_ORDER_CONSTANTS.PLACE_ORDER_URL,
-        method: 'POST',
-        body: data,
-        initCb: requestPlaceOrderData,
-        successCb: receivePlaceOrderData,
-        failureCb: receivePlaceOrderDataError,
-        subreddit,
-        wrapperActionType: 'FETCH_PLACE_ORDER_RESULT_WRAPPER',
-        redirect: 'follow',
-    }));
-};
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const receivePlaceOrderDataError = (err) => ({
+    type:  PLACE_ORDER_CONSTANTS.RECEIVED_PLACE_ORDER_SEARCH_ERROR,
+    errorCode: err,
+  })
+  
+  
+  
+  export const fetchPlaceOrderData = (data) => {
+      console.log(data);
+    return dispatch => {
+      axios.post(PLACE_ORDER_CONSTANTS.PLACE_ORDER_URL,qs.stringify(data))
+        .then(res => dispatch(receivePlaceOrderData(res.data)))
+        .catch(err => dispatch(receivePlaceOrderDataError(err)))
+    }
+  }
 
 export const requestFirstData = subreddit => ({
     type: PLACE_ORDER_CONSTANTS.REQUEST_FIRSTDATA_SEARCH,

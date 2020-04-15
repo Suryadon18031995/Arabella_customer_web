@@ -1,39 +1,29 @@
 import _get from 'lodash/get';
+import axios from 'axios';
+import qs from 'qs';
 import * as CART_CONSTANTS from '../constants/cart';
 import dynamicActionWrapper, { generateFns } from '../utils/actionHelper';
 
-export const requestFirstCartData = subreddit => ({
-    type: CART_CONSTANTS.REQUEST_FIRST_CART_SEARCH,
-    subreddit,
-});
 
-export const receiveFirstCartData = (subreddit, json) => ({
+
+export const receiveFirstCartData = data => ({
     type: CART_CONSTANTS.RECEIVED_FIRST_CART_SEARCH,
-    subreddit,
-    data: json,
-    receivedAt: Date.now(),
-});
-
-const receiveFirstCartDataError = (subreddit, err, errCode) => ({
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const receiveFirstCartDataError = (err) => ({
     type: CART_CONSTANTS.RECEIVED_FIRST_CART_SEARCH_ERROR,
-    subreddit,
-    error: err,
-    errorCode: errCode,
-});
-
-export const fetchFirstCartData = (data, subreddit) => (dispatch) => {
-    return dispatch(dynamicActionWrapper({
-        path: CART_CONSTANTS.FIRST_CART_URL,
-        method: 'POST',
-        body: data,
-        initCb: requestFirstCartData,
-        successCb: receiveFirstCartData,
-        failureCb: receiveFirstCartDataError,
-        subreddit,
-        wrapperActionType: 'FETCH_FIRST_CART_SEARCH_RESULT_WRAPPER',
-        redirect: 'follow',
-    }));
-};
+    errorCode: err,
+  })
+  
+  export const fetchFirstCartData = (data) => {
+      console.log(data);
+    return dispatch => {
+      axios.post(CART_CONSTANTS.FIRST_CART_URL,qs.stringify(data))
+        .then(res => dispatch(receiveFirstCartData(res.data)))
+        .catch(err => dispatch(receiveFirstCartDataError(err)))
+    }
+  }
 
 export const requestAddToCart = subreddit => ({
     type: CART_CONSTANTS.REQUEST_ADD_TO_CART,
@@ -134,35 +124,6 @@ export const fetchCancelDiscountCouponData = (data, subreddit) => (dispatch) => 
     }));
 };
 
-export const fetchRemoveFromCartData = (data, type, subreddit) => (dispatch) => {
-    const constants = _get(CART_CONSTANTS, 'REMOVE_FROM_CART_URL_CONSTANTS');
-    return dispatch(dynamicActionWrapper({
-        path: _get(constants, 'URL'),
-        method: type,
-        body: data,
-        initCb: _get(generateFns({ constants }), 'request'),
-        successCb: _get(generateFns({ constants }), 'recieved'),
-        failureCb: _get(generateFns({ constants }), 'recievedErr'),
-        subreddit,
-        wrapperActionType: 'REMOVE_FROM_CART_WRAPPER',
-        redirect: 'follow',
-    }));
-};
-
-export const fetchUpdateCartData = (data, type, subreddit) => (dispatch) => {
-    const constants = _get(CART_CONSTANTS, 'UPDATE_CART_URL_CONSTANTS');
-    return dispatch(dynamicActionWrapper({
-        path: _get(constants, 'URL'),
-        method: type,
-        body: data,
-        initCb: _get(generateFns({ constants }), 'request'),
-        successCb: _get(generateFns({ constants }), 'recieved'),
-        failureCb: _get(generateFns({ constants }), 'recievedErr'),
-        subreddit,
-        wrapperActionType: 'UPDATE_CART_WRAPPER',
-        redirect: 'follow',
-    }));
-};
 
 export const fetchMoveToWishlistData = (data, type, subreddit) => (dispatch) => {
     const constants = _get(CART_CONSTANTS, 'MOVE_TO_WISHLIST_CONSTANTS');
@@ -206,6 +167,13 @@ export const setCartTypeData = (data, subreddit) => ({
     receivedAt: Date.now(),
 });
 
+export const setRemoveCartTypeData = (data, subreddit) => ({
+    type: CART_CONSTANTS.SET_REMOVE_PRODUCT_TYPE,
+    subreddit,
+    data,
+    receivedAt: Date.now(),
+});
+
 // Bulk Add to cart action
 export const bulkAddToCartData = (data, subreddit) => (dispatch) => {
     const constants = _get(CART_CONSTANTS, 'BULK_ADD_TO_CART_CONSTANTS');
@@ -243,3 +211,66 @@ export const clearCartData = (data, subreddit) => (dispatch) => {
         redirect: 'follow',
     }));
 };
+
+
+export const recievedPostCartData = data => ({
+    type: CART_CONSTANTS.RECEIVED_ADD_TO_CART,
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const recievedPostError = (err) => ({
+    type: CART_CONSTANTS.RECEIVED_ADD_TO_CART_ERROR,
+    errorCode: err,
+  })
+  
+  export const postProductAddToCartData = (data) => {
+      console.log(data);
+    return dispatch => {
+      axios.post(CART_CONSTANTS.ADD_TO_CART_URL,qs.stringify(data))
+        .then(res => dispatch(recievedPostCartData(res.data)))
+        .catch(err => dispatch(recievedPostError(err)))
+    }
+  }
+
+  export const recievedRemoveFromCartData = data => ({
+    type: CART_CONSTANTS.REMOVE_FROM_CART_URL_CONSTANTS.RECEIVED,
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const recievedRemoveFromCartDataError = (err) => ({
+    type: CART_CONSTANTS.REMOVE_FROM_CART_URL_CONSTANTS.RECEIVED_ERROR,
+    errorCode: err,
+  })
+
+
+
+  export const fetchRemoveFromCartData = (data) => {
+    console.log(data);
+  return dispatch => {
+    axios.post(CART_CONSTANTS.REMOVE_FROM_CART_URL_CONSTANTS.URL,qs.stringify(data))
+      .then(res => dispatch(recievedRemoveFromCartData(res.data)))
+      .catch(err => dispatch(recievedRemoveFromCartDataError(err)))
+  }
+}
+
+export const recievedUpdateFromCartData = data => ({
+    type: CART_CONSTANTS.UPDATE_CART_URL_CONSTANTS.RECEIVED,
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const recievedUpdateFromCartDataError = (err) => ({
+    type: CART_CONSTANTS.UPDATE_CART_URL_CONSTANTS.RECEIVED_ERROR,
+    errorCode: err,
+  })
+
+
+
+  export const fetchUpdateCartData = (data) => {
+    console.log(data);
+  return dispatch => {
+    axios.post(CART_CONSTANTS.UPDATE_CART_URL_CONSTANTS.URL,qs.stringify(data))
+      .then(res => dispatch(recievedUpdateFromCartData(res.data)))
+      .catch(err => dispatch(recievedUpdateFromCartDataError(err)))
+  }
+}
+

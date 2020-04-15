@@ -9,6 +9,7 @@ import { fetchPlaceOrderData, clearPlaceOrderReducer, updateProductQty } from '.
 import ErrorHandler from '../../components/Hoc/ErrorHandler.jsx';
 import { flushCartViewData } from '../../actions/cart';
 import { flushCartData, updatePrimeValue } from '../../actions/login';
+import success from '../../assets/svg/success.svg';
 
 const reduceObject = (data) => {
     const abc = data && data.map(each => ({
@@ -66,10 +67,10 @@ class CheckOutSuccessContainer extends Component {
 
         this.props.flushCartViewData();
         this.props.flushCartData();
-        this.props.updateProductQty({ productIds: _get(this.props.history, 'location.state.productIds') });
-        if (this.props.cartType === 'prime') {
-            this.props.updatePrimeValue('1');
-        }
+       // this.props.updateProductQty({ productIds: _get(this.props.history, 'location.state.productIds') });
+       // if (this.props.cartType === 'prime') {
+         //   this.props.updatePrimeValue('1');
+       // }
 
         const pdData = JSON.stringify(reduceObject(this.props.productInfo));
 
@@ -90,6 +91,7 @@ class CheckOutSuccessContainer extends Component {
     }
 
     render() {
+        console.log(this.state);
         if (_get(this.state, 'showHome')) {
             return <Redirect push to="/" />;
         }
@@ -107,22 +109,32 @@ class CheckOutSuccessContainer extends Component {
         }
 
         return (
-            <div className="container">
-                <div className="checkout-success">
-                    <div className="page-title">
-                        <h1>Your order has been received.</h1>
-                    </div>
-                    <div className="success-block">
-                        <h2 className="sub-title">Thank you for your purchase!</h2>
-                        <p>Your order # is: {_get(this.props.history, 'location.state.orderId')}. Your payment of ${_get(this.props.history, 'location.state.placeOrderAmount')} was successfully processed. </p>
-                        <p>You will receive an order confirmation email with details of your order and a link to track its progress.</p>
-                        <div className="buttons-set">
-                            <button type="button" className="button" title="Continue Shopping" onClick={this.handleContinueClick}><span><span>Continue Shopping</span></span></button>
-                        </div>
-                    </div>
+            <div className="text-center">
+                
+            <div className="checkout-success">
+                <div className="page-title">
+                    <h1 style={{color:'#007abf'}}>Thank You For Your Purchase</h1>
                 </div>
+                <br/>
+                <br/>
+                <div className="success-block">
+                    <p>Your Order Number is: <b>{_get(this.props.history, 'location.state.orderId')}</b>. 
+                    <br/>
+                    </p>
+                    <p>We'll Email You An Order Confirmation With Details And Tracking Info.</p>
 
+                    <br/>
+                    <img src={success} style={{height:'300px',width:'300px'}} />
+                    
+                    <br/>
+                    <button clasName="btn" style={{height:'60px',width:'270px',fontSize:'25px',backgroundColor:'rgb(14, 141, 180)',color:'white'}} onClick={this.handleContinueClick}>Continue Shopping</button>
+                </div>
             </div>
+            <br/>
+            <br/>
+            <hr className="blue-hr"></hr>
+
+        </div>
         );
     }
 }

@@ -80,6 +80,7 @@ const placeOrderReducer = (state = {
                 placeOrderData: [],
                 paypalCreditCardRes: [],
                 firstDataCreditCardRes: [],
+                orderIdData: [],
             });
         case PLACE_ORDER_CONSTANTS.SET_FIRST_DATA_REDIRECTION:
             return Object.assign({}, state, {

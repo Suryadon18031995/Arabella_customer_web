@@ -38,6 +38,9 @@ import FloralSuppliesContainer from './containers/ShopByCategory/FloralSupplies.
 import NextDayDeliveryContainer from './containers/ShopByCategory/NextDayDelivery.jsx';
 import catalogsearch from './containers/ShopByCategory/catalogsearch.jsx';
 import HomeContainer from './containers/HomeContainer/HomeContainers.jsx';
+import HomePageOne from './containers/HomePageOne/HomePageOne.jsx';
+import HomePageTwo from './containers/HomePageTwo/HomePageTwo.jsx';
+import HomePageThree from './containers/HomePageThree/HomePageThree.jsx';
 import RegisterContainer from './containers/RegisterContainer.jsx';
 import RegisterSuccessContainer from './containers/RegisterSuccessContainer.jsx';
 import AboutUsContainer from './containers/AboutUsContainer/AboutUs.jsx';
@@ -64,11 +67,16 @@ import AuthorBlogContainer from './containers/Blog/AuthorBlogContainer.jsx';
 import SearchBlogContainer from './containers/Blog/SearchBlogContainer.jsx';
 import PastPurrchaseContainer from './containers/PastPurchaseContainer.jsx';
 import CheckOutContainer from './containers/MyAccount/CheckOutContainer.jsx';
+import ProductListingContainer from './containers/ProductListing/ProductListingContainer.jsx';
+import CategoryDataContainer from './containers/ProductListing/CategoryContainer.jsx';
+import LabTestProductDetailContainer from './containers/ProductContainer/LabTestProductDetailContainer.jsx';
+import GCProductDetailContainer from './containers/ProductContainer/GCProductDetailContainer.jsx';
 import ErrorContainer from './containers/ErrorContainer.jsx';
 // import PrimeMembership from './containers/PrimeMembership.jsx';
 
 import './assets/stylesheets/main.css';
 import './assets/stylesheets/main.less';
+import './assets/stylesheets/mediversal.css';
 import ProductDetailContainer from './containers/ProductContainer/ProductDetailContainer.jsx';
 import ProfileDetailContainer from './containers/MyAccount/ProfileDetailContainer.jsx';
 /* My Account Containers START:  */
@@ -111,6 +119,7 @@ import ProductUpload from './containers/VendorProfile/ProductUpload.jsx';
 import ProductUpdate from './containers/VendorProfile/ProductUpdate.jsx';
 import ArtistLogistics from './containers/VendorProfile/ArtistLogistics.jsx';
 import ArtistLogin from './containers/VendorProfile/ArtistLogin.jsx';
+
 /* My Account Containers END;  */
 
 library.add(faCircle, faCheckCircle);
@@ -178,6 +187,60 @@ ReactDom.render(
               exact
               path="/"
               component={HomeContainer}
+            />
+             <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/catalog/category/view/s/pharma/id/896/"
+              component={HomePageOne}
+            />
+            <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/catalog/category/view/s/lab-test/id/807/"
+              component={HomePageTwo}
+            />
+			      <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/catalog/category/view/s/geriatrics-care/id/808/"
+              component={HomePageThree}
+            />
+            <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/catalog/category/view/s/doctor-appointment/id/809/"
+              component={HomePageThree}
+            />
+            <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/Product-Details/:id"
+              component={ProductDetailContainer}
+            />
+             <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/Lab-Test-Product-Details/:id"
+              component={LabTestProductDetailContainer}
+            />
+              <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/Geriatric-Care-Product-Details/:id"
+              component={GCProductDetailContainer}
+            />
+             <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/catalog/category/view/s/:id/id/:id"
+              component={ProductListingContainer}
+            />
+             <RouteWithLayout
+              layout={HeaderLayout}
+              exact
+              path="/Category/:id"
+              component={CategoryDataContainer}
             />
             {/* <RouteWithLayout
               layout={EmptyLayout}
@@ -734,12 +797,7 @@ ReactDom.render(
               path="/artist/logistics"
               component={ArtistLogistics}
             />
-            <RouteWithLayout
-              layout={HeaderLayout}
-              exact
-              path="/product/:id"
-              component={ProductDetailContainer}
-            />
+           
             <RouteWithLayout
               layout={HeaderLayout}
               exact

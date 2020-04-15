@@ -24,6 +24,18 @@ import banner11 from '../../assets/images/Banner-11.png';
 import banner12 from '../../assets/images/Banner-12.png';
 import banner13 from '../../assets/images/Banner-13.png';
 import banner14 from '../../assets/images/Banner-14.png';
+import hosNetwork from '../../assets/svg/13.svg';
+import medicine from '../../assets/svg/14.svg';
+import labtest from '../../assets/svg/15.svg';
+import gc from '../../assets/svg/16.svg';
+import kids from '../../assets/svg/17.svg';
+import diagnosis from '../../assets/svg/18.svg';
+import test from '../../assets/svg/19.svg';
+import carousel1 from  '../../assets/svg/12.svg';
+import carousel2 from  '../../assets/svg/13.svg';
+import carousel3 from  '../../assets/svg/14.svg';
+import car from '../../assets/svg/10.svg';
+import green2Blue from  '../../assets/svg/11.svg';
 
 class HomeContainer extends React.Component {
   constructor(props) {
@@ -43,7 +55,7 @@ class HomeContainer extends React.Component {
   }
 
   componentDidMount() {
-    document.title = 'Artist Marketplace';
+    document.title = 'Mediversal';
     const lessThanOneDayAgo = (date) => {
       const DAY = 1000 * 60 * 60 * 24; // 24 hours login time
       const oneDayBefore = Date.now() - DAY;
@@ -189,213 +201,145 @@ handleSignUp = () => this.setState({ redirectToRegistration: true });
 handleListingRedirect = () => this.setState({ redirectToListing: true });
 
   render() {
-    if (this.state.redirectToRegistration) {
-        return (
-          <Redirect to='/vendor-registration'/>
-        );
-    }
-
-    if (this.state.redirectToListing) {
-      return (
-        <Redirect to='/listing-products'/>
-      );
-  }
+   
 
     return (
-      <div>
-        <div className='artist-banner no-margin-custom'>
-          <div className='banner-text'>
-            <span>FunKar</span> marketplace for artists, particularly those artists who are highly talented
-              but never got a big stage to showcase their talent or rather we would say never got
-              a small stage to monetize their talent.
-            <div className='mt-5'>
-              <button type="button" className="btn custom-class-button" onClick={this.handleListingRedirect}>Browse Products</button>
-            </div>
-          </div>
+           <div>
+                <div id="myCarousel" className="carousel slide caoroseldata" style={{backgroundImage: `url(${car})`}} data-ride="carousel" >
+                    <ol className="carousel-indicators">
+                      <li data-target="#myCarousel" data-slide-to="0" className="active"></li>
+                      <li data-target="#myCarousel" data-slide-to="1"></li>
+                      <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <div className="carousel-inner" role="listbox">
+                       <div className="item active row">
+                           <div className="col-sm-6">
+                               <img src={carousel1} style={{width:'100%',height:'410px',marginTop:'20px'}}/>
+                          </div>
+                       <div className="col-sm-6">
+                           <div className="carousel-caption">
+                          
+                          </div>      
+                        </div>
+                    </div>
+                    <div className="item  row">
+                          <div className="col-sm-6">
+                            <img src={carousel2} style={{width:'100%',height:'410px',marginTop:'20px'}}/>
+                          </div>
+                          <div className="col-sm-6">
+                             <div className="carousel-caption">
+                          
+                             </div>      
+                          </div>
+                    </div>
+                    <div className="item  row">
+                        <div className="col-sm-6">
+                           <img src={carousel3} style={{width:'100%',height:'410px',marginTop:'20px'}}/>
+                       </div>
+                         <div className="col-sm-6">
+                        <div className="carousel-caption">
+                          
+                        </div>      
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+              
+        <div className="row whiteSection">
+                <div className="col-sm-7 text-box">
+                <h2 className="f-45b">Our Hospital Networks</h2>
+                <h4 className="f-25b">Landing Page</h4>
+                <p className="f-16b">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut laboreet dolore magna aliqua.</p>
+              </div>
+    	        <div className="col-sm-5">
+	    	        <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={hosNetwork} />
+	          </div>
         </div>
-         <div className='search-bar-artist searchbar-artist mt-3'>
-          <div className='center-search-div'>
-          <div className='row no-margin-custom'>
-            <div className='col-6 search-artist-span pr-0 text-right search-artist-span-size font-weight-bold'>
-              Find Ev
-            </div>
-            <div className='col-6 pl-0 search-artist-span-size font-weight-bold'>
-              ents <u>In</u>
-            </div>
+         
+    <div className="row greenToBlue"  style={{backgroundImage: `url(${green2Blue})`}}>
+    <div className="col-sm-5">
+        <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={carousel1} />
+      </div>
+      <div className="col-sm-7 text-box">
+        <h2 className="f-45w">Book Appointment</h2>
+        <h4 className="f-25w">Landing Page</h4>
+        <p className="f-16w">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      </div>
+      
+    </div>
+        <div className="row whiteSection"> 
+        <a href="/catalog/category/view/s/pharma/id/896/">        
+        <div className="col-sm-7 text-box">
+            <h2 className="f-45b">Buy Medicine</h2>
+            <h4 className="f-25b">Landing Page</h4>
+            <p className="f-16b">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
           </div>
-          <div className='mt-3 search-input-artist text-center'>
-              <input placeholder='Bangalore, Karnataka, India' />
-              <button type="button" className="btn custom-class-button">LETS GEAR UP</button>
-            </div>
+          <div className="col-sm-5">
+            <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={medicine}/>
           </div>
+          </a> 
         </div>
+        <div className="row blueToGreen"  style={{backgroundImage: `url(${car})`}}>
+        <a href="/catalog/category/view/s/lab-test/id/807/">   
+        <div className="col-sm-5">
+            <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={labtest} />
+          </div>
+          <div className="col-sm-7 text-box">
+            <h2 className="f-45w">Book Lab Test</h2>
+            <h4 className="f-25w">Landing Page</h4>
+            <p className="f-16w">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          </a>
+      </div>
+      
+   
+    <div className="row whiteSection" >
+      <a href="/catalog/category/view/s/geriatrics-care/id/808/">
+        <div className="col-sm-7 text-box">
+          <h2 className="f-45b">Geriatric Care</h2>
+          <h4 className="f-25b">Landing Page</h4>
+          <p className="f-16b">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div className="col-sm-5">
+          <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={gc}/>
+        </div>      
         
-        <div className="mt-3 ml-3 mr-3 mb-3">
-            <table width="100%">
-              <tbody>
-                <tr>
-                  <td><hr className='hr-color'/></td>
-                  <td className='hr-td-content'>Our Platform</td>
-                  <td><hr className='hr-color'/></td>
-                </tr>
-                </tbody>
-            </table>
+      </a>
+      </div>
+     
+    <div className="row  greenToBlue" style={{backgroundImage: `url(${green2Blue})`}}>
+      <div className="col-sm-5">
+        <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={diagnosis}/>
+      </div>
+      <div className="col-sm-7 p-100">
+        <h2 className="f-45w">Self Diagnosis</h2>
+        <h4 className="f-25w">Landing Page</h4>
+        <p className="f-16w">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      </div>
+    </div>
+    <div className="row whiteSection">
+        <div className="col-sm-7 text-box">
+          <h2 className="f-45b">Special Needs for Kids</h2>
+          <h4 className="f-25b">Landing Page</h4>
+          <p className="f-16b">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
-
-        <div className='row ml-3 mr-3'>
-           <div className='col-4 category-img-custom buy-banner p-0'>
-            <div className='cat-custom-div'>
-              <div className='bottom-alignment-custom'>
-              <div>Buy Artifacts</div>
-              <img src={arrowIcon} alt=''/>
-              </div>
-            </div>
-           </div>
-           <div className='col-4 category-img-custom rent-banner p-0'>
-            <div className='cat-custom-div'>
-            <div className='bottom-alignment-custom'>
-            <div>Rent Artifacts</div>
-              <img src={arrowIcon} alt=''/>
-              </div>
-            </div>
-           </div>
-           <div className='col-4 category-img-custom exchange-banner p-0'>
-            <div className='cat-custom-div'>
-            <div className='bottom-alignment-custom'>
-            <div>Cultural Exchange Program</div>
-              <img src={arrowIcon} alt=''/>
-              </div>
-            </div>
-           </div>
-           <div className='col-4 category-img-custom surprise-banner p-0'>
-            <div className='cat-custom-div'>
-            <div className='bottom-alignment-custom'>
-            <div>Surprise Your Loved Ones</div>
-              <img src={arrowIcon} alt=''/>
-              </div>
-            </div>
-           </div>
-           <div className='col-4 category-img-custom train-banner p-0'>
-            <div className='cat-custom-div'>
-            <div className='bottom-alignment-custom'>
-            <div>Train And Socialize</div>
-              <img src={arrowIcon} alt=''/>
-              </div>
-            </div>
-           </div>
-           <div className='col-4 category-img-custom buy-banner p-0'>
-            <div className='cat-custom-div'>
-            <div className='bottom-alignment-custom'>
-            <div>XXXXXXXX</div>
-              <img src={arrowIcon} alt=''/>
-              </div>
-            </div>
-           </div>
+        <div className="col-sm-5">
+          <img className="responsive" style={{width:'100%',height:'360px',marginTop:'20px'}} src={kids}/>
         </div>
-
-       <div className='row mt-5'>
-          <div className='col-6 join-hands p-0'>
-          <div className='center-search-div text-center'>
-              <div className='partner-with-us font-weight-bold'>Partner With <span>Us!</span></div>
-              <button type="button" className="btn custom-class-button" onClick={this.handleSignUp}>SIGN UP</button>
-            </div>
-          </div>
-          <div className='col-6 pl-0 pr-0'>
-            <img src={joinHandsIcon} alt='' width='100%'/>
-          </div>
+      </div>
+    <div className="row blueToGreen" style={{backgroundImage: `url(${car})`}}>  
+      <a href="/Category/957">    
+        <div className="col-sm-12 p-100">
+           <center>
+            <h2 className="f-45">About Us</h2>
+            <span className="f-25w">Mediversal</span>
+            <span className="f-16w">is a team of highly experienced Healthcare Experts, Management Professionals, Senior Doctors, Technicians.
+            Nursing &amp; Support staffs who are best in their respective fields. Mediversal is commited to provide world class services in 
+            affordable cost.</span>
+          </center>
         </div>
-
-        <div className="mt-3 ml-3 mr-3 mb-3">
-            <table width="100%">
-              <tbody>
-                <tr>
-                  <td><hr className='hr-color'/></td>
-                  <td className='hr-td-content'>Our Recent <span>#FUNKAR#</span> events</td>
-                  <td><hr className='hr-color'/></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div className='row text-center'>
-           <div className='col-2'>
-              <button type="button" className="btn btn-outline-dark">#PORTRAIT ARTIST</button>
-           </div>
-           <div className='col-2'>
-              <button type="button" className="btn custom-class-button">#PAINTERS</button>
-           </div>
-           <div className='col-2'>
-              <button type="button" className="btn btn-outline-dark">#SAND ARTIST</button>
-           </div>
-           <div className='col-2'>
-              <button type="button" className="btn btn-outline-dark">#SCULPTORS</button>
-           </div>
-           <div className='col-2'>
-              <button type="button" className="btn btn-outline-dark">#SINGERS</button>
-           </div>
-           <div className='col-2'>
-              <button type="button" className="btn btn-outline-dark">#CARNATIC MUSIC</button>
-           </div>
-        </div>
-
-        <div className='row mt-5 text-center see-more-img'>
-          <div className='col-3'>
-           <img src={banner11} alt=''/>
-          </div>
-          <div className='col-3'>
-           <img src={banner12} alt=''/>
-          </div>
-          <div className='col-3'>
-           <img src={banner13} alt=''/>
-          </div>
-          <div className='col-3'>
-           <img src={banner14} alt=''/>
-          </div>
-        </div>
-
-        <div className='mt-5 mb-5 text-center font-weight-bold see-more-hr'>
-          SEE MORE
-          <hr className=''/>
-        </div>
-
-        <div className='row'>
-           <div className='col-6 stay-touch'>
-            <div className='stay-touch-div font-weight-bold'>
-              WELCOME<br/>
-              TO A WORLD OF<br/>
-              <span>ARTISAN</span>
-            </div>
-           </div>
-           <div className='col-6 stay-touch-right'>
-              <h2>Get stay in touch.</h2>
-              <hr/>
-              <div className='mt-3'>
-              Ready to book Events Near Bengaluru , KA? Have questions
-              about one of our Artiasan? <span>Send us a note below and we’ll
-              respond as quickly as possible.</span>
-              </div>
-              <div className='mt-3'>
-                <input placeholder='First Name' style={{ width: '45%' }}/>
-                <input placeholder='Last Name' style={{ width: '45%', float: 'right' }}/>
-              </div>
-              <div className='mt-3'>
-                <input placeholder='Email'/>
-              </div>
-              <div className='mt-3'>
-                <input placeholder='Phone'/>
-              </div>
-              <div className='mt-3'>
-                <input placeholder='Enquiry'/>
-              </div>
-              <div className='mt-3'>
-                <textarea placeholder='Message' rows='6'/>
-              </div>
-              <div className='mt-3'>
-              <button type="button" className="btn custom-class-button">SEND</button>
-              </div>
-           </div>
-        </div>
-
+       </a>
+    </div>
       </div>
     );
   }

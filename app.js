@@ -21,11 +21,11 @@ const runner = require("child_process");
 // };
 
 app.use(cors());
-app.use(favicon(path.join(__dirname, '/src/assets/images/fevicon.png')));
+app.use(favicon(path.join(__dirname, '/src/assets/images/favicon.png')));
 // use gzip compression for transfer of resources
 app.use(compression());
 app.use('/', express.static('dist'));
-
+//tyy
 // app.get('*.js', function (req, res, next) {
 //   req.url = req.url + '.gz';
 //   res.set('Content-Encoding', 'gzip');
@@ -73,10 +73,10 @@ app.get('/*', (req, res) => {
 });
 
 // https.createServer(httpsOptions, app, function (req, res) {
-//   // res.writeHead(200);
-//   // res.end("Welcome to Node.js HTTPS Servern");
-//   res.writeHead(301, { Location: `https://${request.headers.host}${request.url}` });
-//   res.end();
-// }).listen(3010);
+  //  res.writeHead(200);
+    //res.end("Welcome to Node.js HTTPS Servern");
+    //res.writeHead(301, { Location: `https://${request.headers.host}${request.url}` });
+    //res.end();
+//}).listen(3010);
 
 app.listen(3010, () => console.log('Example app listening on port 3010!')); // uncomment this line for running in local and comment out above create server

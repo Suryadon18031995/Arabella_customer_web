@@ -67,6 +67,7 @@ class MyOrderContainer extends Component {
             selectedTotal: 0,
             filtDateFrom: undefined,
             filtDateTo: undefined,
+            myOrderRes: undefined,
         };
     }
 
@@ -89,19 +90,9 @@ class MyOrderContainer extends Component {
         this.setState({
             viewMyOrder: true,
         });
-        this.props.getMyOrderData({ apiToken: _get(this.props, 'apiToken') });
-        if (_get(this.props, 'history.location.state.showPaymentResult') === true) {
-            const invNum = _get(this.props, 'history.location.state.invoiceNumber').split(',');
-            this.props.getMultipleOrderPaymentFirstData({
-                apiToken: this.props.apiToken,
-                invoiceNumbers: invNum,
-                transactionId: _get(this.props, 'history.location.state.transId'),
-                paymentType: _get(this.props, 'history.location.state.paymentType'),
-            });
-        }
-        if (_get(this.props, 'history.location.state.showPaymentResult') === false) {
-            alert('payment failed');
-        }
+      this.props.getMyOrderData({
+        api_token: _get(this.props, 'apiToken'),
+       });
     }
 
     myOrderFun = () => {
@@ -270,12 +261,13 @@ class MyOrderContainer extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
         let selectedTotal = 0;
         if (!_isEmpty(_get(nextProps, 'myOrderData'))) {
-            const myOrderRes = _get(nextProps, 'myOrderData.data');
+            const myOrderRes = _get(nextProps, 'myOrderData[0].result');
             this.setState({
-                myOrderRes,
-                myOrderResData: myOrderRes,
+                myOrderRes: _get(nextProps, 'myOrderData[0].result'),
+                myOrderResData: _get(nextProps, 'myOrderData[0].result'),
                 filtDateFrom: moment(_get(_minBy(myOrderRes, 'created_at'), 'created_at')).format('YYYY-MM-DD'),
                 filtDateTo: moment(_get(_maxBy(myOrderRes, 'created_at'), 'created_at')).format('YYYY-MM-DD'),
             });
@@ -348,6 +340,7 @@ class MyOrderContainer extends Component {
     }
 
     render() {
+        console.log(this.state);
         if (_get(this, 'props.isLoading')) {
             return (
                 <div className="container" style={{ minHeight: '500px' }}>
@@ -371,8 +364,6 @@ class MyOrderContainer extends Component {
         }
         return (
             <div>
-                <BreadCrumbs
-                    list={this.state.breadCrumbsList} />
                 <div className="container">
                     <div className='container-block'>
                         <ErrorBoundary>
@@ -413,6 +404,7 @@ class MyOrderContainer extends Component {
                         </ErrorBoundary>
                     </div>
                 </div>
+                <hr className="blue-hr"></hr>
             </div>
         );
     }

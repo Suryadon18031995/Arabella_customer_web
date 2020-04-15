@@ -1,29 +1,29 @@
 // Show Cart Constants
-export const FIRST_CART_URL = `${process.env.APPLICATION_BFF_URL}/cart/details`;
+export const FIRST_CART_URL = ' https://uat.mediversal.tech/index.php/api/cart/ShowCart';
 export const REQUEST_FIRST_CART_SEARCH = 'REQUEST_FIRST_CART_SEARCH';
 export const RECEIVED_FIRST_CART_SEARCH = 'RECEIVED_FIRST_CART_SEARCH';
 export const RECEIVED_FIRST_CART_SEARCH_ERROR = 'RECEIVED_FIRST_CART_SEARCH_ERROR';
 
-export const ADD_TO_CART_URL = `${process.env.APPLICATION_BFF_URL}/cart`;
+export const ADD_TO_CART_URL = 'https://uat.mediversal.tech/index.php/api/cart/AddToCart';
 export const REQUEST_ADD_TO_CART = 'REQUEST_ADD_TO_CART';
 export const RECEIVED_ADD_TO_CART = 'RECEIVED_ADD_TO_CART';
 export const RECEIVED_ADD_TO_CART_ERROR = 'RECEIVED_ADD_TO_CART_ERROR';
 
 // Apply Discount Coupon Constants
-export const DISCOUNT_COUPON_URL = `${process.env.APPLICATION_BFF_URL}/product/applyCoupon`;
+export const DISCOUNT_COUPON_URL = 'https://uat.mediversal.tech/index.php/api/coupon/ApplyCoupon';
 export const REQUEST_DISCOUNT_COUPON_SEARCH = 'REQUEST_DISCOUNT_COUPON_SEARCH';
 export const RECEIVED_DISCOUNT_COUPON_SEARCH = 'RECEIVED_DISCOUNT_COUPON_SEARCH';
 export const RECEIVED_DISCOUNT_COUPON_SEARCH_ERROR = 'RECEIVED_DISCOUNT_COUPON_SEARCH_ERROR';
 
 // Cancel Discount Coupon Constants
-export const CANCEL_DISCOUNT_COUPON_URL = `${process.env.APPLICATION_BFF_URL}/product/removeCoupon`;
+export const CANCEL_DISCOUNT_COUPON_URL = 'https://uat.mediversal.tech/index.php/api/coupon/RemoveCoupon';
 export const REQUEST_CANCEL_DISCOUNT_COUPON_SEARCH = 'REQUEST_CANCEL_DISCOUNT_COUPON_SEARCH';
 export const RECEIVED_CANCEL_DISCOUNT_COUPON_SEARCH = 'RECEIVED_CANCEL_DISCOUNT_COUPON_SEARCH';
 export const RECEIVED_CANCEL_DISCOUNT_COUPON_SEARCH_ERROR = 'RECEIVED_CANCEL_DISCOUNT_COUPON_SEARCH_ERROR';
 
 // Remove From Cart Constants
 export const REMOVE_FROM_CART_URL_CONSTANTS = ({
-    URL: `${process.env.APPLICATION_BFF_URL}/cart`,
+    URL: 'https://uat.mediversal.tech/index.php/api/cart/deleteitem',
     REQUEST: 'REQUEST_REMOVE_FROM_CART',
     RECEIVED: 'RECEIVED_REMOVE_FROM_CART',
     RECEIVED_ERROR: 'RECEIVED_REMOVE_FROM_CART_ERROR',
@@ -31,7 +31,7 @@ export const REMOVE_FROM_CART_URL_CONSTANTS = ({
 
 // Update Cart Constants
 export const UPDATE_CART_URL_CONSTANTS = ({
-    URL: `${process.env.APPLICATION_BFF_URL}/cart`,
+    URL: 'https://uat.mediversal.tech/index.php/api/cart/editCart',
     REQUEST: 'REQUEST_UPDATE_CART',
     RECEIVED: 'RECEIVED_UPDATE_CART',
     RECEIVED_ERROR: 'RECEIVED_UPDATE_CART_ERROR',
@@ -57,6 +57,8 @@ export const CLEAR_CART_DATA = 'CLEAR_CART_DATA';
 
 // cart Type Constants
 export const SET_CART_TYPE = 'SET_CART_TYPE';
+
+export const SET_REMOVE_PRODUCT_TYPE = 'SET_REMOVE_PRODUCT_TYPE';
 
 export const FLUSH_CART_VIEW_DATA = 'FLUSH_CART_VIEW_DATA';
 

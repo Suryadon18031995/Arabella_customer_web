@@ -232,6 +232,7 @@ class FreshDealsContainer extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!_isEmpty(nextProps.filtersData)) {
+      console.log(nextProps.filtersData);
       const shippingMethodsData = [];
       const filterMethodDataTemp = _get(nextProps.filtersData, 'method');
       filterMethodDataTemp &&

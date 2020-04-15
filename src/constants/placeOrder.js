@@ -1,4 +1,4 @@
-export const PLACE_ORDER_URL = `${process.env.APPLICATION_BFF_URL}/order/add`;
+export const PLACE_ORDER_URL = 'https://uat.mediversal.tech/index.php/api/order/PlaceOrder';
 export const REQUEST_PLACE_ORDER_SEARCH = 'REQUEST_PLACE_ORDER_SEARCH';
 export const RECEIVED_PLACE_ORDER_SEARCH = 'RECEIVED_PLACE_ORDER_SEARCH';
 export const RECEIVED_PLACE_ORDER_SEARCH_ERROR = 'RECEIVED_PLACE_ORDER_SEARCH_ERROR';

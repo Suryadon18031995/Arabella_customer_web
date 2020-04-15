@@ -142,7 +142,7 @@ class InformationContainer extends Component {
 
     componentDidMount() {
         document.title = 'Account Information';
-        this.props.getAccountData({ apiToken: this.props.apiToken });
+        //this.props.getAccountData({ apiToken: this.props.apiToken });
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -190,11 +190,7 @@ class InformationContainer extends Component {
             );
         }
 
-        if (!this.props.apiToken) {
-            return <Redirect push to={{
-                pathname: '/login',
-            }} />;
-        }
+       
 
         if (this.state.redirectToAccountDashboard) {
             return <Redirect push to={{

@@ -18,7 +18,7 @@ class LogoutContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.getLogoutData({ apiToken: this.props.apiToken });
+        this.props.getLogoutData();
         // this.props.clearCartData();
         setTimeout(() => {
             this.setState({ render: true });
@@ -38,9 +38,8 @@ class LogoutContainer extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    getLogoutData: (data) => {
-        dispatch(requestUserLogout(data)),
-            // dispatch(logoutFunction()),
+    getLogoutData: () => {
+            dispatch(logoutFunction()),
             dispatch(clearCartReducer()),
             dispatch(clearWishlistReducer())
     },

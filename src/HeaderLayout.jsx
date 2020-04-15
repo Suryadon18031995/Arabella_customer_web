@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // import Modal from 'react-bootstrap/lib/Modal';
 // import Modal from 'react-bootstrap-modal';
 // import Button from 'react-bootstrap/lib/Button';
+
+import ChatBot from 'react-simple-chatbot';
+//import SimpleForm from './SimpleForm';
+//import Review from './Review';
+import Select from "react-select";
+
+
 import connect from 'react-redux/lib/connect/connect';
+import Checkbox from '@material-ui/core/Checkbox';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _isError from 'lodash/isError';
 import _groupBy from 'lodash/groupBy';
 import Redirect from 'react-router/Redirect';
+
+
+import axios from 'axios';
 import Link from 'react-router-dom/Link';
 import logoIcon from './assets/images/LOGO.png';
 import navBarIcon from './assets/images/navbar-icon-three.png';
+import { mapCustomerRegisterData } from './utils/commonMapper';
+import './assets/stylesheets/mediversal.css';
+import swal from 'sweetalert';
 import {
-  fetchLoginData,
+  fetchLoginResponseData,
   receiveHideLoginModalData,
   requestUserLogout,
   updateCartData,
@@ -27,19 +42,405 @@ import {
   fetchRemoveExpiredProductData,
   setCartTypeData,
 } from './actions/cart';
-import { fetchTrackUrlData } from './actions/register';
+import {
+  fetchOnlineSalesMainData,
+  fetchOnlineSalesSubData,
+} from './actions/buyMedicine';
+import { fetchCustomerRegisterData, fetchTrackUrlData, clearRegisterData } from './actions/register';
 import { fetchCategoriesAutoCompleteResult } from './actions/bkm_listing';
+import ErrorBoundary from '../src/containers/ErrorBoundary.jsx';
 import ReorderImage from './assets/images/reorder.png';
 import CategoriesComponenet from './components/Header/categoriesComponent.jsx';
 import Suggetion from './components/Header/SuggetionComponent.jsx';
 import ScrollApp from './components/ScrollTopComponent/scroll.jsx';
 import ErrorHandler from './components/Hoc/ErrorHandler.jsx';
+import DropDownMenu from './components/BKMComponent/DropDownMenuComponent.jsx';
 import { LoginLoader } from './components/Loader/Loader.jsx';
 // import PopupImage from './assets/images/popup_banner.jpg';
 import PaypalImage from './assets/images/Paypal_BKM.png';
 import SecureImage from './assets/images/security_BKM.png';
 import GodaddyImage from './assets/images/godaddy-seal.jpg';
 import MaModal from './components/Common/MaterialUIModal.jsx';
+import mediversal from './assets/svg/1.svg';
+import login from './assets/svg/5.svg';
+import medicine from './assets/svg/6.svg';
+import test from './assets/svg/7.svg';
+import care from './assets/svg/8.svg';
+import doc from './assets/svg/9.svg';
+import google from './assets/svg/74.svg';
+import facebook from './assets/svg/75.svg';
+import register from './assets/svg/76.svg';
+import favicon from './assets/svg/73.svg';
+import pres from './assets/svg/pres.jpg';
+
+class Review extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      gender: '',
+      age: '',
+      name:'',
+      mobile:'',
+      data:[],
+      data1:[],
+    };
+  }
+
+  componentWillMount() {
+    const { steps } = this.props;
+    const { gender, age, name, mobile } = steps;
+
+    this.setState({ gender, age, name, mobile });
+    
+  }
+
+  componentDidMount()
+  {
+    console.log(this.props);
+    //this.state.data.push(this.props.values[0]);
+    //his.state.data1.push(this.props.values1[0]);
+   this.setState({
+      data: this.props.values[0],
+   })
+   this.setState({
+    data1: this.props.values1[0],
+ })
+    console.log(this.state.data);
+    console.log(this.state);
+  }
+
+  render() {
+    const { gender, age, name, mobile } = this.state;
+    return (
+      <div style={{ width: '100%' }}>
+        <h3>Summary</h3>
+        <table>
+          <tbody>
+            <tr>
+              <td>Name</td>
+              <td>{name.value}</td>
+            </tr>
+            <tr>
+              <td>Mobile Number</td>
+              <td>{mobile.value}</td>
+            </tr>
+            <tr>
+              <td>Gender</td>
+              <td>{gender.value}</td>
+            </tr>
+            <tr>
+              <td>Age</td>
+              <td>{age.value}</td>
+            </tr>
+            <tr>
+              <td>Data</td>
+              {this.state.data.map((contact) => (
+              <td>{contact.label}</td>
+              ))};
+            </tr>
+            <tr>
+              <td>Data1</td>
+              {this.state.data1.map((contact) => (
+              <td>{contact.label}</td>
+              ))};
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
+Review.propTypes = {
+  steps: PropTypes.object,
+};
+
+Review.defaultProps = {
+  steps: undefined,
+};
+
+
+class MultiSelect extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+      values: []
+    };
+    this.triggetNext = this.triggetNext.bind(this);
+  }
+  onChangeCheckbox = e => {
+    const isChecked = !this.state.checked;
+    this.setState({
+      checked: isChecked,
+      values: isChecked ? this.props.options : this.state.values
+    });
+  };
+  onChange = opt => {
+    const allOptionsSelected = opt.length === this.props.options.length;
+    this.setState({
+      checked: allOptionsSelected ? true : false,
+      values: opt
+    });
+    console.log(this.state.values);
+  };
+
+  triggetNext() {
+    console.log(this.state.values);
+    this.props.values.push(this.state.values);
+     console.log(this.props);
+     
+     this.setState({ trigger: true }, () => {
+       this.props.triggerNextStep(this.state.values,true);
+     });
+   }
+  render() {
+    return (
+      <div className="App">
+        <div className="row">
+        <Select width='220px'
+          isMulti
+          onChange={this.onChange}
+          options={this.props.options}
+          value={this.state.values}
+        />
+        </div>
+        <br/>
+        <div class="form-row">
+                      <div class="col-md-12 text-center">
+                          <button type="submit" class="btn btn-primary" onClick={()=>this.triggetNext()}>Submit</button>
+                      </div>
+                  </div>
+      </div>
+    );
+  }
+}
+
+class MultiSelect1 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+      values: []
+    };
+    this.triggetNext = this.triggetNext.bind(this);
+  }
+  onChangeCheckbox = e => {
+    const isChecked = !this.state.checked;
+    this.setState({
+      checked: isChecked,
+      values: isChecked ? this.props.options1 : this.state.values
+    });
+  };
+  onChange = opt => {
+    const allOptionsSelected = opt.length === this.props.options1.length;
+    this.setState({
+      checked: allOptionsSelected ? true : false,
+      values: opt
+    });
+    console.log(this.state.values1);
+  };
+
+  triggetNext() {
+    console.log(this.state.values1);
+    this.props.values1.push(this.state.values);
+     console.log(this.props);
+     
+     this.setState({ trigger: true }, () => {
+       this.props.triggerNextStep(this.state.values1,true);
+     });
+   }
+  render() {
+    return (
+      <div className="App">
+        <div className="row">
+        <Select width='220px'
+          isMulti
+          onChange={this.onChange}
+          options={this.props.options1}
+          value={this.state.values}
+        />
+        </div>
+        <br/>
+        <div class="form-row">
+                      <div class="col-md-12 text-center">
+                          <button type="submit" class="btn btn-primary" onClick={()=>this.triggetNext()}>Submit</button>
+                      </div>
+                  </div>
+      </div>
+    );
+  }
+}
+
+class MultiSelect2 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+      values: []
+    };
+    this.triggetNext = this.triggetNext.bind(this);
+  }
+  onChangeCheckbox = e => {
+    const isChecked = !this.state.checked;
+    this.setState({
+      checked: isChecked,
+      values: isChecked ? this.props.options2 : this.state.values
+    });
+  };
+  onChange = opt => {
+    const allOptionsSelected = opt.length === this.props.options2.length;
+    this.setState({
+      checked: allOptionsSelected ? true : false,
+      values: opt
+    });
+    console.log(this.state.values2);
+  };
+
+  triggetNext() {
+    console.log(this.state.values2);
+    this.props.values2.push(this.state.values);
+     console.log(this.props);
+     
+     this.setState({ trigger: true }, () => {
+       this.props.triggerNextStep(this.state.values2,true);
+     });
+   }
+  render() {
+    return (
+      <div className="App">
+        <div className="row">
+        <Select width='220px'
+          isMulti
+          onChange={this.onChange}
+          options={this.props.options2}
+          value={this.state.values}
+        />
+        </div>
+        <br/>
+        <div class="form-row">
+                      <div class="col-md-12 text-center">
+                          <button type="submit" class="btn btn-primary" onClick={()=>this.triggetNext()}>Submit</button>
+                      </div>
+                  </div>
+      </div>
+    );
+  }
+}
+
+class MultiSelect3 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+      values: []
+    };
+    this.triggetNext = this.triggetNext.bind(this);
+  }
+  onChangeCheckbox = e => {
+    const isChecked = !this.state.checked;
+    this.setState({
+      checked: isChecked,
+      values: isChecked ? this.props.options3 : this.state.values
+    });
+  };
+  onChange = opt => {
+    const allOptionsSelected = opt.length === this.props.options3.length;
+    this.setState({
+      checked: allOptionsSelected ? true : false,
+      values: opt
+    });
+    console.log(this.state.values3);
+  };
+
+  triggetNext() {
+    console.log(this.state.values);
+    this.props.values3.push(this.state.values);
+     console.log(this.props);
+     
+     this.setState({ trigger: true }, () => {
+       this.props.triggerNextStep(this.state.values3,true);
+     });
+   }
+  render() {
+    return (
+      <div className="App">
+        <div className="row">
+        <Select width='220px'
+          isMulti
+          onChange={this.onChange}
+          options={this.props.options3}
+          value={this.state.values}
+        />
+        </div>
+        <br/>
+        <div class="form-row">
+                      <div class="col-md-12 text-center">
+                          <button type="submit" class="btn btn-primary" onClick={()=>this.triggetNext()}>Submit</button>
+                      </div>
+                  </div>
+      </div>
+    );
+  }
+}
+
+class MultiSelect4 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: false,
+      values: []
+    };
+    this.triggetNext = this.triggetNext.bind(this);
+  }
+  onChangeCheckbox = e => {
+    const isChecked = !this.state.checked;
+    this.setState({
+      checked: isChecked,
+      values: isChecked ? this.props.options4 : this.state.values
+    });
+  };
+  onChange = opt => {
+    const allOptionsSelected = opt.length === this.props.options4.length;
+    this.setState({
+      checked: allOptionsSelected ? true : false,
+      values: opt
+    });
+    console.log(this.state.values4);
+  };
+
+  triggetNext() {
+    console.log(this.state.values4);
+    this.props.values4.push(this.state.values);
+     console.log(this.props);
+     
+     this.setState({ trigger: true }, () => {
+       this.props.triggerNextStep(this.state.values4,true);
+     });
+   }
+  render() {
+    return (
+      <div className="App">
+        <div className="row">
+        <Select width='220px'
+          isMulti
+          onChange={this.onChange}
+          options={this.props.options4}
+          value={this.state.values}
+        />
+        </div>
+        <br/>
+        <div class="form-row">
+                      <div class="col-md-12 text-center">
+                          <button type="submit" class="btn btn-primary" onClick={()=>this.triggetNext()}>Submit</button>
+                      </div>
+                  </div>
+      </div>
+    );
+  }
+}
+
 
 class HeaderLayout extends React.Component {
   constructor(props) {
@@ -52,16 +453,35 @@ class HeaderLayout extends React.Component {
     this.showBloomKonnectMenu = this.showBloomKonnectMenu.bind(this);
     // this.showCart = this.showCart.bind(this);
     this.showRegister = this.showRegister.bind(this);
+    this.showLoginData = this.showLoginData.bind(this);
     this.toggleCartDropdown = this.toggleCartDropdown.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.mblMenu = this.mblMenu.bind(this);
     this.state = {
+          firstName: undefined,
+          lastName: undefined,
+          email: undefined,
+          telephone: undefined,
+          password: undefined,
+          confirmPassword: undefined,
+          company: 'NA',
+          streetAddress: 'NA',
+          city: 'NA',
+          zipCode: 'NA',
+          country: 'NA',
+          state: 'NA',
+          taxId: 'NA',
+          newsletSub: 'NA',
+          zipcode:'',
+      
+      loginEmail: undefined,
+      loginPassword: undefined,
+      loading: false,
+      categoryData: [],
+      navData: [],
+      testData: [  ],
       showLogin: false,
-      zipcode: undefined,
-      zipcodeInit: undefined,
-      redirectRegister: false,
-      password: undefined,
-      email: undefined,
+      loginForm: false,
       loginResult: !_isEmpty(props.loginData) ? _get(props.loginData, [0, 'message']) : undefined,
       bloomKonnectMenu: false,
       hover: false,
@@ -101,11 +521,87 @@ class HeaderLayout extends React.Component {
       newsletterSubscriptionMessage: '',
       newsletterSubscriptionStatus: '',
       showLargeDropDowns: '',
+      catData: undefined,
+      catId:'',
+      catName:'',
+      catLevel:[],
+      catDescription:'',
+      catImage:'',
+      link: false,
+      id1: undefined,
+      id2: undefined,
+      checked: false,
+      file: null,
+      zipData: undefined,
+      showChat: false,
+      floating: true,
+      options:[
+        { label: "खांसी", value: 1 },
+        { label: "बुखार", value: 2 },
+        { label: "सांस लेने में दिक्कत", value: 3 },
+        { label: "इनमे से कोई भी नहीं", value: 4 }
+      ],
+      options1:[
+        { label: "मधुमेह", value: 1 },
+        { label: "उच्च रक्त धाब/हाइपरटेंशन", value: 2 },
+        { label: "फेफड़ों की बीमारी", value: 3 },
+        { label: "दिल की बीमारी", value: 4 },
+        { label: "इनमे से कोई भी नहीं", value: 5 }
+      ],
+      options2:[
+        { label: "पिछले 14 दिनों में विदेश यात्रा की", value: 1 },
+        { label: "हाल ही में किसी COVID-19 पॉजिटिव व्यक्ति से मिलना हुआ है या ऐसे किसी व्यक्ति के साथ रहे हैं", value: 2 },
+        { label: "मैं स्वास्थ्यकर्मी हूँ", value: 3 },
+        { label: "इनमे से कोई भी नहीं", value: 4 }
+      ],
+      options3:[
+        { label: "हाल ही में किसी COVID-19 पॉजिटिव व्यक्ति से मिलना हुआ है या ऐसे किसी व्यक्ति के साथ रहा हूँ", value: 1 },
+        { label: "मैं एक स्वास्थ्य कर्मचारी हूं और मैंने सुरक्षात्मक गियर के बिना एक COVID-19 पुष्ट मामले की जांच की", value: 2 },
+        { label: "इनमे से कोई भी नहीं", value: 3 }
+      ],
+      options4:[
+        { label: "5 दिन से कम", value: 1 },
+        { label: "5 दिन से ज्यादा", value: 2 },
+        { label: "14 दिन से ज्यादा", value: 5 }
+      ],
+      values:[],
+      values1:[],
+      values2:[],
+      values3:[],
+      values4:[],
+
     };
     this.props.hideLoginModal({ show: false });
+   // this.uploadFiles = this.uploadFiles.bind(this);
+   //this.handleChange = this.handleChange.bind(this)
   }
 
+ 
+
+  onChange(e) {
+    //return files.map(this.uploadFile);
+    this.setState({
+      file: URL.createObjectURL(e.target.files[0])
+    })
+    let files=e.target.files;
+    console.log("hhh");
+    console.warn("file  jj",files);
+    let reader= new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onLoad=(e)=>{
+      console.warn(e.target.result);
+    }
+}
+
+handleChange(event) {
+  console.log(event.target.files[0]);
+ 
+}
+
+ 
+
   componentDidUpdate(prevProps) {
+    //console.log(prevProps);
     if (_get(prevProps, 'location.pathname') !== _get(this.props, 'location.pathname')) {
       if (_get(this.props, 'location.pathname') === '/checkout/onepage') {
         this.setState({ showRemoveIcon: false });
@@ -172,22 +668,146 @@ class HeaderLayout extends React.Component {
     }
   };
 
-  loginclickFun = () => {
-    if (this.handleValidation()) {
-      this.setState({
-        popupCall: true,
-      });
-      this.props.getLoginData({
-        email: this.state.email,
-        password: this.state.pass,
-      });
+  handleValidationRegister() {
+    const errors = {};
+    let formIsValid = true;
+
+    //  FirstName
+    if (this.state.firstName === undefined || this.state.firstName === '') {
+      formIsValid = false;
+      errors.firstName = 'Please fill out this field';
     }
-  };
+
+    // lastName
+    if (this.state.lastName === undefined || this.state.lastName === '') {
+      formIsValid = false;
+      errors.lastName = 'Please fill out this field';
+    }
+
+
+    // telephone
+    if (this.state.telephone === undefined || this.state.telephone === '') {
+      formIsValid = false;
+      errors.telephone = 'Please fill out this field';
+    }
+
+    if (this.state.telephone !== undefined) {
+      if (this.state.telephone.length < 10) {
+        formIsValid = false;
+        errors.telephone = 'Please Lengthen this text to 10 Numbers';
+      } else {
+        const re = /^[0-9\b]+$/;
+        if (re.test(this.state.telephone)) {
+          // formIsValid = true;
+        } else {
+          formIsValid = false;
+          errors.telephone = 'Please Provide Numeric value';
+        }
+      }
+    }
+
+    // password
+    if (this.state.password === undefined || this.state.password === '') {
+      formIsValid = false;
+      errors.password = 'Please fill out this field';
+
+    }
+
+    if (this.state.password !== undefined) {
+      if (this.state.password.length < 6) {
+        formIsValid = false;
+        errors.password = 'Please enter 6 characters or more';
+      }
+    }
+
+    // confirm password
+    if (this.state.confirmPassword === undefined || this.state.confirmPassword === '') {
+      formIsValid = false;
+      errors.confirmPassword = 'Please fill out this field';
+    }
+
+    if (this.state.confirmPassword !== undefined) {
+      if (this.state.confirmPassword.length < 6) {
+        formIsValid = false;
+        errors.confirmPassword = 'Please enter 6 characters or more';
+      }
+    }
+
+    // Email
+    if (this.state.email === undefined || this.state.email === '') {
+      formIsValid = false;
+      errors.email = 'Please fill out this field';
+    }
+
+    if (this.state.email !== undefined && this.state.email !== '') {
+      const lastAtPos = this.state.email.lastIndexOf('@');
+      const lastDotPos = this.state.email.lastIndexOf('.');
+      if (!(lastAtPos < lastDotPos && lastAtPos > 0 && this.state.email.indexOf('@@') === -1 && lastDotPos > 2 && (this.state.email.length - lastDotPos) > 2)) {
+        formIsValid = false;
+        errors.email = 'Email is not valid';
+      }
+    }
+
+    
+    if (this.state.password !== this.state.confirmPassword) {
+      alert('Password do not match');
+    }
+
+    this.setState({ errors });
+    return formIsValid;
+  }
+
+  handleCheck = () => {
+    this.setState({ checked: !this.state.checked });
+  }
+
+  
+
+  customerRegisterData = () => {
+    if (this.handleValidationRegister()) {
+      console.log(this.state.checked);
+      if (this.state.checked === true) 
+      {
+      const reqBody = mapCustomerRegisterData(this.state);
+      console.log(reqBody);
+      this.props.getRegisterData(reqBody);
+      this.setState({ isLoading: false });
+      this.showLoginModal();
+      this.setState({
+        firstName: undefined,
+        lastName: undefined,
+        email: undefined,
+        telephone: undefined,
+        password: undefined,
+        confirmPassword: undefined,
+        company: 'NA',
+        streetAddress: 'NA',
+        city: 'NA',
+        zipCode: 'NA',
+        country: 'NA',
+        state: 'NA',
+        taxId: 'NA',
+        newsletSub: 'NA',
+      });
+      }
+      else
+      {
+       alert('Please select terms and conditions') ;
+      }
+     
+    }
+  }
 
   handleInputChange = (event) => {
+    console.log([event.target.id]);
     this.setState({
       [event.target.id]: event.target.value,
     });
+    console.log(event);
+    this.setState({
+      errors: {},
+    })
+    
   };
 
   handleChange = (event) => {
@@ -207,47 +827,95 @@ class HeaderLayout extends React.Component {
     }
   }
 
+  getData = (data) => {
+    console.log(data);
+    this.setState({
+           catData: data,
+           link: true,
+         //id1: data.url.substring(data.url.lastIndexOf('/') + 1),
+        // id2: data.url.substring(data.url.lastIndexOf('/') + 3),
+    });
+
+   
+  }
+
+  startChat = () => {
+      console.log('start chat');
+      
+      this.setState({
+        showChat: true,
+      });
+    }
+
+    hideChat = () => {
+   
+      this.setState({
+        showChat: false,
+      });
+    }
+
+  loginclickFun = () => {
+    if (this.handleValidation()) {
+      this.setState({
+        popupCall: true,
+      });
+     console.log(this.state.loginEmail);
+      this.props.getLoginData({
+        email: this.state.loginEmail,
+        password: this.state.loginPassword,
+      });
+    }
+     // this.showLoginModal();
+      //this.setState({
+        //loginEmail: undefined,
+        //loginPassword: undefined,
+      //});
+  };
+
   handleValidation() {
     const errors = {};
     let formIsValid = true;
+    console.log('test');
+    console.log(this.state.loginEmail);
 
     // Email
-    if (this.state.email === '') {
+    if (this.state.loginEmail === undefined) {
       formIsValid = false;
-      errors.email = 'This is a required field.';
+      errors.loginEmail = 'This is a required field.';
     }
 
-    if (typeof this.state.email !== 'undefined' && this.state.email !== '') {
-      const lastAtPos = this.state.email.lastIndexOf('@');
-      const lastDotPos = this.state.email.lastIndexOf('.');
+    if (typeof this.state.loginEmail !== 'undefined' && this.state.loginEmail !== '') {
+      const lastAtPos = this.state.loginEmail.lastIndexOf('@');
+      const lastDotPos = this.state.loginEmail.lastIndexOf('.');
 
       if (
         !(
           lastAtPos < lastDotPos &&
           lastAtPos > 0 &&
-          this.state.email.indexOf('@@') === -1 &&
+          this.state.loginEmail.indexOf('@@') === -1 &&
           lastDotPos > 2 &&
-          this.state.email.length - lastDotPos > 2
+          this.state.loginEmail.length - lastDotPos > 2
         )
       ) {
         formIsValid = false;
-        errors.email = 'Email is not valid';
+        errors.loginEmail = 'Email is not valid';
       }
     }
 
-    if (this.state.pass === '') {
+    if (this.state.loginPassword === undefined) {
       formIsValid = false;
-      errors.pass = 'this is a required field';
+      errors.loginPassword = 'This is a required field';
     }
 
-    if (typeof this.state.pass !== 'undefined' && this.state.pass !== '') {
-      if (this.state.pass.length < 6) {
+    if (typeof this.state.loginPassword !== 'undefined' && this.state.loginPassword !== '') {
+      if (this.state.loginPassword.length < 6) {
         formIsValid = false;
-        errors.pass =
-          'Please enter 6 or more characters. Leading or trailing spaces will be ignored.';
+        errors.loginPassword =
+          'Please enter more than 6 characters.';
       }
     }
     this.setState({ errors });
+    console.log(this.state);
     return formIsValid;
   }
 
@@ -280,12 +948,10 @@ class HeaderLayout extends React.Component {
   //   this.props.getCartData({ quoteId: this.state.cart_id });
   // };
 
-  showRegister = () => {
+ showRegister  = () => {
     this.setState({
-      showLogin: false,
-      redirectRegister: true,
+      loginForm: false,
     });
-    this.props.hideLoginModal({ show: false });
   };
 
   forgotPassword = () => {
@@ -341,31 +1007,63 @@ class HeaderLayout extends React.Component {
     }
   }
 
+
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.state.totalProdInCart !== nextProps.cartCount) {
-      this.setState({
-        totalProdInCart: nextProps.cartCount,
-        subtotal: nextProps.cartTotal,
-        totalProd: nextProps.cartProducts,
-      });
+    console.log(nextProps);
+    if (!_isEmpty(_get(nextProps, 'registerData'))) {
+      if (_get(nextProps.registerData, [0, 'code']) === 1) {
+        swal("", "Registered Successfully.", "success");
+        this.props.clearRegData();
+        this.setState({
+          checked: false,
+        });
+      } else {
+        //alert(_get(nextProps.registerData, [0, 'message']));
+        swal("", _get(nextProps.registerData, [0, 'message']), "error");
+        this.props.clearRegData();
+        this.setState({
+          checked: false,
+        });
+      }
     }
-    if (!_isEmpty(_get(nextProps, 'firstCartData')) && this.props.cartType !== 'RECEIVED_ADD_TO_CART' && this.props.cartType !== 'REQUEST_ADD_TO_CART' && this.props.cartCount !== _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0)) {
-      // if (_get(nextProps, ['firstCartData', 'cart', 0, 'code']) === 1) {
-      this.props.updateCart({
-        show: false,
-        cartCount: _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0),
-        cartTotal: _get(nextProps.firstCartData, ['cart', 0, 'subtotal'], 0),
-        cartProducts: _get(nextProps.firstCartData, ['cart', 0, 'result'], []),
-      });
-      // }
+
+    
+    if (!_isEmpty(_get(nextProps, 'onlineSalesMain'))) {
+      console.log(_get(nextProps, 'onlineSalesMain'));
+      if (_get(nextProps.onlineSalesMain, 'code') === 1) {
+        console.log(_get(nextProps.onlineSalesMain, 'code'));
+        this.setState({
+          //...categoryData,
+          categoryData: _get(nextProps.onlineSalesMain, 'result.level1')
+        })
+      }
     }
+
+    
+    if (!_isEmpty(_get(nextProps, 'onlineSalesSub')))
+     {
+      console.log(_get(nextProps, 'onlineSalesSub'));
+      if (_get(nextProps, 'onlineSalesSub.code') === 1) {
+        console.log(_get(nextProps, 'onlineSalesSub.code'));
+        this.setState({
+          ///..testData,
+          testData: _get(nextProps, 'onlineSalesSub.result.level1')
+        })
+        
+      }
+    }
+    
+    
     if (!_isEmpty(_get(nextProps, 'loginData')) && this.state.popupCall && nextProps.match.path !== '/view-cart') {
       this.setState({
         loginResult: _get(nextProps.loginData, [0, 'message']),
       });
       if (_get(nextProps.loginData, [0, 'message']) === 'success') {
+        
         this.setState({
           showLogin: false,
+         // cartCount: _get(nextProps.loginData, [0,'total_products_in_cart']),
+          //cartProducts: _get(nextProps.loginData, [0,'items']),
           // totalProd: _get(nextProps.loginData, [0, 'cartDetails', 'result']),
           // totalProdInCart: _get(nextProps.loginData, [0, 'cartDetails', 'total_products_in_cart'], 0),
           // subtotal: _get(nextProps.loginData, [0, 'cartDetails', 'subtotal'], 0),
@@ -395,15 +1093,16 @@ class HeaderLayout extends React.Component {
             popupCall: false,
           },
           () => {
-            alert('Invalid login or password.');
+            //alert('');
+            swal("", "Invalid login or password.", "error");
           },
         );
       }
       // this.props.hideLoginModal({ show: false });
     }
-    if (!_isEmpty(_get(nextProps, 'showLoginModal')) && _get(nextProps, 'showLoginModal.show')) {
-      this.handleShow('login');
-    }
+   // if (!_isEmpty(_get(nextProps, 'showLoginModal')) && _get(nextProps, 'showLoginModal.show')) {
+     // this.handleShow('login');
+   // }
     if (!_isEmpty(_get(nextProps, 'updateCartDetails')) && _get(nextProps, 'updateCartDetails.show')) {
       this.toggleCartDropdown('myCartId');
     }
@@ -455,8 +1154,8 @@ class HeaderLayout extends React.Component {
     }
     if (!_isEmpty(_get(nextProps, 'RemoveFromCartData'))) {
       if (_get(nextProps, 'RemoveFromCartData.code') === 1) {
-        this.props.getCartData({ apiToken: this.props.apiToken });
-        this.props.removeExpiredProducts({ apiToken: this.props.apiToken, cartId: this.props.cartId });
+        //this.props.getCartData({ apiToken: this.props.apiToken });
+        //this.props.removeExpiredProducts({ apiToken: this.props.apiToken, cartId: this.props.cartId });
       }
     }
 
@@ -522,13 +1221,45 @@ class HeaderLayout extends React.Component {
   }
   // eslint-disable-next-line class-methods-use-this
   componentDidMount() {
+    
+
+  const startChat = () => { setShowChat(true); }
+  const hideChat = () => { setShowChat(false); }
+    console.log(this.props);
+   if(this.props.location.pathname === '/')
+    {
+      this.props.getMainData();  
+    }
+    if(this.props.location.pathname === '/')
+    {
+      this.props.getSubData(); 
+    }
+    $("#divname").hide();
+    axios.post('https://uat.mediversal.tech/index.php/api/customer/getzipcode')
+    .then(data => {
+      this.setState(state => {
+        state.zipcode = data.data.zipcode;
+        return state;
+      });
+      console.log("data", data);
+
+      //HERE IT IS RETURNING EXPECTED DATA       
+
+      console.log(this.state.zipcode);
+        }) // this statement will not show you correct result since setState is async 
+      .catch(err => {
+          console.error("err", err);
+      }); 
+    //this.props.clearRegData();
+   
+
     const lessThanOneDayAgo = (date) => {
       const DAY = 1000 * 60 * 60 * 24; // 24 hours login time
       const oneDayBefore = Date.now() - DAY;
       return date < oneDayBefore;
     };
     if (this.props.apiToken && this.props.lastUpdatedToken && lessThanOneDayAgo(this.props.lastUpdatedToken)) {
-      this.props.clearLoginData();
+     // this.props.clearLoginData();
     }
 
     if (this.props.showCartResult) {
@@ -538,6 +1269,11 @@ class HeaderLayout extends React.Component {
       }
       showCartResult.reverse();
       this.setState({ totalProd: showCartResult });
+    }
+
+    if(this.props.apiToken !== '')
+    {
+    //this.props.getCartData({ api_token: this.props.apiToken, spending_point: 1 });
     }
 
     // this.props.postTrackUrl({
@@ -570,6 +1306,7 @@ class HeaderLayout extends React.Component {
         }
       }
     });
+    
   }
 
   componentWillUnmount() {
@@ -696,11 +1433,11 @@ class HeaderLayout extends React.Component {
     }));
   };
 
-  removeProduct = (cartRid) => {
-    this.props.getaddRemoveUpdateProduct({
-      apiToken: this.props.apiToken, itemId: cartRid,
-    }, 'DELETE');
-  }
+  //removeProduct = (cartRid) => {
+    //this.props.getaddRemoveUpdateProduct({
+      //apiToken: this.props.apiToken, itemId: cartRid,
+    //}, 'DELETE');
+  //}
 
   handleMouseEnter = () => {
     this.setState({ showLargeDropDowns: 'custom-class-trail' });
@@ -712,14 +1449,36 @@ class HeaderLayout extends React.Component {
 
   showLoginModal = () => this.setState(prevState => ({
     showLogin: !prevState.showLogin,
+    loginForm: !prevState.loginForm,
   }));
+
+  showLoginData  = () => {
+    this.setState({
+      loginForm: true,
+      
+    });
+  };
+
+  showPrescriptionModal = () => this.setState(prevState => ({
+    showPrescription: !prevState.showPrescription,
+  }));
+
+
 
   // eslint-disable-next-line class-methods-use-this
   render() {
-    if (this.state.redirectRegister) {
-      return (<Redirect to={{
-        pathname: '/register',
-      }} />);
+   console.log(this.state);
+   console.log(this.state.id2);
+    if (this.state.link) {
+      this.setState({
+        link: false,
+      });
+      return (
+        <Redirect push to={{
+          pathname: '/Category/'+ this.state.catData.id,
+          state: { catId: this.state.catData.id, catName: this.state.catData.name, catLevel: this.state.catData.level, catDescription: this.state.catData.description, catImage: this.state.catData.image },
+      }} />
+       );
     }
     const menuClass = `dropdown-menu ${this.state.isOpen ? 'show' : ''}`;
     const menuClass1 = `dropdown-menu ${this.state.isOpen1 ? 'show' : ''}`;
@@ -756,153 +1515,1216 @@ class HeaderLayout extends React.Component {
         </div>
       );
     }
-// console.log(this.state);
+
+    const renderMenu = items => {
+      return <ul  class="dropdown-content">
+        { items.map(i => {
+          return <li >
+            <a  href={i.url}>{ i.name }</a>
+            {/* i.level && renderMenu(i.level) */}
+            </li>
+        })}
+      </ul>
+    }
+    
+    const Menu =  (data) => {
+      console.log(data);
+      return <div class="row">
+         {data.map((contact) => (
+       <div className="col-sm-3 p-10">
+                <center>
+                  <div class="dropdown">
+                  <a href={contact.url}  class="dropbtn">
+                    <img src={contact.icon}  style={{height:'50px',width:'50px'}}/>
+                    <span className="black-bold">&nbsp;&nbsp;{contact.name}</span>
+                   
+                  </a>               
+                  { renderMenu(contact.level) }
+                  </div>
+                </center>
+               
+              
+              </div>
+             
+              
+            
+         ))}
+         </div>
+      
+    }
+    
     return (
-      <div className="App container-fluid">
+      <div className="App">
 
         <div>
           {this.props.location.pathname !== '/' ? 
-          <div className='row artist-header'>
-            <div className="col">
-              <Link to='/'>
-              <img src={logoIcon} alt='Logo' />
-              </Link>
-            </div>
-            <div className="col">
-            </div>
-            <div className="col">
-              <span className='font-weight-bold white-color-head'><span className='span-orange'>PARTNER </span>WITH US!</span>
-            </div>
-            <div className="col white-color-head-button">
-              {!this.props.apiToken ? <button type="button" onClick={this.showLoginModal}>
-                LOGIN
-              </button> :
-              <React.Fragment>
+          <div>
+              <div className="row">
+                  <div className="col-sm-3 p-10">
+                    <center><a  href="/"><img className="main-image" src={mediversal}/></a></center>
+                  </div>
+                  <div className="col-sm-6 p-10">
+                    <div className="row">
+                      <div className="col-sm-9">
+                          <div className="search">
+                            <button type="submit" className="searchButton1">
+                            <i className="fa fa-map-marker"></i>  Delivering to {this.state.zipcode}
+                          </button>
+                            <input type="text" className="searchTerm" placeholder="Search for Medicine and Lab Test"/>
+                            <button type="submit" className="searchButton">
+                            <i className="fa fa-search"></i>
+                          </button>
+                          </div>
+                      </div>
+                      <div className="col-sm-3">
+                      <center><a class="btn" onClick={this.showPrescriptionModal} style={{borderRadius:'10px',margin:'9px',height:'36px',width:'135px',backgroundColor:'#0077BF',textTransform: 'none',fontSize: '10px', paddingTop: '9px'}}>Upload Prescription </a></center>
+                      </div>
+                   </div>
+                   </div>
+                   {this.props.apiToken === '' ?
+                <div className="col-sm-3 p-10 mt-15">
+                  <center><a onClick={this.showLoginModal}><img src={login} style={{height:'15px',width:'15px'}}/>&nbsp;&nbsp;Login / Register</a></center>
+                </div>
+                : 
+                <div className="col-sm-3 p-10 mt-15">
+                  <div className="row">
+                  <div className="col-sm-3">
+                    <div class="dropdown2">
+                    <span class="fa-stack  has-badge" style={{fontSize: '1.5em',marginTop:'-10px'}} data-count={this.props.cartCount}>
+                        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                        <i class="fa fa-shopping-cart fa-stack-2x red-cart"></i>
+                 </span>
+                         <div class="dropdown-content2">
+                          <ul class="list-cart-summary hidden-xs">
+                            <li>
+                            <span><b>Order Summary</b></span>
+                            <span class="cartCount pull-right">{this.props.cartCount} Item(s)</span>
+                            </li>
+                            <hr></hr>
+                            {this.props.cartProducts && this.props.cartProducts.map((contact) => (
+                           <li>
+                            <span>{contact.name.substring(0, 15)}</span>
+                            <span className="pull-right">Qty: {contact.qty}</span>
+                           </li>
+                            ))}
+                            <li class="more-items" style={{display: 'none'}}>
+                            <a class="button-text"></a>
+                            </li>
+                            <br/>
+
+                            <li class="text-center">
+                            <a data-value="proceedToCart" href='/view-cart' style={{color:'#0087b0'}} class="button-text btn-proceed-cart">PROCEED TO CART</a>
+                            </li>
+                            </ul>
+                        </div>
+                   </div>
+                   </div>
+                   <div className="col-sm-9">
+                   <div class="dropdown3">
+                       <span>Welcome {this.props.loginData[0].result.cust_name} !</span>
+                         <div class="dropdown-content3">
+                         <ul class="list-cart-summary hidden-xs">
+                         <li class="more-items">
+                            <a class="button-text" href="/customer/account">My Account(Pending)</a>
+                            </li>
+                            <li class="more-items">
+                            <a class="button-text" href="/logoutSuccess">Logout</a>
+                            </li>
+                            </ul>
+                        </div>
+                   </div>    
+                 </div>
+                 </div>
+
+              </div>  
+                /*<center>Welcome {this.props.loginData[0].result.cust_name} !</center>
+                <React.Fragment>
                 <Link to='/view-cart'>My Bag</Link><br/>
               <Link to='/logoutSuccess'>Logout</Link>
               </React.Fragment>
-               }
+      </div>*/
+                }
+              </div>
+              <div className="row">
+              {this.state.categoryData.map((contact) => (
+                    <ul className="col-sm-3 p-10">
+                      <center>
+                          <li className="parent">
+                              <a href={contact.url}>
+                              <img src={contact.icon}  style={{height:'50px',width:'50px'}}/>
+                              <span className="black-bold">&nbsp;&nbsp;                              
+                              {contact.name}                              
+                              </span>
+                              </a>
+                              
+                             
+                              {
+                              contact.level && contact.level.length > 0 && contact.include_in_menu === '1' ?
+                                <ul className="child" style={{paddingLeft:'80px'}}>
+                               {contact.level.map((contact1) => (
+                                 <center>
+                                   {contact1.include_in_menu === '1' &&
+                                <li className="parent">
+                                   <a href={contact1.url}>{contact1.name}
+                                   { contact1.level && contact1.level.length > 0 ?
+                                   <span class="expand">» </span>: '' }
+                                   
+                                   </a>
+
+                                   { contact1.level && contact1.level.length > 0 &&
+                                            <ul className="child" >
+                                            {contact1.level.map((contact2) => (
+                                             <li className="parent">
+                                                <a href={contact2.url}>{contact2.name}</a>
+                                                { contact2.level && contact2.level.length > 0 &&
+                                                   <span class="expand">» </span> }
+                                                
+                                               { contact2.level && contact2.level.length > 0 &&
+                                                          <ul className="child" >
+                                                            {contact2.level.map((contact3) => (
+                                                              <li className="parent" href={contact3.url}>
+                                                                <a href={contact3.url}>{contact3.name}</a>
+                                                                </li>
+                                                      
+                                                      ))}
+                                                      </ul>
+                                                }
+
+
+
+                                             </li>
+                                             
+                                             ))}
+                                             </ul>
+                                      }
+
+                                </li>
+                                } </center>
+                                              
+                                
+                                ))}
+                                 
+                                 </ul>
+                             :
+                             <li></li>
+                              }
+                            
+                         </li>
+                      </center>
+                     
+                    </ul>
+                    
+                   ))}
+              </div>
+              {/*Menu(this.state.categoryData*/}
+            <nav className="navbar-default bg-blue" style={{marginBottom: '0px !important',border: '0px !important'}}>
+                <div className="container-fluid bg-blue">
+                  <div className="navbar-header">
+                    <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                      <span className="sr-only">Toggle navigation</span>
+                      <span className="icon-bar"></span>
+                      <span className="icon-bar"></span>
+                      <span className="icon-bar"></span>
+                    </button>
+                  </div>
+                  <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul className="nav row" style={{float:'none !important'}}>
+                    <li className="col-sm-1" style={{paddingLeft: '0px',paddingRight: '0px'}}></li>
+                   
+                   
+                    {this.state.testData.map((contact) => (
+                    <li  className="parent1 col-sm-2" style={{paddingLeft: '0px',paddingRight: '0px'}}>
+                                 <a onClick={() => this.getData(contact)} style={{color: '#ffffff',fontWeight: '300',fontSize: '14px'}}>
+                                 <center>{contact.name}</center>
+                                 </a>
+                                 
+                                
+                                 {
+                                 contact.level && contact.level.length > 0 ?
+                                   <ul className="child1" style={{paddingLeft:'20px'}}>
+                                  {contact.level.map((contact1) => (
+                                   <li  className="parent1">
+                                      <a onClick={() => this.getData(contact1)}  style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact1.name}
+                                      { contact1.level && contact1.level.length > 0 ?
+                                      <span class="expand1">» </span>: '' }
+                                      
+                                      </a>
+   
+                                      { contact1.level && contact1.level.length > 0 ?
+                                               <ul className="child1">
+                                               {contact1.level.map((contact2) => (
+                                                <li   className="parent1">
+                                                         <a onClick={() => this.getData(contact2)} style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact2.name}
+                                                              { contact2.level && contact2.level.length > 0 ?
+                                                              <span class="expand1">» </span>: '' }
+                                                              
+                                                              </a>
+
+                                                      { contact2.level && contact2.level.length > 0 ?
+                                                        <ul className="child1">
+                                                        {contact2.level.map((contact3) => (
+                                                          <li  className="parent1">
+                                                            <a  onClick={() => this.getData(contact3)} style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact3.name}
+                                                            { contact3.level && contact3.level.length > 0 ?
+                                                              <span class="expand1">» </span>: '' }
+                                                            </a>
+
+                                                                      { contact3.level && contact3.level.length > 0 ?
+                                                                  <ul className="child1">
+                                                                  {contact3.level.map((contact4) => (
+                                                                    <li key={contact4}  className="parent1" style={{float:'left'}}>
+                                                                      <a onClick={() => this.getData(contact4)}  style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact4.name}</a>
+                                                                    </li>
+                                                                    
+                                                                    ))}
+                                                                    </ul>
+                                                                    :<li></li>}
+                                                          </li>
+                                                          
+                                                          ))}
+                                                          </ul>
+                                                          :<li></li>}
+                                                </li>
+                                                
+                                                ))}
+                                                </ul>
+                                                :<li></li>}
+   
+                                   </li>
+                                  
+                                                 
+                                   
+                                   ))}
+                                    
+                                    </ul>
+                                :
+                                <li></li>
+                                 }
+                               
+                            </li>
+                       
+                    ))}
+                      <li className="col-sm-1" style={{paddingLeft: '0px',paddingRight: '0px'}}>
+                      </li>
+                  </ul>
+                  </div>
+                </div>
+              </nav>
+              
+              <div className="header-banner-small" > 
+              <div className="row fixed-header" id="divname" style={{height:'60px'}}> 
+                    <div className="col-sm-1 p-5">
+                      <center><img src={favicon} style={{height:'47px',width:'37px'}}/></center>
+                    </div>
+                    <div className="col-sm-3 p-5"> 
+                       <div className="row">
+                       {this.state.categoryData.map((contact) => (
+                    <div className="col-sm-3 p-5">
+                      <center>
+                          <li className="parent">
+                              <a href={contact.url}>
+                              <img src={contact.icon}  style={{height:'37px',width:'37px'}}/>
+                              </a>
+                              
+                             
+                              {
+                              contact.level && contact.level.length > 0 ?
+                                <ul className="child" style={{marginLeft:'20px'}}>
+                               {contact.level.map((contact1) => (
+                                 <center>
+                                  {contact1.include_in_menu === '1' && 
+  
+                                <li className="parent">
+                                   <a href={contact1.url}>{contact1.name}
+                                   { contact1.level && contact1.level.length > 0 ?
+                                   <span class="expand">» </span>: '' }
+                                   
+                                   </a>
+
+                                   { contact1.level && contact1.level.length > 0 &&
+                                            <ul className="child" >
+                                            {contact1.level.map((contact2) => (
+                                             <li className="parent">
+                                                <a href={contact2.url}>{contact2.name}</a>
+                                                { contact2.level && contact2.level.length > 0 ?
+                                                 <span class="expand">» </span>: '' }
+                                                { contact2.level && contact2.level.length > 0 &&
+                                            <ul className="child" >
+                                            {contact2.level.map((contact3) => (
+                                             <li className="parent">
+                                                <a href={contact3.url}>{contact3.name}</a>
+                                             </li>
+                                             
+                                             ))}
+                                             </ul>
+                                             }
+
+
+
+                                             </li>
+                                             
+                                             ))}
+                                             </ul>
+                                             }
+
+                                </li>
+                                } </center>
+                                              
+                                
+                                ))}
+                                 
+                                 </ul>
+                             :
+                             <li></li>
+                              }
+                            
+                         </li>
+                      </center>
+                     
+                    </div>
+                    
+                   ))}                          
+                        </div>
+                    </div>
+                    <div className="col-sm-7" style={{paddingTop: '6px'}}>
+                      <div className="row">
+                        <div className="col-sm-9">
+                        <center>
+                            <div className="search">
+                            <button type="submit" className="searchButton1">
+                              <i className="fa fa-map-marker"></i>  Delivering to {this.state.zipcode}
+                            </button>
+                              <input type="text" className="searchTerm" placeholder="Search for Medicine and Lab Test"/>
+                              <button type="submit" className="searchButton">
+                              <i className="fa fa-search"></i>
+                            </button>
+                            </div>
+                            </center>  
+                        </div>
+                        <div className="col-sm-3">
+                        <center><a style={{borderRadius:'10px',margin:'9px',height:'37px',width:'123px',backgroundColor:'#0077BF',textTransform: 'none',fontSize: '9px', paddingTop: '9px'}} className="btn">Upload <br/> Prescription </a></center>
+                        </div>
+                      </div>
+                    </div>  
+                    {this.props.apiToken === '' ?                  
+                    <div className="col-sm-1 p-5">
+                      <center>
+                        <a  onClick={this.showLoginModal}>
+                      <img src={login} style={{height:'15px',width:'15px',margin: '20px'}}/>
+                      </a>
+                      </center>
+                    </div>:
+                    <div className="col-sm-1 p-5" style={{marginLeft: '-26px',marginTop: '16px'}}>
+                    <center>
+                    Welcome {this.props.loginData[0].result.fname} 
+                   
+                    </center>
+                  </div>
+                    }
+                </div>
             </div>
-          </div>:
-          <div className='row artist-header'>
-          <div className="col">
-            <Link to='/'>
-            <img src={logoIcon} alt='Logo' />
-            </Link>
+                
+                
+            </div>:
+            <div>
+              <div className="row">
+                <div className="col-sm-3 p-10">
+                  <center><a  href="/"><img className="main-image" src={mediversal}/></a></center>
+                </div>
+                <div className="col-sm-6 p-10">
+                  <div className="row">
+                    <div className="col-sm-9">
+                        <div className="search">
+                          <button type="submit" className="searchButton1">
+                          <i className="fa fa-map-marker"></i>  Delivering to {this.state.zipcode}
+                        </button>
+                          <input type="text" className="searchTerm" placeholder="Search for Medicine and Lab Test"/>
+                          <button type="submit" className="searchButton">
+                          <i className="fa fa-search"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div className="col-sm-3">
+                      <center><a class="btn" onClick={this.showPrescriptionModal} style={{borderRadius:'10px',margin:'9px',height:'36px',width:'135px',backgroundColor:'#0077BF',textTransform: 'none',fontSize: '10px', paddingTop: '9px'}}>Upload Prescription </a></center>
+                    </div>
+                 </div>
+                 </div>
+                 {this.props.apiToken === '' ?
+                <div className="col-sm-3 p-10 mt-15">
+                  <center><a onClick={this.showLoginModal}><img src={login} style={{height:'15px',width:'15px'}}/>&nbsp;&nbsp;Login / Register</a></center>
+                </div>
+                : 
+                <div className="col-sm-3 p-10 mt-15">
+              <div className="row">
+                  <div className="col-sm-3">
+                    <div class="dropdown2">
+                    <span class="fa-stack  has-badge" style={{fontSize: '1.5em',marginTop:'-10px'}} data-count={this.props.cartCount}>
+                        <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                        <i class="fa fa-shopping-cart fa-stack-2x red-cart"></i>
+                 </span>
+                         <div class="dropdown-content2">
+                          <ul class="list-cart-summary hidden-xs">
+                            <li>
+                            <span><b>Order Summary</b></span>
+                            <span class="cartCount pull-right">{this.props.cartCount} Item(s)</span>
+                            </li>
+                            <hr></hr>
+                            {this.props.cartProducts && this.props.cartProducts.map((contact) => (
+                           <li>
+                            <span>{contact.name.substring(0, 15)}</span>
+                            <span className="pull-right">Qty: {contact.qty}</span>
+                           </li>
+                            ))}
+                            <li class="more-items" style={{display: 'none'}}>
+                            <a class="button-text"></a>
+                            </li>
+                            <br/>
+
+                            <li class="text-center">
+                            <a data-value="proceedToCart" href='/view-cart' style={{color:'#0087b0'}} class="button-text btn-proceed-cart">PROCEED TO CART</a>
+                            </li>
+                            </ul>
+                        </div>
+                   </div>
+                   </div>
+                   <div className="col-sm-9">
+                   <div className="dropdown3">
+                       <span>Welcome {this.props.loginData[0].result.cust_name} !</span>
+                         <div className="dropdown-content3">
+                         <ul className="list-cart-summary hidden-xs">
+                         <li className="more-items">
+                            <a className="button-text" href="/customer/account">My Account(Pending)</a>
+                            </li>
+                            <li className="more-items">
+                            <a className="button-text"  href="/logoutSuccess">Logout</a>
+                            </li>
+                            </ul>
+                        </div>
+                   </div>    
+                 </div>
+                 </div>
+
+              </div>
+                }
+              </div>
+              <div className="row">
+              {this.state.categoryData.map((contact) => (
+                    <ul className="col-sm-3 p-10">
+                      <center>
+                          <li className="parent">
+                              <a href={contact.url}>
+                              <img src={contact.icon}  style={{height:'50px',width:'50px'}}/>
+                              <span className="black-bold">&nbsp;&nbsp;                              
+                              {contact.name}                              
+                              </span>
+                              </a>
+                              
+                             
+                              {
+                              contact.level && contact.level.length > 0 && contact.include_in_menu === '1' ?
+                                <ul className="child" style={{paddingLeft:'80px'}}>
+                               {contact.level.map((contact1) => (
+                                 <center>
+                                   {contact1.include_in_menu === '1' &&
+                                <li className="parent">
+                                   <a href={contact1.url}>{contact1.name}
+                                   { contact1.level && contact1.level.length > 0 ?
+                                   <span class="expand">» </span>: '' }
+                                   
+                                   </a>
+
+                                   { contact1.level && contact1.level.length > 0 &&
+                                            <ul className="child" >
+                                            {contact1.level.map((contact2) => (
+                                             <li className="parent">
+                                                <a href={contact2.url}>{contact2.name}</a>
+                                                { contact2.level && contact2.level.length > 0 &&
+                                                   <span class="expand">» </span> }
+                                                
+                                               { contact2.level && contact2.level.length > 0 &&
+                                                          <ul className="child" >
+                                                            {contact2.level.map((contact3) => (
+                                                              <li className="parent" href={contact3.url}>
+                                                                <a href={contact3.url}>{contact3.name}</a>
+                                                                </li>
+                                                      
+                                                      ))}
+                                                      </ul>
+                                                }
+
+
+
+                                             </li>
+                                             
+                                             ))}
+                                             </ul>
+                                      }
+
+                                </li>
+                                } </center>
+                                              
+                                
+                                ))}
+                                 
+                                 </ul>
+                             :
+                             <li></li>
+                              }
+                            
+                         </li>
+                      </center>
+                     
+                    </ul>
+                    
+                   ))}
+              </div>
+              <nav className="navbar-default bg-blue" style={{marginBottom: '0px !important',border: '0px !important'}}>
+                <div className="container-fluid bg-blue">
+                  <div className="navbar-header">
+                    <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                      <span className="sr-only">Toggle navigation</span>
+                      <span className="icon-bar"></span>
+                      <span className="icon-bar"></span>
+                      <span className="icon-bar"></span>
+                    </button>
+                  </div>
+                  <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    
+                  <ul className="nav row" style={{float:'none !important'}}>
+                    <li className="col-sm-1" style={{paddingLeft: '0px',paddingRight: '0px'}}></li>
+                   
+                    {this.state.testData.map((contact) => (
+                    <li  className="parent1 col-sm-2" style={{paddingLeft: '0px',paddingRight: '0px'}}>
+                                 <a onClick={() => this.getData(contact)} style={{color: '#ffffff',fontWeight: '300',fontSize: '14px'}}>
+                                 <center>{contact.name}</center>
+                                 </a>
+                                 
+                                
+                                 {
+                                 contact.level && contact.level.length > 0 ?
+                                   <ul className="child1" style={{paddingLeft:'20px'}}>
+                                  {contact.level.map((contact1) => (
+                                   <li  className="parent1">
+                                      <a onClick={() => this.getData(contact1)}  style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact1.name}
+                                      { contact1.level && contact1.level.length > 0 ?
+                                      <span class="expand1">» </span>: '' }
+                                      
+                                      </a>
+   
+                                      { contact1.level && contact1.level.length > 0 ?
+                                               <ul className="child1">
+                                               {contact1.level.map((contact2) => (
+                                                <li   className="parent1">
+                                                         <a onClick={() => this.getData(contact2)} style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact2.name}
+                                                              { contact2.level && contact2.level.length > 0 ?
+                                                              <span class="expand1">» </span>: '' }
+                                                              
+                                                              </a>
+
+                                                      { contact2.level && contact2.level.length > 0 ?
+                                                        <ul className="child1">
+                                                        {contact2.level.map((contact3) => (
+                                                          <li  className="parent1">
+                                                            <a  onClick={() => this.getData(contact3)} style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact3.name}
+                                                            { contact3.level && contact3.level.length > 0 ?
+                                                              <span class="expand1">» </span>: '' }
+                                                            </a>
+
+                                                                      { contact3.level && contact3.level.length > 0 ?
+                                                                  <ul className="child1">
+                                                                  {contact3.level.map((contact4) => (
+                                                                    <li key={contact4}  className="parent1" style={{float:'left'}}>
+                                                                      <a onClick={() => this.getData(contact4)}  style={{paddingLeft:'10px',textDecoration: 'none',display: 'block',width: '100%',height: '100%'}}>{contact4.name}</a>
+                                                                    </li>
+                                                                    
+                                                                    ))}
+                                                                    </ul>
+                                                                    :<li></li>}
+                                                          </li>
+                                                          
+                                                          ))}
+                                                          </ul>
+                                                          :<li></li>}
+                                                </li>
+                                                
+                                                ))}
+                                                </ul>
+                                                :<li></li>}
+   
+                                   </li>
+                                  
+                                                 
+                                   
+                                   ))}
+                                    
+                                    </ul>
+                                :
+                                <li></li>
+                                 }
+                               
+                            </li>
+                       
+                    ))}
+                       <li className="col-sm-1" style={{paddingLeft: '0px',paddingRight: '0px'}}>
+                      </li>
+                  </ul>
+                  </div>
+                </div>
+              </nav>
+              <div className="header-banner-small" > 
+                  <div className="row fixed-header" id="divname" style={{height:'60px'}}> 
+                    <div className="col-sm-1 p-5">
+                      <center><img src={favicon} style={{height:'47px',width:'37px'}}/></center>
+                    </div>
+                    <div className="col-sm-3 p-5"> 
+                       <div className="row">
+                       {this.state.categoryData.map((contact) => (
+                    <div className="col-sm-3 p-5">
+                      <center>
+                          <li className="parent">
+                              <a href={contact.url}>
+                              <img src={contact.icon}  style={{height:'37px',width:'37px'}}/>
+                              </a>
+                              
+                             
+                              {
+                              contact.level && contact.level.length > 0 && contact.include_in_menu === '1' ?
+                                <ul className="child" style={{marginLeft:'20px'}}>
+                               {contact.level.map((contact1) => (
+                                 <center>
+                                   {contact1.include_in_menu === '1' &&
+                                <li className="parent">
+                                   <a href={contact1.url}>{contact1.name}
+                                   { contact1.level && contact1.level.length > 0 ?
+                                   <span class="expand">» </span>: '' }
+                                   
+                                   </a>
+
+                                   { contact1.level && contact1.level.length > 0 && 
+                                            <ul className="child">
+                                            {contact1.level.map((contact2) => (
+                                             <li className="parent">
+                                                <a href={contact2.url}>{contact2.name}</a>
+                                             </li>
+                                             
+                                             ))}
+                                             </ul>}
+
+                                </li>
+                               
+                              } </center>             
+                                
+                                ))}
+                                 
+                                 </ul>
+                             :
+                             <li></li>
+                              }
+                            
+                         </li>
+                      </center>
+                     
+                    </div>
+                    
+                   ))}                          
+                        </div>
+                    </div>
+                    <div className="col-sm-7" style={{paddingTop: '6px'}}>
+                      <div className="row">
+                        <div className="col-sm-9">
+                        <center>
+                            <div className="search">
+                            <button type="submit" className="searchButton1">
+                              <i className="fa fa-map-marker"></i>  Delivering to {this.state.zipcode}
+                            </button>
+                              <input type="text" className="searchTerm" placeholder="Search for Medicine and Lab Test"/>
+                              <button type="submit" className="searchButton">
+                              <i className="fa fa-search"></i>
+                            </button>
+                            </div>
+                            </center>  
+                        </div>
+                        <div className="col-sm-3">
+                          <center><a style={{borderRadius:'10px',margin:'9px',height:'37px',width:'123px',backgroundColor:'#0077BF',textTransform: 'none',fontSize: '9px', paddingTop: '9px'}} className="btn">Upload <br/> Prescription </a></center>
+                        </div>
+                      </div>
+                    </div>                    
+                    {this.props.apiToken === '' ?                  
+                    <div className="col-sm-1 p-5">
+                      <center>
+                        <a  onClick={this.showLoginModal}>
+                      <img src={login} style={{height:'15px',width:'15px',margin: '20px'}}/>
+                      </a>
+                      </center>
+                    </div>:
+                    <div className="col-sm-1 p-5" style={{marginLeft: '-26px',marginTop: '16px'}}>
+                    <center>
+                    Welcome {this.props.loginData[0].result.fname}
+                    </center>
+                  </div>
+                    }
+                </div>
+                </div>
+                 
           </div>
-          <div className="col">
-          </div>
-          <div className="col">
-            <span className='font-weight-bold'><span className='span-orange'>PARTNER </span>WITH US!</span>
-          </div>
-          <div className="col color-link-head">
-            {!this.props.apiToken ? <button type="button" onClick={this.showLoginModal}>
-              LOGIN
-            </button> : <React.Fragment>
-                <Link to='/view-cart'>My Bag</Link><br/>
-              <Link to='/logoutSuccess'>Logout</Link>
-              </React.Fragment> }
-          </div>
-        </div>
+        
         }
         </div>
         
         {this.props.children}
         <MaModal open={this.state.showLogin} handleCloseModal={this.showLoginModal}>
-          <div className='text-center'>
+         {this.state.loginForm ? 
+          <div className='text-center' style={{marginLeft:'30px',marginRight:'30px'}}>
+          <button type="button" className="close" onClick={this.showLoginModal} data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style={{fontSize:'30px'}}>&times;</span>
+        </button>
           <div className='cust-margin-login'>          
-          <h2>LOG IN</h2>
+          <h3>Please Sign In</h3><br/>
+          <center><p><i>Enjoy the convenience of a single account across all</i></p></center>
+          </div> 
+          <div className="row">
+          <center>
+         <img src={google} style={{height:'70px',width:'70px'}}/>
+     
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <img src={facebook} style={{height:'70px',width:'70px'}}/>  
+          </center>
           </div>
-          <div className='cust-margin-login'>
-                    <input placeholder='name@example.com' name='email' id='email' onChange={this.handleInputChange} />
+          <br/>
+
+          <div className="row">
+            <center>
+          Or via email
+           </center>
+           </div>
+           <br/>
+            <div className="row"  style={{position: 'relative'}}>
+                <div className="md-form col-md-3">
+              </div>
+              <div className="md-form col-md-6">
+                <i className="fas fa-envelope prefix"  style={{color:'#2fafcc'}}></i>
+                <input type="email" autocomplete="new-password" required name="loginEmail" id="loginEmail" onChange={this.handleInputChange}/>
+                <label  for="loginEmail"  style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Email Address</label>
+                
+              </div>
+              <div className="md-form col-md-3">
+              <span className={`${ this.state.errors.loginEmail }`? 'blink' : ''}>{this.state.errors.loginEmail}</span>
+              </div>
+              </div>
+              <div className="row"  style={{position: 'relative'}}>
+              <div className="md-form col-md-3">
+              </div>
+              <div className="md-form col-md-6">
+                <i className="fa fa-lock prefix"  style={{color:'#2fafcc',fontSize:'26px'}}></i>
+                <input type="password" autocomplete="new-password" required name="loginPassword" id="loginPassword" onChange={this.handleInputChange}/>
+                <label  for="loginPassword"  style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Create Password</label>
+               
+              </div>
+              <div className="md-form col-md-3">
+              <span className={`${ this.state.errors.loginPassword }`? 'blink' : ''}>{this.state.errors.loginPassword}</span>
+              </div>
+              </div>
+              <div>
+               <div className="row">
+               <div className="md-form col-md-3">
                 </div>
-                <div className='cust-margin-login' style={{ marginBottom: '20px' }}>
-                    <input placeholder='Password' type='password' id='pass' name='password' onChange={this.handleInputChange} />
-                    {/* <div className='remeber-section'>
-                        <input type='checkbox' label='Remember Me' defaultChecked />
-                        <span className='show-pass-span'>Show Password</span>
-                    </div> */}
+                 <div className="md-form col-md-6">
+                           <div class="row" style={{marginTop: '-30px'}}>
+                               <div className="md-form col-md-3">
+                                  
+                               </div>
+                              <div  className="md-form col-md-9">
+                                 <a style={{marginRight: '-100px'}} href="">Forgot password?</a>
+                              </div>
+                          </div>
+                   </div>
+                 <div className="md-form col-md-3">
+                  </div>
+               </div>
+               <div class="row">
+                 <center>
+                      <button className="btn" onClick={this.loginclickFun} style={{height: '36px', width: '200px',fontSize: '15px',backgroundColor:'#0077bf',color:'white'}} type="submit">Sign in</button>
+                  </center>
+              </div>
+              <br/>
+                 <div class="row">
+                   <center>
+                    <p>Not a member?&nbsp;
+                        <a onClick={this.showRegister} style={{color:'blue'}}>Register</a>
+                    </p>
+                    </center>                        
+                       
                 </div>
-                <div className='cust-margin-login'>
-                <button type="button" className="btn custom-class-button" onClick={this.loginclickFun}>LOGIN</button>
+            </div>
+            <div>
+
+            </div>
+
+
+           </div>
+           :
+           <div><div className='text-center' style={{marginLeft:'30px',marginRight:'30px'}}>
+           <button type="button" className="close" onClick={this.showLoginModal} data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true" style={{fontSize:'30px'}}>&times;</span>
+         </button>
+           <div className='cust-margin-login'>          
+           <h3>Please Register</h3>
+           <center><p><i>Enjoy the convenience of a single account across all</i></p></center>
+           </div> 
+           <div className="row">
+           <center>
+          <img src={google} style={{height:'50px',width:'50px'}}/>
+      
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <img src={facebook} style={{height:'50px',width:'50px'}}/>  
+           </center>
+           </div>
+           <div className="row">
+             <center>
+           Or via email
+            </center>
+            </div>
+             <div className=" row" style={{position: 'relative',marginTop:'12px'}}>
+               <div className="md-form col-md-6">
+                 <i className="fas fa-user prefix" style={{color:'#2fafcc'}}></i>
+                 <input type="text" id="firstName" autocomplete="new-password" name="firstName" value={this.state.firstName} onChange={this.handleInputChange}/>
+                 <label  for="firstName" style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Enter First name</label>
+                 <span className={`${ this.state.errors.lastName }`? 'blink' : ''}>{this.state.errors.lastName}</span>
+               </div>
+               <div className="md-form col-md-6">
+                 <i className="fas fa-user prefix" style={{color:'#2fafcc'}}></i>
+                 <input type="text" id="lastName" autocomplete="new-password" name="lastName" value={this.state.lastName} onChange={this.handleInputChange}/>
+                 <label  for="lastName" style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Enter Last name</label>
+                 <span className={`${ this.state.errors.lastName }`? 'blink' : ''}>{this.state.errors.lastName}</span>
+               </div>
+             </div>
+             <div className="row"  style={{position: 'relative',marginTop:'12px'}}>
+               <div className="md-form col-md-6">
+                 <i className="fas fa-envelope prefix"  style={{color:'#2fafcc'}}></i>
+                 <input type="email" autocomplete="new-password" id="email" name="email" value={this.state.email} onChange={this.handleInputChange}/>
+                 <label for="email"  style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Email Address</label>
+                 <span className={`${ this.state.errors.email }`? 'blink' : ''}>{this.state.errors.email}</span>
+               </div>
+ 
+               <div className= "md-form  col-md-6">
+                 <i className="fa fa-mobile prefix"  style={{color:'#2fafcc',fontSize:'26px'}}></i>
+                 <input type="text" autocomplete="new-password" id="telephone" name="telephone"  value={this.state.telephone} onChange={this.handleInputChange}/>
+                 <label  for="telephone"  style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Phone Number</label>
+                 <span className={`${ this.state.errors.telephone }`? 'blink' : ''}>{this.state.errors.telephone}</span>
+               </div>
+               </div>
+               <div className="row"  style={{position: 'relative',marginTop:'12px'}}>
+               <div className="md-form col-md-6">
+                 <i className="fa fa-lock prefix"  style={{color:'#2fafcc',fontSize:'26px'}}></i>
+                 <input type="email" autocomplete="new-password" id="password" className="password"  value={this.state.password} onChange={this.handleInputChange}/>
+                 <label for="password"  style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Create Password</label>
+                 <span className={`${ this.state.errors.password }`? 'blink' : ''}>{this.state.errors.password}</span>
+               </div>
+               <div className="md-form col-md-6">
+                 <i className="fa fa-lock prefix"  style={{color:'#2fafcc',fontSize:'26px'}}></i>
+                 <input type="text" autocomplete="new-password" id="confirmPassword" className="confirmPassword"  value={this.state.confirmPassword} onChange={this.handleInputChange}/>
+                 <label for="confirmPassword"  style={{fontSize:'12px',marginLeft: '4.0rem',marginTop: '-12px'}}>Confirm Password</label>
+                 <span className={`${ this.state.errors.confirmPassword }`? 'blink' : ''}>{this.state.errors.confirmPassword}</span>
+               </div>
+               </div>
+               <div>
+               <div class="row">
+                       <center>
+                                 <input type="checkbox" onChange={this.handleCheck} defaultChecked={this.state.checked}/>
+                                
+                             &nbsp;
+                                 <label style={{fontColor:'#2fafcc',fontSize:'12px'}}>
+                                 Terms and Conditions</label>
+                       </center>       
+                        
+                 </div>
+             </div>
+             <div>
+             <center>
+               <a onClick={this.customerRegisterData}>
+             <img src={register} style={{height:'65px',width:'200px'}}/>
+             </a>
+             </center>
+ 
+             </div>
+             <br/>
+                 <div class="row" style={{marginTop:'-10px'}}>
+                   <center>
+                    <p>Have an Account?&nbsp;
+                        <a onClick={this.showLoginData} style={{color:'blue'}}>Login</a>
+                    </p>
+                    </center>                        
+                       
                 </div>
-                <div>
-                    Forget Your Password? Get Help
-                </div>
-                <div className='cust-margin-login'>
-                <button type="button" className="btn btn-outline-primary" onClick={this.showRegister}>SIGN UP</button>
-                </div>
+ 
+ 
+            </div></div>}
+        </MaModal>
+        <MaModal open={this.state.showPrescription} handleCloseModal={this.showPrescriptionModal}>
+          <div className='text-center'>
+            <br/><br/>
+              <div className='text-center' style={{marginLeft:'30px',marginRight:'30px'}}>
+                 <button type="button" className="close" onClick={this.showPrescriptionModal} data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true" style={{fontSize:'30px'}}>&times;</span>
+                  </button>
+             </div> 
+             <div className="form-group files color">
+                  {this.state.file === null?
+              <img src={pres} style={{height:'300px',width:'300px'}}/> :
+             <img src={this.state.file} style={{height:'300px',width:'300px'}}/>}\
+             
+              </div>
+                <br/><br/>
+              <div>
+
+              <center>
+                     <label style={{padding: '10px',background: '#007abf',display: 'table', color: '#fff',width:'200px'}}>
+                        Browse And Upload
+                      <input type="file" name="file" onChange={(e) => this.onChange(e)}/>
+                    </label>
+                </center> 
+              </div>
+
           </div>
         </MaModal>
         <div className="footer-section-custom mt-4">
-          <hr />
-          <div className="row">
-            <div className="col">
-              <ul className='list-unstyled text-center'>
-                <li className='mt-4 font-weight-bold'>
-                  COMPANY
-              </li>
-                <li className='mt-4'>
-                  About Us
-              </li>
-                <li className='mt-4'>
-                  Blog
-              </li>
-                <li className='mt-4'>
-                  Press
-              </li>
-                <li className='mt-4'>
-                  Careers
-              </li>
-              </ul>
-            </div>
-            <div className="col">
-              <ul className='list-unstyled text-center'>
-                <li className='mt-4 font-weight-bold'>
-                  SUPPORT
-              </li>
-                <li className='mt-4'>
-                  FAQ
-              </li>
-                <li className='mt-4'>
-                  Ressend Confirmation Email
-              </li>
-                <li className='mt-4'>
-                  Reschedule My Ticket
-              </li>
-                <li className='mt-4'>
-                  Gift Card Balance
-              </li>
-              </ul>
-            </div>
-            <div className="col">
-              <ul className='list-unstyled text-center'>
-                <li className='mt-4 font-weight-bold'>
-                  SUPPORT
-              </li>
-                <li className='mt-4'>
-                  Launch Your Own Business
-              </li>
-                <li className='mt-4'>
-                  Become a Venue
-              </li>
-                <li className='mt-4'>
-                  Local Partner Login
-              </li>
-              </ul>
-            </div>
-            <div className="col">
-              <ul className='list-unstyled text-center'>
-                <li className='mt-4 font-weight-bold'>
-                  Follow us online
-              </li>
-                <li className='mt-4'>
+          <div className="row p-20">
+            <div className="col-sm-4 p-20">
+              <ul className="ul-style" >
+              <li href="/" style={{fontWeight: '600',fontSize: '14px'}}>
+                   Home
+                   <br/><br/>
+                   </li>
+              {this.state.testData.map((contact) => (
+                <li style={{fontWeight: '600' ,marginTop:'10px'}}>
+                  <a onClick={() => this.getData(contact)} style={{fontSize: '14px'}}>
+                   {contact.name} 
+                   </a>
+                   <br/><br/>
+                   </li>
 
-                </li>
+                ))}
               </ul>
+            </div>
+            <div className="col-sm-4 p-20">
+                <h4 className="f-25b">Corporate Office</h4>
+                <p className="f-16b">508-509, 5Th Floor, Hariniwas complex,
+                <br/>
+                Near Dakbunglow Chawk,
+                <br/>
+                Patna - 800001, Bihar</p>
+                <br/><br/>
+                <h4 className="f-25b">Head Office</h4>
+                <p className="f-16b">508-509, 5Th Floor, Hariniwas complex,
+                <br/>
+                Near Dakbunglow Chawk,
+                <br/>
+                Patna - 800001, Bihar</p>
+              </div>
+              <div className="col-sm-4 p-20">
+              <h4 className="f-25b">Hospital Address</h4>
+              <p className="f-16b">Mediversal Superspeciality Hospital
+              <br/>
+              (A unit of Mediversal Healthcare Pvt. Ltd)
+              <br/>
+              Doctors' Colony, Kankarbagh,
+              <br/>
+              Patna - 800020, Bihar</p>
+              <br/><br/>
+              <p className="f-16b">Phone : +919608600365
+              <br/>
+              Email : info@mediversal.in</p>
             </div>
           </div>
         </div>
+        <div className = "footer">Footer</div>
+        <div className = "bot">
+        <div style ={{display: this.state.showChat ? "" : "none"}}>
+        <ErrorBoundary>
+        <ChatBot 
+        toggleFloating='true'
+        className="data-css"
+        headerComponent={this.state.floating && (
+         <div className="rsc-data">
+           <div ></div>
+            <h4>Covid 19</h4>
+           <a style={{marginRight:'13px'}} onClick={() => this.hideChat()}>X</a>
+           </div>
+        )}
+         handleEnd='true'
+         steps={[
+          {
+            id: '3',
+            message: 'आपका लिंग क्या है?',
+            trigger: 'gender',
+          },
+          {
+            id: 'gender',
+            options: [
+              { value: 'पुरुष', label: 'पुरुष', trigger: '5' },
+              { value: 'महिला', label: 'महिला', trigger: '5' },
+              { value: 'अन्य', label: 'अन्य', trigger: '5' },
+            ],
+          },
+          {
+            id: '5',
+            message: 'कृपया अपनी आयु लिखें।',
+            trigger: 'age',
+          },
+          {
+            id: 'age',
+            user: true,
+            trigger: 'a',
+            validator: (value) => {
+              if (isNaN(value)) {
+                return 'value must be a number';
+              } else if (value < 0) {
+                return 'value must be positive';
+              } else if (value > 120) {
+                return `${value}? Come on!`;
+              }
+
+              return true;
+            },
+          },
+          {
+            id: 'a',
+            message: 'क्या आप नीचे लिखे हुए लक्षणों में से किसी का अनुभव कर रहे हैं?',
+            trigger: 'search',
+          },
+          {
+            id: 'search',
+            component: <MultiSelect options={this.state.options} values={this.state.values}/>, 
+            trigger:'dd'
+          },
+          {
+            id: 'dd',
+            user: true,
+            trigger: 'ee',
+          },
+          {
+            id: 'ee',
+            message: 'क्या आप नीचे लिखे हुए लक्षणों में से किसी का अनुभव कर रहे हैं?',
+            trigger: 'ff',
+          },
+          {
+            id: 'ff',
+            component: <MultiSelect1 options1={this.state.options1} values1={this.state.values1}/>, 
+            trigger:'gg'
+          },
+          {
+            id: 'gg',
+            user: true,
+            trigger: 'hh',
+          },
+          {
+            id: 'hh',
+            message: 'नीचे दिए गए विकल्पों में से कौनसा आपके लिए लागू होता है?',
+            trigger: 'ii',
+          },
+          {
+            id: 'ii',
+            component: <MultiSelect2 options2={this.state.options2} values2={this.state.values2}/>, 
+            trigger:'jj'
+          },          
+          {
+            id: 'jj',
+            user: true,
+            trigger: 'kk',
+          },
+          {
+            id: 'kk',
+            message: 'क्या आपने पिछले 14 दिनों में कोई विदेश यात्रा की है?',
+            trigger: 'll',
+          },
+          {
+            id: 'll',
+            options: [
+              { value: 'हाँ', label: 'हाँ', trigger: 'mm' },
+              { value: 'नहीं', label: 'नहीं', trigger: 'mm'},
+            ],
+          },
+          {
+            id: 'mm',
+            message: 'नीचे दिए गए विकल्पों में से कौनसा आपके लिए लागू होता है?',
+            trigger: 'nn',
+          },
+          {
+            id: 'nn',
+            component: <MultiSelect3 options3={this.state.options3} values3={this.state.values3}/>, 
+            trigger:'oo'
+          },          
+          {
+            id: 'oo',
+            user: true,
+            trigger: 'pp',
+          },
+          {
+            id: 'pp',
+            message: 'यह अंतःक्रिया कब हुई थी?',
+            trigger: 'qq',
+          },
+          {
+            id: 'qq',
+            component: <MultiSelect4 options4={this.state.options4} values4={this.state.values4}/>, 
+            trigger:'rr'
+          },          
+          {
+            id: 'rr',
+            user: true,
+            trigger: 'ss',
+          },
+          {
+            id: 'ss',
+            message: 'नाम',
+            trigger: 'name',
+          },
+          {
+            id: 'name',
+            user: true,
+            trigger: 'tt',
+          },
+          {
+            id: 'tt',
+            message: 'मोबाइल नंबर',
+            trigger: 'mobile',
+          },
+          {
+            id: 'mobile',
+            user: true,
+            trigger: 'uu',
+          },
+          {
+            id: 'uu',
+            message: 'पिन कोड',
+            trigger: 'pinCode',
+          },
+          {
+            id: 'pinCode',
+            user: true,
+            trigger: 'review',
+          },
+          {
+            id: 'review',
+            component: <Review values={this.state.values} values1={this.state.values1} values2={this.state.values2} values3={this.state.values3} values4={this.state.values4}/>,
+            asMessage: true,
+            trigger: 'end-message',
+          },
+          {
+            id: 'end-message',
+            message: 'Thanks! Your data was submitted successfully!',
+            //end: true,
+          },      
+        ]} />
+           </ErrorBoundary>
+        </div>      
+        {/* <div> {showChat ? <SimpleForm></SimpleForm> : null} </div> */}
+        <div>
+          {!this.state.showChat &&       
+             <a  onClick={() => this.startChat()} className="chat_on"> <span className="chat_on_icon"><i class="fa fa-comments" aria-hidden="true"></i></span> </a>
+            }
+        </div>
+      </div>  
 
       </div>
 
@@ -910,9 +2732,13 @@ class HeaderLayout extends React.Component {
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getLoginData: data => dispatch(fetchLoginData(data)),
+  getMainData: () => dispatch(fetchOnlineSalesMainData()),
+  getSubData: () => dispatch(fetchOnlineSalesSubData()), 
+  getLoginData: data => dispatch(fetchLoginResponseData(data)),
+  getRegisterData: data => dispatch(fetchCustomerRegisterData(data)),
   hideLoginModal: data => dispatch(receiveHideLoginModalData(data)),
   clearLoginData: () => dispatch(requestUserLogout()),
+  clearRegData: () => dispatch(clearRegisterData()), 
   updateCart: data => dispatch(updateCartData(data)),
   getCategoriesData: data => dispatch(fetchCategoriesList(data)),
   getCategoryAutoCompleteData: data => dispatch(fetchCategoriesAutoCompleteResult(data)),
@@ -928,7 +2754,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = (state) => {
   const {
-    loginReducer, cartReducer, bkmReducer, wishListReducer, myFavouritesReducer,
+    loginReducer, cartReducer, bkmReducer, wishListReducer, myFavouritesReducer, registerReducer,buyMedicineReducer,
   } = state;
 
   const {
@@ -963,6 +2789,16 @@ const mapStateToProps = (state) => {
     moveToWishListData,
     error: cartError,
   } = cartReducer || [];
+
+  const {
+    registerData,
+  } = registerReducer || [];
+
+  const {
+    testData,
+    onlineSalesMain,
+    onlineSalesSub,
+  } = buyMedicineReducer || [];
 
   const { showWishListData, addToWishlist, error: wishlistError } = wishListReducer || [];
 
@@ -1007,6 +2843,10 @@ const mapStateToProps = (state) => {
     cartCount,
     cartProducts,
     cartTotal,
+    registerData,
+    onlineSalesMain,
+    onlineSalesSub,
+    testData,
   };
 };
 

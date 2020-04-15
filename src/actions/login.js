@@ -1,5 +1,7 @@
 
 import _get from 'lodash/get';
+import axios from 'axios';
+import qs from 'qs';
 import * as LOGIN_CONSTANTS from '../constants/login';
 import dynamicActionWrapper, { generateFns } from '../utils/actionHelper';
 import * as SALESREP_CONSTANTS from '../constants/salesRep';
@@ -256,3 +258,24 @@ export const verifyEmailId = (data, subreddit) => (dispatch) => {
         redirect: 'follow',
     }));
 };
+
+export const recievedLoginDetails = data => ({
+    type: LOGIN_CONSTANTS.RECEIVED_LOGIN_RESPONSE_DATA,
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const recievedLoginError = (err) => ({
+    type: LOGIN_CONSTANTS.RECEIVED_LOGIN_RESPONSE_ERROR,
+    errorCode: err,
+  })
+
+ 
+  
+  export const fetchLoginResponseData = (data) => {
+      console.log(data);      
+    return dispatch => {
+      axios.post('https://uat.mediversal.tech/index.php/api/customer/login',qs.stringify(data))
+        .then(res => dispatch(recievedLoginDetails(res.data)))
+        .catch(err => dispatch(recievedLoginError(err)))
+    }
+  }

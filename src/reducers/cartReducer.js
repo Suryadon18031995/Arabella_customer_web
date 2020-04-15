@@ -54,6 +54,7 @@ const cartReducer = (state = {
                 cartType: _get(action.data, ['cart', 0, 'result', 0, 'type']),
                 updateCartData: [],
                 discountCouponData: [],
+                RemoveFromCartData: [],
                 removeExpiredProductsData: [],
                 moveToWishListData: [],
                 lastUpdated: action.receivedAt,

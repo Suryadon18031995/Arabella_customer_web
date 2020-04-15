@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 98.69 26.36" style="enable-background:new 0 0 98.69 26.36;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#1FB584;}
+	.st1{fill:#FFFFFF;}
+	.st2{font-family:'Candara';}
+	.st3{font-size:22.6042px;}
+	.st4{fill:#3A3A3A;}
+	.st5{font-size:15.0695px;}
+	.st6{fill:none;stroke:#0087B0;stroke-width:3;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st0" d="M65.02,1.69h23.36c4.99,0,9.04,4.05,9.04,9.04V16c0,4.99-4.05,9.04-9.04,9.04H65.02"/>
+	<path class="st0" d="M34.88,25.05H11.52C6.53,25.05,2.48,21,2.48,16v-5.27c0-4.99,4.05-9.04,9.04-9.04h23.36"/>
+	<g>
+		<text transform="matrix(1 0 0 1 74.9652 18.6433)" class="st1 st2 st3">+</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 47.4662 17.1365)" class="st4 st2 st5">1</text>
+	</g>
+	<g>
+		<text transform="matrix(1 0 0 1 16.1937 18.6433)" class="st1 st2 st3">-</text>
+	</g>
+	<path class="st6" d="M97.19,15.82c0,4.99-4.05,9.04-9.04,9.04H10.54c-4.99,0-9.04-4.05-9.04-9.04v-5.27c0-4.99,4.05-9.04,9.04-9.04
+		h77.61c4.99,0,9.04,4.05,9.04,9.04V15.82z"/>
+</g>
+</svg>

@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import _get from 'lodash/get';
+import Alert from '@material-ui/lab/Alert';
+import SweetAlert from 'react-bootstrap-sweetalert'
+import swal from 'sweetalert';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { makeStyles } from '@material-ui/core/styles';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
 import _isError from 'lodash/isError';
@@ -11,7 +17,7 @@ import connect from 'react-redux/lib/connect/connect';
 import CheckOutComponent from '../../components/MyAccount/CheckOutComponent.jsx';
 import { fetchAllAddressData, setAddrId } from '../../actions/address';
 import { fetchFirstCartData } from '../../actions/cart';
-import { SubscriptionLoader } from '../../components/Loader/Loader.jsx';
+import Loader from '../../components/Loader/Loader.jsx';
 import {
     // getSubscriptionHelperDetails,
     fetchPlaceOrderData,
@@ -42,6 +48,7 @@ class CheckOutContainer extends Component {
             earnPoints: 0,
             pointBalance: 0,
             enableSpendPoint: false,
+            loading: false,
             breadCrumbsList: [
                 {
                     link: '/',
@@ -55,7 +62,7 @@ class CheckOutContainer extends Component {
             payMethod: undefined,
             cartType: _get(this.props.cartType, 'cartType'),
             addrId: this.props.addrId,
-            paymentType: 'firstdataglobalgateway',
+            paymentType: undefined,
             showCheckoutSuccess: false,
             errors: {},
             checked: true,
@@ -70,10 +77,10 @@ class CheckOutContainer extends Component {
             // transactionType: _get(this.props.cartType, 'cartType'),
             transactionType: undefined,
             showShipAddress: true,
-            showCards: true,
+            showCards: false,
             // env: 'production', // you can set here to 'production' for production
             // productionID: 'AdsHRiaT2Wim1r3xPjrNkvbAxb3jnjZJHabLsEEp-S06Ey5uv1rTGuTcQ1mMQqNVtHaYnX2zWKe5b52w',
-            // sandboxID: 'Ab0E6-8KFQ-oxtRJBHxebIGEbetkTdlP5uM4tseLPnejBprcRRHdKEMZ8m-xed4wMrhbYKFzkato3PqI',
+           // sandboxID: 'Ab0E6-8KFQ-oxtRJBHxebIGEbetkTdlP5uM4tseLPnejBprcRRHdKEMZ8m-xed4wMrhbYKFzkato3PqI',
             currencyCode: 'USD',
             cartId: this.props.cartId,
             // transactions: [
@@ -95,10 +102,27 @@ class CheckOutContainer extends Component {
             placeOrderAmount: 0,
             savedCardsFirstdata: [],
             savedCardsAuthorizenet: [],
+            cartResult: undefined,
+            discountCouponValue: undefined,
+            couponRes: false,
+            showCouponRes: false,
+            coupCode: undefined,
+            showCouponData: undefined,
+            code: undefined,
+            subTotal: undefined,
+            grandTotal: undefined,
+            result: undefined,
+            cancelCouponVal: undefined,
+            sucessClassName: undefined,
+            discountVal: undefined,
+            productIds: undefined,
         };
         this.instance;
         // this.getNonceToken = this.getNonceToken.bind(this);
     }
+
+    
+
 
     handleCollapse = (index) => {
         this.setState({
@@ -127,7 +151,25 @@ class CheckOutContainer extends Component {
         });
     }
 
+
+    onConfirm = () => {
+       // this.setState({ checked: !this.state.checked });
+    }
+
+    onCancel = () => {
+        //this.setState({ checked: !this.state.checked });
+    }
+
     handleProcessOrder = () => {
+        console.log(this.state.paymentType);
+        if(this.state.paymentType === undefined)
+        {
+          
+           // toast.success("Success Notification !");
+           // alert('Select Payment Type!');
+           swal("", "You didn't selected the payment type!", "error");
+           /// <SweetAlert title="Here's a message!" onConfirm={this.onConfirm} onCancel={this.onCancel} />
+        }
         if (this.state.checked === false) {
             alert('Please accept terms and conditions');
         } else {
@@ -186,16 +228,17 @@ class CheckOutContainer extends Component {
                 //         this.props.addPaypalCreditCard(encrytpedData);
                 //     }
             } else if (this.state.paymentType === 'openTerms') {
+                this.setState({
+                    loading: true,
+                });
                 this.props.getPlaceOrder({
-                    apiToken: this.props.apiToken,
-                    storeId: this.props.storeId,
-                    shippingAddrId: _get(this.state.defaultShipInfo, 'entity_id'),
-                    billingAddrId: _get(this.state.defaultBillingInfo, 'entity_id'),
-                    currencyCode: this.props.currencyCode,
-                    custPO: '',
-                    payMethod: 'banktransfer',
-                    billingAddress: this.state.defaultBillingInfo,
-                    rewardPointsUsed: this.state.rewardPointsUsed, // @todo
+                 api_token: this.props.apiToken,
+                store_id: this.props.storeId,
+                shipping_addr_id: _get(this.state.defaultShipInfo, 'entity_id'),
+                    billing_addr_id: _get(this.state.defaultBillingInfo, 'entity_id'),
+                    currency_code: this.props.currencyCode,
+                    cust_po: '',
+                    pay_method: 'banktransfer',
                 });
             } else if (this.state.paymentType === 'authorizenet') {
                 if (!(this.state.value || this.state.creditnumber)) {
@@ -242,7 +285,7 @@ class CheckOutContainer extends Component {
                     orderId: 123456,
                     currency: 'INR',
                     // orderAmount: 11.00,
-                    grandTotal: this.state.grandTotal,
+                    grandTotal: 10,
                     // redirectUrl: 'http://127.0.0.1:3010/ccavResponseHandler',
                     // cancelUrl: 'http://127.0.0.1:3010/ccAvenueCancelHandler',
                     language: 'EN',
@@ -271,42 +314,23 @@ class CheckOutContainer extends Component {
                     apiToken: this.props.apiToken,
                 });
                 console.log('b:', body);
+                document.getElementById('nonseamless').submit();
+                
+
                 // debugger
-                axios({
-                    url: `${process.env.APPLICATION_BFF_URL}/payment/ccavenue/token`,
-                    method: 'POST',
-                    data: JSON.stringify(body),
-                    headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-store',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Method': 'access-control-request-method' || '*',
-                    'Access-Control-Allow-Headers': 'access-control-request-headers' || '*',
-                    },
-                    })
-                .then((response) => {
-                    console.log('res:', response.data);
-                    // let formData = new FormData();
-                    // formData.append("username", "Groucho");
-                    // formData.append("accountnum", 123456);
-                    // console.log('form:', formData);
-                    // document.getElementById("nonseamless").action = 'https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction';
-                    // document.getElementById("encRequest").name  = 'b';
-                    document.getElementById('encRequest').value = response.data.encRequest; //  'dc0458991d58466f303d07feb7fc6e590e3d47a48665415a59271dbe87ab994a650bc153873969fb73c717a574997a48a8eac310f094d1d07d9dea0f05fbda255ea2ab2c004b875142856e8743269adf0004f6531ccd30eb525c87477073c62e1a4b05a76350cb04d5c1429c3406aed42e6e48080afcea67d5b87950448bd44431ac88b700f0838bda353b835c5950345865bc8fa279224b17681ba9bd62a377630ce0d595b618d5058c31279bc2c403c3a7cdb8762dbefb5fff30479eaab22df3b12af725b1dc8d3c4dc14a859a53295f3e9c6577cba5291c50dd9119d4e18578bb61395b3aae538b849bf9fb0116254a32527193de6badad0b58665d291005ac8e310b5002325661775e8a1a800719ae446745319030b34cdcd778eb7a99daba82f09088af072adc88e2eba24955b85582e5081bf3e214ef53bc9cdab1539784fc7cc6db634d4dc1c5b294e85c01868c37bb36388547d62f28ea278c21bcf5d7d418d48a5b998cd3c0e65d34b3258f6da186ca854a8be4aa317902e61eb5e83fcd63252bce1f96e41b069dc787d7b69d60eea052c47d51908d4620d093b74f76a1bf3c66832b773f6cb0e9e1418908d1bb9aff94931dccdb6c07638d2c80e649fb3495b366e4cc55dd75ca749089a8359c38c3873d779ae520d3800d60a678e9ecffc345901fde26305cebf5f3a848288471abae7b7d31324fa2bea3c7364216b6e252c3e09df16ff4cf9742d0f83bba3864e5c83e56dcc8865b8cc7ce4283a0adbe0855efab8449df9378530e1ee7cef6dc4b8db2a9ca3f16aa81248cfb4a431f36c7a93727aafc480471a88bf8141d2f97b0fe240032bcb19bcb4e863cbce033d3934c70cc91dd39fba523d7ff2fd0eae2db0898961a9b85ef07beedd63bdefa22091bad43ea1cb2386e0e92210573032076959906c71a34a8f08019c1005b45ec2187275c4521a30a2df58da65fc8260eef50774895c8e128ae53dd9f4dfdc72472edbd004e96050adcfddab1a04ca9f74264fe111ef774bbc98750667badaaf8da7b208c0377ff2cda4af9b11f' //
-                    // document.getElementById("access_code").name  = 'b';
-                    document.getElementById('access_code').value = response.data.accessCode; // 'AVXL88GK63AI87LXIA'//
-                    document.getElementById('nonseamless').submit();
-                });
+               
             }
         }
     }
 
     getPaymentType = (event) => {
-        if (event.target.name === 'firstdataglobalgateway') {
-            this.setState({
-                paymentType: event.target.name,
-                showCards: true,
-            });
+        if (event.target.name === 'cod') {
+           console.log('cod');
+           this.setState({
+            paymentType: event.target.name,
+            showCards: false,
+            showCredit: false,
+        });
         // } else if (event.target.name === 'paypal') {
         //     this.props.getOrderId({ apiToken: this.props.apiToken });
         //     this.setState({
@@ -337,7 +361,7 @@ class CheckOutContainer extends Component {
             // this.props.getOrderId({ apiToken: this.props.apiToken });
             this.setState({
                 paymentType: event.target.name,
-                showCards: false,
+                showCards: true,
                 showCredit: false,
             });
         }
@@ -473,31 +497,94 @@ class CheckOutContainer extends Component {
     componentDidMount() {
         document.title = 'Checkout';
         this.props.clearPlaceOrderData();
-        this.props.getAllAddressData({ apiToken: this.props.apiToken });
-        this.props.getPaymentMethodInfo({
-            apiToken: this.props.apiToken,
-            storeId: this.props.storeId,
-            cartId: this.props.cartId,
-            cartType: this.props.cartType,
-        });
-        this.props.getCartData({ apiToken: this.props.apiToken });
+        this.props.getAllAddressData({ api_token: this.props.apiToken });
+        console.log(this.props.localeId);
+      //  this.props.getPaymentMethodInfo({
+        //    apiToken: this.props.apiToken,
+          //  storeId: this.props.storeId,
+           // cartId: this.props.cartId,
+           // cartType: this.props.cartType,
+       // });
+       this.props.getCartData({ api_token: this.props.apiToken, spending_point: 1 });
+
         // if (this.props.cartType === 'subscription') {
         //     this.props.getSubscriptionHelp({ apiToken: this.props.apiToken });
         // }
-        this.props.getSavedCardData({ apiToken: this.props.apiToken });
-        this.props.getBraintreeClientToken();
+       // this.props.getSavedCardData({ apiToken: this.props.apiToken });
+        //this.props.getBraintreeClientToken();
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (!_isEmpty(_get(nextProps, 'allAddressData'))) {
-            const defaultBillingInfo = _find(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: _get(nextProps, 'allAddressData.billingAddressId') });
-            let defaultShipInfo = _filter(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: this.props.storeId });
-            defaultShipInfo = !_isEmpty(defaultShipInfo) ? defaultShipInfo[0] : {};
-            this.setState({ defaultShipInfo, defaultBillingInfo });
-            this.props.setAddrId({ billId: _get(defaultBillingInfo, 'entity_id'), shipId: _get(defaultShipInfo, 'entity_id') });
-        }
         if (!_isEmpty(_get(nextProps, 'firstCartData'))) {
+           // this.props.updateCart({
+             // show: false,
+              //cartCount: _get(nextProps.firstCartData, ['cart', 0, 'total_products_in_cart'], 0),
+              //cartTotal: _get(nextProps.firstCartData, ['cart', 0, 'subtotal'], 0),
+             // cartProducts: _get(nextProps.firstCartData, ['cart', 0, 'result'], []),
+           // });
             if (_get(nextProps, ['firstCartData', 'cart', 0, 'code']) === 1) {
+                const productIds = result && Array.isArray(result) && result.reduce((accumulator, product) => accumulator.concat(product.product_id), []);
+                let rewardPointsUsed = 0;
+                let rewardsChecked = false;
+                let enableSpendPoint = false;
+                if ((_get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'type'], 'normal') === 'normal') && _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ') && _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0]) {
+                    rewardsChecked = true;
+                    enableSpendPoint = true;
+                    if (_get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ') && _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0] && (Number(_get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0]) > Number(_get(nextProps, ['firstCartData', 'cart', 0, 'spendingmax'])))) {
+                        rewardPointsUsed = Number(_get(nextProps, ['firstCartData', 'cart', 0, 'spendingmax']));
+                    } else {
+                        rewardPointsUsed = Number(_get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0]);
+                    }
+                }
+              const productDetailsTemp = _get(nextProps, ['firstCartData', 'cart', 0, 'result']);
+              const cartNewId = _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'cart_id']);
+              if (cartNewId !== this.props.cartId) {
+                this.props.setCartId(cartNewId);
+              }
+              let productDetails = {};
+              productDetailsTemp.map((o) => {
+                productDetails = {
+                  ...productDetails,
+                  [o.cart_rid]: {
+                    product_id: o.product_id,
+                    quantity: o.qty,
+                  },
+                };
+              });
+             
+              console.log(nextProps.firstCartData.cart);
+              this.setState({
+                cartResult: _get(nextProps, 'firstCartData.cart'),
+                code: _get(nextProps, ['firstCartData', 'cart', 0, 'code']),
+                subTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'subtotal']).split(',').join(''),
+                grandTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']).split(',').join(''),
+                redirection: _get(nextProps, ['firstCartData', 'cart', 0, 'redirection']),
+                amount: _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']),
+                transactionType: _get(nextProps.firstCartData, ['cart', 0, 'result', 0, 'type']),
+                cartType: _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'type'], 'normal'),
+                productIds: productIds,
+                cycles: _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'cycles']),
+                discount: _get(nextProps, ['firstCartData', 'cart', 0, 'discount']),
+                couponCode: _get(nextProps, ['firstCartData', 'cart', 0, 'coupon_code']),
+                feeAmount: _get(nextProps, ['firstCartData', 'cart', 0, 'fee_amount']),
+                earnPoints: _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_earn']),
+                pointBalance: _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ') && _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0],
+                maxReward: Number(_get(nextProps, ['firstCartData', 'cart', 0, 'spendingmax'])),
+                rewardPointsUsed,
+                rewardsChecked,
+                enableSpendPoint,
+              });
+              const couponCode = _get(nextProps.firstCartData, ['cart', 0, 'coupon_code']);
+              if (couponCode !== 'NA') {
+                this.setState({
+                  couponRes: true,
+                  coupCode: couponCode,
+                  discountCouponValue: couponCode,
+                  showCouponRes: false,
+                  move: false,
+                });
+              }
+            } else {
                 if (this.state.cartType === 'subscription') {
                     this.setState({
                         checkoutTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']) ? _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']) : _get(nextProps, ['firstCartData', 'cart', 0, 'subtotal']),
@@ -521,28 +608,39 @@ class CheckOutContainer extends Component {
                         rewardPointsUsed = Number(_get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0]);
                     }
                 }
-                this.setState({
-                    result,
-                    subTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'subtotal']).split(',').join(''),
-                    grandTotal: _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']).split(',').join(''),
-                    redirection: _get(nextProps, ['firstCartData', 'cart', 0, 'redirection']),
-                    amount: _get(nextProps, ['firstCartData', 'cart', 0, 'grandtotal']),
-                    transactionType: _get(nextProps.firstCartData, ['cart', 0, 'result', 0, 'type']),
-                    cartType: _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'type'], 'normal'),
-                    productIds: productIds.join('_'),
-                    cycles: _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'cycles']),
-                    discount: _get(nextProps, ['firstCartData', 'cart', 0, 'discount']),
-                    couponCode: _get(nextProps, ['firstCartData', 'cart', 0, 'coupon_code']),
-                    feeAmount: _get(nextProps, ['firstCartData', 'cart', 0, 'fee_amount']),
-                    earnPoints: _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_earn']),
-                    pointBalance: _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ') && _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0],
-                    maxReward: Number(_get(nextProps, ['firstCartData', 'cart', 0, 'spendingmax'])),
-                    rewardPointsUsed,
-                    rewardsChecked,
-                    enableSpendPoint,
-                });
+                console.log('surya'+productIds);
+              // this.props.setCartType({ cartType: '' });
+              this.setState({
+                cartResult: _get(nextProps, 'firstCartData'),
+                code: _get(nextProps, ['firstCartData', 'cart', 0, 'code']),
+                subTotal: _get(nextProps,'firstCartData[0].subtotal'),
+                grandTotal: _get(nextProps, 'firstCartData[0].grandtotal'),
+                redirection: _get(nextProps, ['firstCartData', 'cart', 0, 'redirection']),
+                amount: _get(nextProps, 'firstCartData[0].grandtotal'),
+                transactionType: _get(nextProps.firstCartData, ['cart', 0, 'result', 0, 'type']),
+                cartType: _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'type'], 'normal'),
+                productIds: productIds,
+                cycles: _get(nextProps, ['firstCartData', 'cart', 0, 'result', 0, 'cycles']),
+                discount: _get(nextProps, 'firstCartData[0].discount'),
+                couponCode: _get(nextProps, 'firstCartData[0].coupon_code'),
+                feeAmount: _get(nextProps, ['firstCartData', 'cart', 0, 'fee_amount']),
+                earnPoints: _get(nextProps, 'firstCartData[0].reviewedpoint_earn'),
+                pointBalance: _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ') && _get(nextProps, ['firstCartData', 'cart', 0, 'reviewedpoint_balance'], ' ').split(' ')[0],
+                maxReward: Number(_get(nextProps, ['firstCartData', 'cart', 0, 'spendingmax'])),
+                rewardPointsUsed,
+                rewardsChecked,
+                enableSpendPoint,
+              });
             }
+          }
+        if (!_isEmpty(_get(nextProps, 'allAddressData'))) {
+            const defaultBillingInfo = _find(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: _get(nextProps, 'allAddressData.billingAddressId') });
+            let defaultShipInfo = _filter(_get(nextProps, ['allAddressData', 'result', 0], []), { entity_id: this.props.storeId });
+            defaultShipInfo = !_isEmpty(defaultShipInfo) ? defaultShipInfo[0] : {};
+            this.setState({ defaultShipInfo, defaultBillingInfo });
+            this.props.setAddrId({ billId: _get(defaultBillingInfo, 'entity_id'), shipId: _get(defaultShipInfo, 'entity_id') });
         }
+      
 
         if (!_isEmpty(_get(nextProps, 'paymentMethodInfoData'))) {
             if (_get(nextProps, 'paymentMethodInfoData.status') === 'true') {
@@ -558,6 +656,9 @@ class CheckOutContainer extends Component {
 
         if (!_isEmpty(_get(nextProps, 'placeOrderData'))) {
             if (_get(nextProps.placeOrderData, 'code') === 1) {
+                this.setState({
+                    loading: false,
+                });
                 this.setState({ showCheckoutSuccess: true, orderId: _get(nextProps, 'placeOrderData.order_id'), placeOrderAmount: _get(nextProps, 'placeOrderData.amount') });
             }
         }
@@ -663,40 +764,40 @@ class CheckOutContainer extends Component {
     }
 
     render() {
-        // console.log(this.props.braintreeClientToken);
-        if (_get(this, 'props.isLoading')) {
-            return (
-                <div className="container" style={{ minHeight: '500px' }}>
-                    <SubscriptionLoader type={_get(this.props, 'cartType', '')} actionType={_get(this.props, 'actionType', '')} />
-                </div>
-            );
-        }
+      
+        //if (this.state.loading) {
+          //  return (
+            //    <div className="loaderDiv" style={{ minHeight: '400px' }}>
+              //   <Loader />
+             //   </div>
+           // );
+        //}
         if (_get(this.state, 'showCheckoutSuccess')) {
             return <Redirect push to={{
                 pathname: '/checkout/onepage/success',
                 state: { orderId: this.state.orderId, productIds: this.state.productIds, placeOrderAmount: this.state.placeOrderAmount },
             }} />;
         }
-        if (!this.props.apiToken) {
+        {/*if (!this.props.apiToken) {
             return <Redirect push to={{
                 pathname: '/login',
             }} />;
-        }
+        }*/}
         return (
             <div>
-                <BreadCrumbs
-                    list={this.state.breadCrumbsList} />
+              
                 <div className="container">
                     <div ref={this.abc} />
                     <ErrorBoundary>
                     <form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
                     <input id="donaldduck" type="hidden" name="q" value="a"/>
-                    <input type="hidden" id="encRequest" name="encRequest" value="' + encRequest + '" />
-                    <input type="hidden" id="access_code" name="access_code" value="' + accessCode + '" />
+                    <input type="hidden" id="encRequest" name="encRequest" value="Ab0E6-8KFQ-oxtRJBHxebIGEbetkTdlP5uM4tseLPnejBprcRRHdKEMZ8m-xed4wMrhbYKFzkato3PqI" />
+                    <input type="hidden" id="access_code" name="access_code" value="AVXL88GK63AI87LXIA" />
                     </form>
                         <CheckOutComponent
                             {...this.state}
                             instance={this.instance}
+                            cartResult={this.state.cartResult}
                             braintreeClientToken={this.props.braintreeClientToken}
                             currencyCode={this.props.currencyCode}
                             primeUser={this.props.primeUser}
@@ -724,7 +825,7 @@ class CheckOutContainer extends Component {
                             // productionId={this.state.productionID}
                             checkoutTotal={this.state.checkoutTotal}
                             currencyCode={this.state.currencyCode}
-                            // sandboxID={this.state.sandboxID}
+                          //  sandboxID={this.state.sandboxID}
                             payMethod={this.state.payMethod}
                             balanceLimit={this.state.balanceLimit}
                             couponCode={this.state.couponCode}
@@ -737,9 +838,12 @@ class CheckOutContainer extends Component {
                             handleRewardsCheckChange={this.handleRewardsCheckChange}
                             // getNonceToken={this.getNonceToken}
                             assignInstance={this.assignInstance}
+                            grandTotal={this.state.grandTotal}
+                            loading={this.state.loading}
                         />
                     </ErrorBoundary>
                 </div>
+                <hr className="blue-hr"></hr>
             </div>
         );
     }
@@ -762,6 +866,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = (state) => {
+
+    
+
     const {
         loginReducer, allAddressReducer, cartReducer, placeOrderReducer,
     } = state;
@@ -774,6 +881,7 @@ const mapStateToProps = (state) => {
         cartId,
         primeUser,
         demoExpired,
+        localeId,
     } = loginReducer || [];
 
     const {
@@ -807,6 +915,7 @@ const mapStateToProps = (state) => {
         currencyCode,
         allAddressData,
         storeId,
+        localeId,
         firstCartData,
         placeOrderData,
         paymentMethodInfoData,

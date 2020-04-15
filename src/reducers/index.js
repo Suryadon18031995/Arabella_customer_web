@@ -23,6 +23,9 @@ import placeOrderReducer from './placeOrder';
 import viewsReducer from './recenttViewsReducer';
 import blogReducer from './blog';
 import vendorArtistsReducer from './vendorArtists';
+import buyMedicineReducer from './buyMedicine';
+import labTestReducer from './labTest';
+import geriatricCareReducer from './geriatricCare';
 
 const commonReducer = (state = 'initialState', action) => {
   switch (action.type) {
@@ -69,7 +72,10 @@ const rootReducer = combineReducers({
   placeOrderReducer,
   viewsReducer,
   blogReducer,
-  vendorArtistsReducer
+  vendorArtistsReducer,
+  buyMedicineReducer,
+  labTestReducer,
+  geriatricCareReducer,
 });
 
 export default rootReducer;

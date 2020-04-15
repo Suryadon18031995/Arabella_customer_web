@@ -1,39 +1,33 @@
 
 import * as REGISTER_CONSTANTS from '../constants/register';
 import dynamicActionWrapper from '../utils/actionHelper';
+import axios from 'axios';
+import qs from 'qs';
 
-export const requestRegisterData = subreddit => ({
-    type: REGISTER_CONSTANTS.REQUEST_REGISTER_SEARCH,
+export const clearRegisterData = subreddit => ({
+    type: REGISTER_CONSTANTS.CLEAR_REGISTER_DATA,
     subreddit,
 });
 
-export const receiveRegisterData = (subreddit, json) => ({
+export const recievedRegisterDetails = data => ({
     type: REGISTER_CONSTANTS.RECEIVED_REGISTER_SEARCH,
-    subreddit,
-    data: json,
-    receivedAt: Date.now(),
-});
-
-const receiveRegisterDataError = (subreddit, err, errCode) => ({
+     data,
+     receivedAt: Date.now(),
+  })  
+  export const recievedRegisterError = (err) => ({
     type: REGISTER_CONSTANTS.RECEIVED_REGISTER_SEARCH_ERROR,
-    subreddit,
-    error: err,
-    errorCode: errCode,
-});
+    errorCode: err,
+  })
 
-export const fetchCustomerRegisterData = (data, subreddit) => (dispatch) => {
-    return dispatch(dynamicActionWrapper({
-        path: REGISTER_CONSTANTS.REGISTER_URL,
-        method: 'POST',
-        body: data,
-        initCb: requestRegisterData,
-        successCb: receiveRegisterData,
-        failureCb: receiveRegisterDataError,
-        subreddit,
-        wrapperActionType: 'FETCH_REGISTER_SEARCH_RESULT_WRAPPER',
-        redirect: 'follow',
-    }));
-};
+export const fetchCustomerRegisterData = (data) => {
+    console.log(data);      
+  return dispatch => {
+    axios.post('https://uat.mediversal.tech/index.php/api/customer/register',qs.stringify(data))
+      .then(res => dispatch(recievedRegisterDetails(res.data)))
+      .catch(err => dispatch(recievedRegisterError(err)))
+  }
+}
+
 
 export const requestStateListData = subreddit => ({
     type: REGISTER_CONSTANTS.REQUEST_STATE_LIST_SEARCH,

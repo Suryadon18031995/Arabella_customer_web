@@ -8,6 +8,13 @@ const registerReducer = (state = {
     trackUrl: '',
 }, action) => {
     switch (action.type) {
+        case REGISTER_CONSTANTS.CLEAR_REGISTER_DATA:
+            return Object.assign({}, state, {
+                type: '',
+                error: '',
+                isFetching: false,
+                registerData: [],
+            });
         case REGISTER_CONSTANTS.REQUEST_REGISTER_SEARCH:
             return Object.assign({}, state, {
                 isFetching: true,
